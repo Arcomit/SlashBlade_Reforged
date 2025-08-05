@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -49,9 +50,9 @@ public class ObjReader {
         String         currentLine;
 
         while ((currentLine = reader.readLine()) != null) {
+            lineNum++;
             currentLine = currentLine.replaceAll("\\s+", " ").trim();
             processLine(currentLine, lineNum);
-            lineNum++;
         }
     }
 
@@ -67,12 +68,12 @@ public class ObjReader {
 
         switch (tokens[0]) {
             case "v":  parsePosition(tokens, lineNum); break;
-            case "vt": parseUv(tokens, lineNum);      break;
-            case "vn": parseNormal(tokens, lineNum);  break;
-            case "f" : parseFace(tokens, lineNum);    break;
+            case "vt": parseUv      (tokens, lineNum); break;
+            case "vn": parseNormal  (tokens, lineNum); break;
+            case "f" : parseFace    (tokens, lineNum); break;
             case "g" :
-            case "o" : startNewGroup(tokens, lineNum);break;
-            default  :                                break;
+            case "o" : startNewGroup(tokens, lineNum); break;
+            default  :                                 break;
         }
     }
 
@@ -84,7 +85,7 @@ public class ObjReader {
         try {
             float x = Float.parseFloat(tokens[1]);
             float y = Float.parseFloat(tokens[2]);
-            float z = tokens.length > 3 ? Float.parseFloat(tokens[3]) : 0.0f;
+            float z = tokens.length >= 4 ? Float.parseFloat(tokens[3]) : 0.0f;
 
             positions.add(new SimpleVector3f(x, y, z));
         } catch (NumberFormatException | IndexOutOfBoundsException e) {
@@ -116,7 +117,7 @@ public class ObjReader {
         try {
             float u = Float.parseFloat(tokens[1]);
             float v = 1.0f - Float.parseFloat(tokens[2]); // 反转V
-            float w = tokens.length > 3 ? Float.parseFloat(tokens[3]) : 0.0f;
+            float w = tokens.length >= 4 ? Float.parseFloat(tokens[3]) : 0.0f;
 
             uvs.add(new SimpleVector3f(u, v, w));
         } catch (NumberFormatException | IndexOutOfBoundsException e) {
@@ -125,7 +126,7 @@ public class ObjReader {
     }
 
     private void parseFace(String[] tokens, int lineNum) throws ModelParseException {
-        if (tokens.length >= 4){
+        if (tokens.length >= 5){
             throw new ModelParseException("存在非三角面", lineNum);
             // TODO: 自动模型三角化
         }
@@ -134,15 +135,15 @@ public class ObjReader {
         String[] subTokens;
         // f v1/vt1/vn1 v2/vt2/vn2 v3/vt3/vn3 ...
         if (FACE_VERTEX_UV_NORMAL_INDEX_PATTERN.matcher(String.join(" ", tokens)).matches()) {
-            face1.vertices      = new SimpleVector3f[tokens.length];
-            face1.verticesUvs   = new SimpleVector3f[tokens.length];
-            face1.vertexNormals = new SimpleVector3f[tokens.length];
+            face1.vertices      = new SimpleVector3f[tokens.length - 1];
+            face1.verticesUvs   = new SimpleVector3f[tokens.length - 1];
+            face1.vertexNormals = new SimpleVector3f[tokens.length - 1];
 
-            for (int i = 1; i < tokens.length; ++i) {
-                subTokens                  = tokens[i].split("/");
-                face1.vertices     [i - 1] = positions.get(Integer.parseInt(subTokens[0]) - 1);
-                face1.verticesUvs  [i - 1] = uvs      .get(Integer.parseInt(subTokens[1]) - 1);
-                face1.vertexNormals[i - 1] = normals  .get(Integer.parseInt(subTokens[2]) - 1);
+            for (int i = 0; i < tokens.length - 1; ++i) {
+                subTokens                  = tokens[i + 1].split("/");
+                face1.vertices     [i] = positions.get(Integer.parseInt(subTokens[0]) - 1);
+                face1.verticesUvs  [i] = uvs      .get(Integer.parseInt(subTokens[1]) - 1);
+                face1.vertexNormals[i] = normals  .get(Integer.parseInt(subTokens[2]) - 1);
             }
 
             face1.faceNormal = face1.computeUnitNormal();
@@ -150,13 +151,13 @@ public class ObjReader {
 
         // f v1/vt1 v2/vt2 v3/vt3 ...
         if (FACE_VERTEX_UV_INDEX_PATTERN.matcher(String.join(" ", tokens)).matches()) {
-            face1.vertices    = new SimpleVector3f[tokens.length];
-            face1.verticesUvs = new SimpleVector3f[tokens.length];
+            face1.vertices    = new SimpleVector3f[tokens.length - 1];
+            face1.verticesUvs = new SimpleVector3f[tokens.length - 1];
 
-            for (int i = 1; i < tokens.length; ++i) {
-                subTokens                = tokens[i].split("/");
-                face1.vertices   [i - 1] = positions.get(Integer.parseInt(subTokens[0]) - 1);
-                face1.verticesUvs[i - 1] = uvs      .get(Integer.parseInt(subTokens[1]) - 1);
+            for (int i = 0; i < tokens.length - 1; ++i) {
+                subTokens                = tokens[i + 1].split("/");
+                face1.vertices   [i] = positions.get(Integer.parseInt(subTokens[0]) - 1);
+                face1.verticesUvs[i] = uvs      .get(Integer.parseInt(subTokens[1]) - 1);
             }
 
             face1.faceNormal = face1.computeUnitNormal();
@@ -164,13 +165,13 @@ public class ObjReader {
 
         // f v1//vn1 v2//vn2 v3//vn3 ...
         if (FACE_VERTEX_NORMAL_INDEX_PATTERN.matcher(String.join(" ", tokens)).matches()) {
-            face1.vertices      = new SimpleVector3f[tokens.length];
-            face1.vertexNormals = new SimpleVector3f[tokens.length];
+            face1.vertices      = new SimpleVector3f[tokens.length - 1];
+            face1.vertexNormals = new SimpleVector3f[tokens.length - 1];
 
-            for (int i = 1; i < tokens.length; ++i) {
-                subTokens                  = tokens[i].split("/");
-                face1.vertices     [i - 1] = positions.get(Integer.parseInt(subTokens[0]) - 1);
-                face1.vertexNormals[i - 1] = normals  .get(Integer.parseInt(subTokens[2]) - 1);
+            for (int i = 0; i < tokens.length - 1; ++i) {
+                subTokens                  = tokens[i + 1].split("/");
+                face1.vertices     [i] = positions.get(Integer.parseInt(subTokens[0]) - 1);
+                face1.vertexNormals[i] = normals  .get(Integer.parseInt(subTokens[2]) - 1);
             }
 
             face1.faceNormal = face1.computeUnitNormal();
@@ -178,10 +179,10 @@ public class ObjReader {
 
         // f v1 v2 v3 ...
         if (FACE_VERTEX_INDEX_PATTERN.matcher(String.join(" ", tokens)).matches()) {
-            face1.vertices = new SimpleVector3f[tokens.length];
+            face1.vertices = new SimpleVector3f[tokens.length - 1];
 
-            for (int i = 1; i < tokens.length; ++i) {
-                face1.vertices[i - 1] = positions.get(Integer.parseInt(tokens[i]) - 1);
+            for (int i = 0; i < tokens.length - 1; ++i) {
+                face1.vertices[i] = positions.get(Integer.parseInt(tokens[i + 1]) - 1);
             }
 
             face1.faceNormal = face1.computeUnitNormal();

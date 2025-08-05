@@ -10,7 +10,7 @@ public class ObjFace {
     public SimpleVector3f[] vertices;
     public SimpleVector3f[] verticesUvs;
     public SimpleVector3f[] vertexNormals;
-    public SimpleVector3f faceNormal;
+    public SimpleVector3f   faceNormal;
 
     /**
      * 计算并返回三角形面的单位法向量

@@ -45,7 +45,7 @@ public class ObjModelManager implements PreparableReloadListener {
         ).thenCompose(preparationBarrier::wait);
     }
 
-    private void   loadResources(ResourceManager resourceManager) {
+    private       void     loadResources(ResourceManager resourceManager) {
         MODELS.clear();
 
         try {
@@ -80,7 +80,7 @@ public class ObjModelManager implements PreparableReloadListener {
         });
     }
 
-    public  static ObjModel get(ResourceLocation resourceLocation) {
+    public static ObjModel get(ResourceLocation resourceLocation) {
         if (resourceLocation != null){
             ObjModel model = MODELS.computeIfAbsent(resourceLocation, m -> {
                 try {
