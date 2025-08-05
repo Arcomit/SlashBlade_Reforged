@@ -1,0 +1,177 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'idea'
+    id 'net.neoforged.moddev' version '2.0.106'
+}
+
+version = mod_version
+group = mod_group_id
+
+repositories {
+    mavenLocal()
+}
+
+base {
+    archivesName = mod_id
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+neoForge {
+    version = project.neo_version
+    parchment {
+        mappingsVersion = project.parchment_mappings_version
+        minecraftVersion = project.parchment_minecraft_version
+    }
+
+    runs {
+        client {
+            client()
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
+
+        server {
+            server()
+            programArgument '--nogui'
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
+
+        gameTestServer {
+            type = "gameTestServer"
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
+
+        data {
+            data()
+            programArguments.addAll '--mod', project.mod_id, '--all',
+                    '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+        }
+
+        configureEach {
+            systemProperty 'forge.logging.markers', 'REGISTRIES'
+            logLevel = org.slf4j.event.Level.DEBUG
+        }
+    }
+
+    mods {
+        "${mod_id}" {
+            sourceSet(sourceSets.main)
+        }
+    }
+}
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+repositories {
+    mavenLocal()
+    maven {
+        name = "Modrinth"
+        url = "https://api.modrinth.com/maven"
+    }
+    maven {
+        name = "CurseForge"
+        url = "https://cursemaven.com"
+    }
+    maven {
+        name = "Jared's maven"
+        url = "https://maven.blamejared.com/"
+    }
+    maven {
+        name = "KosmX's maven"
+        url = 'https://maven.kosmx.dev/'
+    }
+    maven {
+        url = "https://maven.firstdarkdev.xyz/snapshots"
+    } // LDLib, Photon
+}
+
+dependencies {
+    // PlayerAnimator
+    implementation        "dev.kosmx.player-anim:player-animation-lib-forge:${player_anim_version}"
+
+    // 基岩版动画库
+    implementation jarJar("maven.modrinth:simplebedrockmodel:${simple_bedrock_model_version}") {
+        version {
+            prefer simple_bedrock_model_version
+        }
+    }
+    compileOnly(          "com.maydaymemory:mae:1.0.2")
+
+    // 加速渲染
+    implementation        "curse.maven:accelerated-rendering-1314021:6839175"
+
+    // 光子2特效库（前置）
+    implementation        "curse.maven:photon-871522:6843384"
+    implementation        "curse.maven:ldlib-626676:6843335"
+
+    // 碰撞箱库
+    implementation        "curse.maven:hitbox-api-1152734:5958930"
+
+    // JEI
+    compileOnly           "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
+    compileOnly           "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
+    runtimeOnly           "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
+
+    // 光影
+    implementation        "curse.maven:sodium-394468:6382651"
+    implementation        "curse.maven:irisshaders-455508:6661598"
+
+    // lombok
+    compileOnly           "org.projectlombok:lombok:1.18.38"
+    annotationProcessor   "org.projectlombok:lombok:1.18.38"
+}
+
+// 用于 neoforge.mods 里替换那一堆 ${xxxx}
+tasks.withType(ProcessResources).configureEach {
+    var replaceProperties = [
+            minecraft_version      : minecraft_version,
+            minecraft_version_range: minecraft_version_range,
+            neo_version            : neo_version,
+            neo_version_range      : neo_version_range,
+            loader_version_range   : loader_version_range,
+            mod_id                 : mod_id,
+            mod_name               : mod_name,
+            mod_license            : mod_license,
+            mod_version            : mod_version,
+            mod_authors            : mod_authors,
+            mod_description        : mod_description
+    ]
+    inputs.properties replaceProperties
+
+    filesMatching(['META-INF/neoforge.mods.toml']) {
+        expand replaceProperties
+    }
+}
+
+publishing {
+    publications {
+        register('mavenJava', MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            url "file://${project.projectDir}/repo"
+        }
+    }
+}
+
+// 让 idea 主动下载前置库的源码和 Javadoc
+// 新版本 idea 默认不会下载这两个，这虽然加快了构建速度，但是不方便调试
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
+    }
+}
+
+// 必须，编码需要显式指定为 UTF
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+java {
+    // 编译源码文件，方便发布 maven
+    withSourcesJar()
+}
