@@ -45,7 +45,7 @@ public class ObjModelManager implements PreparableReloadListener {
         ).thenCompose(preparationBarrier::wait);
     }
 
-    private       void     loadResources(ResourceManager resourceManager) {
+    private void loadResources(ResourceManager resourceManager) {
         MODELS.clear();
 
         try {
@@ -62,7 +62,7 @@ public class ObjModelManager implements PreparableReloadListener {
                 MODEL_DIR, resLoc -> resLoc.getPath().toLowerCase(Locale.ROOT).endsWith(FILE_TYPES)
         );
         resources.forEach((resourceLocation, resource) -> {
-            ObjModel model = null;
+            ObjModel model;
 
             try {
 
@@ -90,15 +90,15 @@ public class ObjModelManager implements PreparableReloadListener {
                 } catch (IOException | ModelParseException e) {
 
                     SlashbladeMod.LOGGER.warn("Failed to load model: {}", resourceLocation, e);
-                    return null;
-                }
 
+                    return DEFAULT_MODEL;
+
+                }
             });
 
-            if (model != null) {
-                return model;
-            }
+            return model;
         }
+
         return DEFAULT_MODEL;
     }
 }

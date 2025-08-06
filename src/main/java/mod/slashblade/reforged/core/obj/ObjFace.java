@@ -1,5 +1,8 @@
 package mod.slashblade.reforged.core.obj;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * @Author: Arcomit
  * @CreateTime: 2025-08-05 12:16
@@ -7,10 +10,10 @@ package mod.slashblade.reforged.core.obj;
  */
 public class ObjFace {
 
-    public SimpleVector3f[] vertices;
-    public SimpleVector3f[] verticesUvs;
-    public SimpleVector3f[] vertexNormals;
-    public SimpleVector3f   faceNormal;
+    protected SimpleVector3f[] vertices;
+    protected SimpleVector3f[] verticesUvs;
+    protected SimpleVector3f[] vertexNormals;
+    protected SimpleVector3f   faceNormal;
 
     /**
      * 计算并返回三角形面的单位法向量

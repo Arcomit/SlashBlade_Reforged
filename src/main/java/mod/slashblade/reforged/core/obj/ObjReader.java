@@ -171,7 +171,7 @@ public class ObjReader {
             for (int i = 0; i < tokens.length - 1; ++i) {
                 subTokens                  = tokens[i + 1].split("/");
                 face1.vertices     [i] = positions.get(Integer.parseInt(subTokens[0]) - 1);
-                face1.vertexNormals[i] = normals  .get(Integer.parseInt(subTokens[2]) - 1);
+                face1.vertexNormals[i] = normals  .get(Integer.parseInt(subTokens[1]) - 1);
             }
 
             face1.faceNormal = face1.computeUnitNormal();
