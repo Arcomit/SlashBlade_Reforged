@@ -10,6 +10,9 @@ import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
@@ -22,6 +25,7 @@ import java.util.concurrent.Executor;
  * @CreateTime: 2025-08-05 11:54
  * @Description: Obj模型管理，用于加载和缓存，获取Obj模型。
  */
+@OnlyIn(Dist.CLIENT)
 public class ObjModelManager implements PreparableReloadListener {
 
     private static final Map<ResourceLocation, ObjModel> MODELS        = new HashMap<>();
@@ -40,13 +44,17 @@ public class ObjModelManager implements PreparableReloadListener {
             Executor           gameExecutor
     ) {
         return CompletableFuture.runAsync(
-                () -> loadResources(resourceManager),
-                backgroundExecutor
-        ).thenCompose(preparationBarrier::wait);
+                () -> {
+                    loadResources(resourceManager);
+                }
+                        , backgroundExecutor
+                                         )
+               .thenCompose(preparationBarrier::wait);
     }
 
     private void loadResources(ResourceManager resourceManager) {
         MODELS.clear();
+        System.out.println("NB");
 
         try {
 

@@ -2,6 +2,7 @@ package mod.slashblade.reforged.core.obj;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.joml.Vector3f;
 
 /**
  * @Author: Arcomit
@@ -12,4 +13,8 @@ import lombok.Getter;
 public class SimpleVector3f {
 
     private final float x, y, z;
+
+    public Vector3f toJoml() {
+        return new Vector3f(x, y, z);
+    }
 }
