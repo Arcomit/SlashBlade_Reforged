@@ -1,4 +1,4 @@
-package mod.slashblade.reforged.core.obj.event;
+package mod.slashblade.reforged.core.animation.event;
 
 import mod.slashblade.reforged.SlashbladeMod;
 import mod.slashblade.reforged.core.obj.ModelParseException;
@@ -22,34 +22,34 @@ import java.util.concurrent.Executor;
 
 /**
  * @Author: Arcomit
- * @CreateTime: 2025-08-05 11:54
- * @Description: Obj模型管理，用于加载和缓存，获取Obj模型。
+ * @CreateTime: 2025-08-18 15:08
+ * @Description: TODO
  */
 @OnlyIn(Dist.CLIENT)
-public class ObjModelManager implements PreparableReloadListener {
+public class AnimationManager implements PreparableReloadListener {
 
     private static final Map<ResourceLocation, ObjModel> MODELS        = new HashMap<>();
-    private static final String                          MODEL_DIR     = "model";
-    private static final String                          FILE_TYPES    = ".obj";
+    private static final String                          MODEL_DIR     = "animation/obj";
+    private static final String                          FILE_TYPES    = ".json";
 
     private static       ObjModel                        DEFAULT_MODEL = null;
 
     @Override
     public CompletableFuture<Void> reload(
             PreparationBarrier preparationBarrier,
-            ResourceManager    resourceManager,
-            ProfilerFiller     preparationsProfiler,
+            ResourceManager resourceManager,
+            ProfilerFiller preparationsProfiler,
             ProfilerFiller     reloadProfiler,
-            Executor           backgroundExecutor,
+            Executor backgroundExecutor,
             Executor           gameExecutor
     ) {
         return CompletableFuture.runAsync(
-                () -> {
-                    loadResources(resourceManager);
-                }
+                        () -> {
+                            loadResources(resourceManager);
+                        }
                         , backgroundExecutor
-                                         )
-               .thenCompose(preparationBarrier::wait);
+                )
+                .thenCompose(preparationBarrier::wait);
     }
 
     private void loadResources(ResourceManager resourceManager) {

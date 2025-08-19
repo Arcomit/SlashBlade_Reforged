@@ -1,6 +1,8 @@
 package mod.slashblade.reforged;
 
 import com.mojang.logging.LogUtils;
+import com.test.entity.entity.init.EntityInits;
+import mod.slashblade.reforged.content.init.SbItems;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -13,7 +15,8 @@ public class SlashbladeMod {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public SlashbladeMod(IEventBus modEventBus, ModContainer modContainer) {
-
+        SbItems.register(modEventBus);
+        EntityInits.register(modEventBus);
     }
 
     public static ResourceLocation prefix(String path){

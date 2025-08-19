@@ -15,7 +15,7 @@ import java.util.function.BiFunction;
  * @CreateTime: 2025-08-06 14:59
  * @Description: 写入顶点帮助类
  */
-public class WriteVerticesHelper {
+public class WriteVerticesInfo {
 
     public static final BiFunction<Vector4f, Integer, Integer> ALPHA_NO_OVERRIDE   = (v, a) -> a;
     public static final BiFunction<Vector4f, Integer, Integer> ALPHA_OVERRIDEYZZ   = (v, a) -> v.y() == 0 ? 0 : a;

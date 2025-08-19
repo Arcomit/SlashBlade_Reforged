@@ -1,7 +1,10 @@
-package mod.slashblade.reforged.builtin.item;
+package mod.slashblade.reforged.content.item;
 
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+
+import java.util.function.Consumer;
 
 /**
  * @Author: Arcomit

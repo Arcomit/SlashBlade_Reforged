@@ -12,9 +12,7 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import lombok.experimental.ExtensionMethod;
 import mod.slashblade.reforged.core.obj.ObjFace;
 import mod.slashblade.reforged.core.obj.ObjGroup;
-import mod.slashblade.reforged.utils.WriteVerticesHelper;
-import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.renderer.RenderType;
+import mod.slashblade.reforged.utils.WriteVerticesInfo;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Final;
@@ -25,7 +23,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -59,14 +56,14 @@ public class ObjGroupMixin implements IAcceleratedRenderer<Void> {
                 &&	extension							.isAccelerated					()
         ) {
             ci			.cancel		();
-            PoseStack.Pose pPose = WriteVerticesHelper.getPoseStack().last();
+            PoseStack.Pose pPose = WriteVerticesInfo.getPoseStack().last();
             extension	.doRender	(
                     this,
                     null,
                     pPose.pose  (),
                     pPose.normal(),
-                    WriteVerticesHelper.getLightMap(),
-                    WriteVerticesHelper.getOverlayMap(),
+                    WriteVerticesInfo.getLightMap(),
+                    WriteVerticesInfo.getOverlayMap(),
                     0
             );
         }

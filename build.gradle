@@ -29,17 +29,20 @@ neoForge {
         client {
             client()
             systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+            jvmArgument "-XX:+AllowEnhancedClassRedefinition"
         }
 
         server {
             server()
             programArgument '--nogui'
             systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+            jvmArgument "-XX:+AllowEnhancedClassRedefinition"
         }
 
         gameTestServer {
             type = "gameTestServer"
             systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+            jvmArgument "-XX:+AllowEnhancedClassRedefinition"
         }
 
         data {
@@ -62,6 +65,19 @@ neoForge {
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+configurations {
+    runtimeClasspath.extendsFrom localRuntime
+
+    // 自定义一个 minecraftLibrary，方便引入需要 jarJar 的库
+    mcLib
+    implementation {
+        extendsFrom mcLib
+    }
+    additionalRuntimeClasspath {
+        extendsFrom mcLib
+    }
+}
 
 repositories {
     mavenLocal()
@@ -90,19 +106,18 @@ dependencies {
     // PlayerAnimator
     implementation        "dev.kosmx.player-anim:player-animation-lib-forge:${player_anim_version}"
 
-    // 基岩版动画库
-    implementation jarJar("maven.modrinth:simplebedrockmodel:${simple_bedrock_model_version}") {
-        version {
-            prefer simple_bedrock_model_version
-        }
+    // May爹动画引擎
+    mcLib jarJar("com.maydaymemory:mae:1.0.4") {
+        exclude group: 'com.google.code.findbugs', module: 'jsr305'
+        exclude group: 'it.unimi.dsi', module: 'fastutil'
+        exclude group: 'org.joml', module: 'joml'
     }
-    compileOnly(          "com.maydaymemory:mae:1.0.2")
 
     // 加速渲染
     implementation        "curse.maven:accelerated-rendering-1314021:6839175"
 
     // 光子2特效库（前置）
-    implementation        "curse.maven:photon-871522:6843384"
+    implementation        "curse.maven:photon-871522:6854432"
     implementation        "curse.maven:ldlib-626676:6843335"
 
     // 碰撞箱库

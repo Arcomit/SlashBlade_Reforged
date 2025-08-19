@@ -1,7 +1,7 @@
 package mod.slashblade.reforged.core.obj;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import mod.slashblade.reforged.utils.WriteVerticesHelper;
+import mod.slashblade.reforged.utils.WriteVerticesInfo;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.joml.Matrix3f;
@@ -30,14 +30,14 @@ public class ObjFace {
     private float    averageV = 0F;
 
     public  void writeVertices(VertexConsumer vertexConsumer){
-        if (WriteVerticesHelper.getPoseStack() != null){
-            transform  = WriteVerticesHelper.getPoseStack().last().pose();
-            normal     = WriteVerticesHelper.getPoseStack().last().normal();
+        if (WriteVerticesInfo.getPoseStack() != null){
+            transform  = WriteVerticesInfo.getPoseStack().last().pose();
+            normal     = WriteVerticesInfo.getPoseStack().last().normal();
         }
         if ((vertexUvs != null) && (vertexUvs.length > 0)) {
             for (int i = 0; i < vertexUvs.length; ++i) {
-                averageU += vertexUvs[i].getX() * WriteVerticesHelper.getUvOperator().x() + WriteVerticesHelper.getUvOperator().z();
-                averageV += vertexUvs[i].getY() * WriteVerticesHelper.getUvOperator().y() + WriteVerticesHelper.getUvOperator().w();
+                averageU += vertexUvs[i].getX() * WriteVerticesInfo.getUvOperator().x() + WriteVerticesInfo.getUvOperator().z();
+                averageV += vertexUvs[i].getY() * WriteVerticesInfo.getUvOperator().y() + WriteVerticesInfo.getUvOperator().w();
             }
 
             averageU = averageU / vertexUvs.length;
@@ -83,12 +83,12 @@ public class ObjFace {
                 vertices3f.z()
         );
 
-        Color color = WriteVerticesHelper.getColor();
+        Color color = WriteVerticesInfo.getColor();
         vertexConsumer.setColor(
                 color.getRed  (),
                 color.getGreen(),
                 color.getBlue (),
-                WriteVerticesHelper.getAlphaOverride().apply(
+                WriteVerticesInfo.getAlphaOverride().apply(
                         new Vector4f(
                                 vertices[index].getX(),
                                 vertices[index].getY(),
@@ -101,8 +101,8 @@ public class ObjFace {
             float offsetU = 0.0005F;
             float offsetV = 0.0005F;
 
-            float textureU = vertexUvs[index].getX() * WriteVerticesHelper.getUvOperator().x() + WriteVerticesHelper.getUvOperator().z();
-            float textureV = vertexUvs[index].getY() * WriteVerticesHelper.getUvOperator().y() + WriteVerticesHelper.getUvOperator().w();
+            float textureU = vertexUvs[index].getX() * WriteVerticesInfo.getUvOperator().x() + WriteVerticesInfo.getUvOperator().z();
+            float textureV = vertexUvs[index].getY() * WriteVerticesInfo.getUvOperator().y() + WriteVerticesInfo.getUvOperator().w();
 
             if (textureU > averageU) {
                 offsetU = -offsetU;
@@ -116,8 +116,8 @@ public class ObjFace {
             vertexConsumer.setUv(0, 0);
         }
 
-        vertexConsumer.setOverlay(WriteVerticesHelper.getOverlayMap());
-        vertexConsumer.setLight  (WriteVerticesHelper.getLightMap  ());
+        vertexConsumer.setOverlay(WriteVerticesInfo.getOverlayMap());
+        vertexConsumer.setLight  (WriteVerticesInfo.getLightMap  ());
         vertexConsumer.setNormal (
                 normal3f.x(),
                 normal3f.y(),
