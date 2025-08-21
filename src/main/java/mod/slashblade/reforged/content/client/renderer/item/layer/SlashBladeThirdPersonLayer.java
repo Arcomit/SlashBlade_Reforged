@@ -56,7 +56,7 @@ public class SlashBladeThirdPersonLayer<T extends LivingEntity, M extends Entity
 
         ObjModel model = ObjModelManager.get(DefaultResources.DEFAULT_MODEL);
 
-        Pose pose = AnimationManager.get("default_idle_universal").evaluate(0f);
+        Pose pose = AnimationManager.get(DefaultResources.DEFAULT_ANIMATION).evaluate(0f);
         model.applyPose(pose);
 
         WriteVerticesInfo.setPoseStack(poseStack);
@@ -69,6 +69,7 @@ public class SlashBladeThirdPersonLayer<T extends LivingEntity, M extends Entity
         //poseStack.scale(0.01f,0.01f,0.01f);
 
         model.writeVerticesOnly(vertexConsumer, "blade");
+        model.writeVerticesOnly(vertexConsumer, "sheath");
 
 
         WriteVerticesInfo.resetPoseStack();

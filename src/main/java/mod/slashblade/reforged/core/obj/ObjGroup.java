@@ -24,15 +24,15 @@ import java.util.List;
 public class ObjGroup {
 
     private final String        name;
-    private final List<ObjFace> faces  = new ArrayList<>();
+    private final List<ObjFace> faces    = new ArrayList<>();
 
-    private       float x;
-    private       float y;
-    private       float z;
-    private       Quaternionf rotation = new Quaternionf();
-    private       float xScale         = 1;
-    private       float yScale         = 1;
-    private       float zScale         = 1;
+    private       float         x;
+    private       float         y;
+    private       float         z;
+    private       Quaternionf   rotation = new Quaternionf();
+    private       float         xScale   = 1;
+    private       float         yScale   = 1;
+    private       float         zScale   = 1;
 
     public ObjGroup(String name) {
         this.name = name;

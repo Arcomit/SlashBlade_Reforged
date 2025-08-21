@@ -61,6 +61,7 @@ public class SlashBladeItemRenderer implements DynamicItemRenderer {
         //poseStack.scale(0.01f,0.01f,0.01f);
 
         model.writeVerticesOnly(vertexConsumer, "blade");
+        model.writeVerticesOnly(vertexConsumer, "sheath");
 
 
         WriteVerticesInfo.resetPoseStack();
@@ -95,7 +96,7 @@ public class SlashBladeItemRenderer implements DynamicItemRenderer {
 
 
 
-        if (false){
+        if (true){
             // 抵消视角旋转，固定物品位置
             Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
             Quaternionf inverseRot = new Quaternionf(camera.rotation()).conjugate();
@@ -123,8 +124,8 @@ public class SlashBladeItemRenderer implements DynamicItemRenderer {
             poseStack.mulPose(new Quaternionf(extraRot));
         }
 
-
-        poseStack.translate(1, -0.5, -1.03125);
+        poseStack.translate(0, -1.125, -0.375);
+        //poseStack.translate(1, -0.5, -1.03125);
 
         WriteVerticesInfo.setPoseStack(poseStack);
         WriteVerticesInfo.setLightMap(packedLight);
@@ -136,6 +137,7 @@ public class SlashBladeItemRenderer implements DynamicItemRenderer {
         VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
 
         model.writeVerticesOnly(vertexConsumer, "blade");
+        model.writeVerticesOnly(vertexConsumer, "sheath");
 
         WriteVerticesInfo.resetPoseStack();
         WriteVerticesInfo.resetLightMap();

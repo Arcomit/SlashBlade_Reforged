@@ -11,6 +11,10 @@
 				"camera": {
 					"rotation": [0, 0, 0],
 					"position": [0, 18, 4]
+				},
+				"sheath": {
+					"rotation": [53.66504, -77.65979, 128.29483],
+					"position": [6, 14, -9]
 				}
 			}
 		}

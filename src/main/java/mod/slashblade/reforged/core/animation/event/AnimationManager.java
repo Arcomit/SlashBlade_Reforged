@@ -97,10 +97,10 @@ public class AnimationManager implements PreparableReloadListener {
 
         if (animationName != null){
 
-            return ANIMATIONS.computeIfAbsent(animationName, m -> ANIMATIONS.get("default_idle_universal"));
+            return ANIMATIONS.computeIfAbsent(animationName, m -> ANIMATIONS.get(DefaultResources.DEFAULT_ANIMATION));
 
         }
 
-        return ANIMATIONS.get("default_idle_universal");
+        return ANIMATIONS.get(DefaultResources.DEFAULT_ANIMATION);
     }
 }
