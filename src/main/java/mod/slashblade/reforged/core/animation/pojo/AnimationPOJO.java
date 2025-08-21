@@ -8,10 +8,11 @@ import java.util.Map;
 /**
  * @Author: Arcomit
  * @CreateTime: 2025-08-14 17:14
- * @Description: TODO
+ * @Description: 动画数据类
  */
 @Getter
 public class AnimationPOJO {
+
     @SerializedName("loop"            )
     private boolean                    loop;
 

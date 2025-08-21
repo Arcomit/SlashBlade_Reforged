@@ -29,10 +29,8 @@ import java.util.concurrent.Executor;
 public class ObjModelManager implements PreparableReloadListener {
 
     private static final Map<ResourceLocation, ObjModel> MODELS        = new HashMap<>();
-    private static final String                          MODEL_DIR     = "model";
+    private static final String                          FILE_DIR      = "slashblade/models";
     private static final String                          FILE_TYPES    = ".obj";
-
-    private static       ObjModel                        DEFAULT_MODEL = null;
 
     @Override
     public CompletableFuture<Void> reload(
@@ -55,18 +53,8 @@ public class ObjModelManager implements PreparableReloadListener {
     private void loadResources(ResourceManager resourceManager) {
         MODELS.clear();
 
-        try {
-
-            DEFAULT_MODEL = new ObjReader(DefaultResources.DEFAULT_MODEL).getModel();
-
-        } catch (IOException | ModelParseException e) {
-
-            throw new RuntimeException("Failed to load default model: " + DefaultResources.DEFAULT_MODEL, e);
-
-        }
-
         Map<ResourceLocation, Resource> resources = resourceManager.listResources(
-                MODEL_DIR, resLoc -> resLoc.getPath().toLowerCase(Locale.ROOT).endsWith(FILE_TYPES)
+                FILE_DIR, resLoc -> resLoc.getPath().toLowerCase(Locale.ROOT).endsWith(FILE_TYPES)
         );
         resources.forEach((resourceLocation, resource) -> {
             ObjModel model;
@@ -77,9 +65,7 @@ public class ObjModelManager implements PreparableReloadListener {
 
             } catch (IOException | ModelParseException e) {
 
-                model = DEFAULT_MODEL;
-
-                SlashbladeMod.LOGGER.warn("Failed to load model: {}", resourceLocation, e);
+                throw new RuntimeException("Failed to load model: " + resourceLocation, e);
 
             }
 
@@ -98,7 +84,7 @@ public class ObjModelManager implements PreparableReloadListener {
 
                     SlashbladeMod.LOGGER.warn("Failed to load model: {}", resourceLocation, e);
 
-                    return DEFAULT_MODEL;
+                    return MODELS.get(DefaultResources.DEFAULT_MODEL);
 
                 }
             });
@@ -106,6 +92,6 @@ public class ObjModelManager implements PreparableReloadListener {
             return model;
         }
 
-        return DEFAULT_MODEL;
+        return MODELS.get(DefaultResources.DEFAULT_MODEL);
     }
 }

@@ -11,6 +11,7 @@ import java.util.Map;
 
 @SuppressWarnings("ALL")
 public class SoundEffectKeyframesSerializer implements JsonDeserializer<SoundEffectKeyframes> {
+
     @Override
     public SoundEffectKeyframes deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
         Double2ObjectRBTreeMap<ResourceLocation> keyframes = new Double2ObjectRBTreeMap<>();

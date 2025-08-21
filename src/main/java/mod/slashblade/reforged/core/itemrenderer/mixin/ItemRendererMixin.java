@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 /**
  * @Author: Arcomit
  * @CreateTime: 2025-08-10 20:07
- * @Description: TODO
+ * @Description: MixinItemRenderer用于方便的自定义物品渲染，不需要写花里胡哨的一大堆（比如用不上的BakedModel）
  */
 @Mixin(ItemRenderer.class)
 public class ItemRendererMixin {

@@ -6,10 +6,11 @@ import lombok.Getter;
 /**
  * @Author: Arcomit
  * @CreateTime: 2025-08-14 17:31
- * @Description: TODO
+ * @Description: 动画骨骼
  */
 @Getter
 public class AnimationBone {
+
     @SerializedName("position")
     private AnimationKeyframes position;
 

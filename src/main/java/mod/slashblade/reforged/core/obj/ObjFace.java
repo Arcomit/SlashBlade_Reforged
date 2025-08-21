@@ -31,6 +31,8 @@ public class ObjFace {
 
     public  void writeVertices(VertexConsumer vertexConsumer){
         if (WriteVerticesInfo.getPoseStack() != null){
+
+
             transform  = WriteVerticesInfo.getPoseStack().last().pose();
             normal     = WriteVerticesInfo.getPoseStack().last().normal();
         }

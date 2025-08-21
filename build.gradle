@@ -103,6 +103,9 @@ repositories {
 }
 
 dependencies {
+    // Nbteidt
+    implementation "curse.maven:nbtedit-reborn-678133:6125444"
+
     // PlayerAnimator
     implementation        "dev.kosmx.player-anim:player-animation-lib-forge:${player_anim_version}"
 

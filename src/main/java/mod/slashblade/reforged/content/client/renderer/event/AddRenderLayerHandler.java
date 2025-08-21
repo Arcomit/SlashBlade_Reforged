@@ -17,7 +17,7 @@ import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 /**
  * @Author: Arcomit
  * @CreateTime: 2025-08-19 10:34
- * @Description: TODO
+ * @Description: 添加渲染层处理类
  */
 @EventBusSubscriber(value = Dist.CLIENT, modid = SlashbladeMod.MODID)
 public class AddRenderLayerHandler {

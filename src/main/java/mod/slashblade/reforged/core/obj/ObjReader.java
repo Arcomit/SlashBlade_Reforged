@@ -56,7 +56,7 @@ public class ObjReader {
     private         final List<SimpleVector3f> positions    = new ArrayList<>();
     private         final List<SimpleVector3f> normals      = new ArrayList<>();
     private         final List<SimpleVector3f> uvs          = new ArrayList<>();
-    private               ObjGroup             currentGroup = model.getGroups().computeIfAbsent("Default", g -> new ObjGroup("Default"));
+    private               ObjGroup             currentGroup = model.getGroups().computeIfAbsent("Default", ObjGroup::new);
 
     private void parse(InputStream inputStream) throws IOException, ModelParseException {
         BufferedReader reader  = new BufferedReader(new InputStreamReader(inputStream));
@@ -211,6 +211,6 @@ public class ObjReader {
 
     private void startNewGroup(String[] tokens, int lineNum) {
         String groupName    = tokens.length > 1 ? tokens[1] : "group_" + lineNum;
-               currentGroup = model.getGroups().computeIfAbsent(groupName, k -> new ObjGroup(groupName));
+               currentGroup = model.getGroups().computeIfAbsent(groupName, ObjGroup::new);
     }
 }

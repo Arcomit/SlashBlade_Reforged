@@ -1,29 +1,34 @@
 package mod.slashblade.reforged.content.client.renderer.item.layer;
 
+import com.maydaymemory.mae.basic.BoneTransform;
+import com.maydaymemory.mae.basic.Pose;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import mod.slashblade.reforged.content.client.renderer.SBRenderTypes;
+import mod.slashblade.reforged.content.client.renderer.SbRenderTypes;
+import mod.slashblade.reforged.content.item.SlashBladeItem;
+import mod.slashblade.reforged.core.animation.event.AnimationManager;
 import mod.slashblade.reforged.core.obj.ObjModel;
 import mod.slashblade.reforged.core.obj.event.ObjModelManager;
 import mod.slashblade.reforged.utils.DefaultResources;
 import mod.slashblade.reforged.utils.WriteVerticesInfo;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.monster.breeze.Breeze;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Matrix4f;
+import org.joml.Quaternionfc;
+import org.joml.Vector3fc;
 
 /**
  * @Author: Arcomit
  * @CreateTime: 2025-08-19 10:28
- * @Description: TODO
+ * @Description: 第三人称拔刀剑物品渲染
  */
 public class SlashBladeThirdPersonLayer<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T,M> {
 
@@ -43,18 +48,22 @@ public class SlashBladeThirdPersonLayer<T extends LivingEntity, M extends Entity
                        float                      netHeadYaw,
                        float                      headPitch)
     {
-        Minecraft mc = Minecraft.getInstance();
+        ItemStack itemStack = livingEntity.getMainHandItem();
+        if (itemStack.isEmpty() || !(itemStack.getItem() instanceof SlashBladeItem)) return;
         poseStack.pushPose();
         poseStack.translate(0, 1.5f, 0);
         poseStack.mulPose(Axis.ZP.rotationDegrees(180));
+
+        ObjModel model = ObjModelManager.get(DefaultResources.DEFAULT_MODEL);
+
+        Pose pose = AnimationManager.get("default_idle_universal").evaluate(0f);
+        model.applyPose(pose);
 
         WriteVerticesInfo.setPoseStack(poseStack);
         WriteVerticesInfo.setLightMap(packedLight);
         WriteVerticesInfo.setOverlayMap(OverlayTexture.NO_OVERLAY);
 
-        ObjModel model = ObjModelManager.get(DefaultResources.DEFAULT_MODEL);
-
-        RenderType renderType = SBRenderTypes.getSlashBladeBlend(DefaultResources.DEFAULT_TEXTURE);
+        RenderType renderType = SbRenderTypes.getBlend(DefaultResources.DEFAULT_TEXTURE);
         VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
 
         //poseStack.scale(0.01f,0.01f,0.01f);

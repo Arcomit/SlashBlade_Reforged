@@ -13,9 +13,10 @@ import org.joml.Vector3f;
 /**
  * @Author: Arcomit
  * @CreateTime: 2025-08-14 17:51
- * @Description: TODO
+ * @Description: 用于将动画json文件转换为java对象
  */
 public class GsonUtil {
+
     public static final Gson CLIENT_GSON = new GsonBuilder()
             .registerTypeAdapter(ResourceLocation.class, new ResourceLocation.Serializer())
             .registerTypeAdapter(Vector3f.class, new Vector3fSerializer())

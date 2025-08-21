@@ -9,10 +9,11 @@ import javax.annotation.Nullable;
 /**
  * @Author: Arcomit
  * @CreateTime: 2025-08-14 17:32
- * @Description: TODO
+ * @Description: 动画关键帧(平移旋转缩放)
  */
 @Getter
 public class AnimationKeyframes {
+
     private final Double2ObjectRBTreeMap<Keyframe> keyframes;
 
     public AnimationKeyframes(Double2ObjectRBTreeMap<Keyframe> keyframes) {

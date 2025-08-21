@@ -8,10 +8,11 @@ import java.util.Map;
 /**
  * @Author: Arcomit
  * @CreateTime: 2025-08-14 17:14
- * @Description: TODO
+ * @Description: 动画文件
  */
 @Getter
 public class AnimationFile {
+
     @SerializedName("format_version")
     private String                     format_version;
 

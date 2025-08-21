@@ -15,15 +15,16 @@ import java.util.Map;
 /**
  * @Author: Arcomit
  * @CreateTime: 2025-08-18 15:13
- * @Description: TODO
+ * @Description: 动画资产类
  */
-public class Animation extends BasicAnimation {
+public class AnimationAsset extends BasicAnimation {
+
     private static final float DEGREE_TO_ANGLE = (float) (Math.PI / 180);
     public static final String SOUND_CHANNEL_NAME = "sound_effects";
 
     private float specifiedEndTimeS = -1;
 
-    public Animation(String name) {
+    public AnimationAsset(String name) {
         super(name, new ZYXBoneTransformFactory(), ArrayPoseBuilder::new);
     }
 
@@ -35,8 +36,8 @@ public class Animation extends BasicAnimation {
         return specifiedEndTimeS;
     }
 
-    public static Animation createAnimation(String name, AnimationPOJO pojo, ObjGroupIndexProvider indexProvider) {
-        Animation animation = new Animation(name);
+    public static AnimationAsset createAnimation(String name, AnimationPOJO pojo, ObjGroupIndexProvider indexProvider) {
+        AnimationAsset animationAsset = new AnimationAsset(name);
         if (pojo.getBones() != null) {
             for (Map.Entry<String, AnimationBone> entry : pojo.getBones().entrySet()) {
                 int boneIndex = indexProvider.getIndex(entry.getKey());
@@ -47,9 +48,9 @@ public class Animation extends BasicAnimation {
                     // 这里导出成基岩版模型之后旋转会 z 轴对称变成左手系等效旋转，现在我们逆转回来
                     ArrayInterpolatableChannel<Rotation> rotationChannel = parseRotationChannel(bone.getRotation(), -1, -1, 1);
                     ArrayInterpolatableChannel<Vector3fc> scaleChannel = parseChannel(bone.getScale(), 1, 1, 1);
-                    animation.setTranslationChannel(boneIndex, translationChannel);
-                    animation.setRotationChannel(boneIndex, rotationChannel);
-                    animation.setScaleChannel(boneIndex, scaleChannel);
+                    animationAsset.setTranslationChannel(boneIndex, translationChannel);
+                    animationAsset.setRotationChannel(boneIndex, rotationChannel);
+                    animationAsset.setScaleChannel(boneIndex, scaleChannel);
                 }
             }
         }
@@ -59,21 +60,21 @@ public class Animation extends BasicAnimation {
             for (Double2ObjectMap.Entry<ResourceLocation> entry : soundEffects.getKeyframes().double2ObjectEntrySet()) {
                 keyframes.add(new ResourceLocationKeyframe((float) entry.getDoubleKey(), entry.getValue()));
             }
-            animation.setClipChannel(SOUND_CHANNEL_NAME, new ArrayClipChannel<>(keyframes));
+            animationAsset.setClipChannel(SOUND_CHANNEL_NAME, new ArrayClipChannel<>(keyframes));
         }
         float animationLength = (float) pojo.getAnimationLength();
-        animation.setSpecifiedEndTimeS(animationLength);
-        return animation;
+        animationAsset.setSpecifiedEndTimeS(animationLength);
+        return animationAsset;
     }
 
-    public static List<Animation> createAnimation(AnimationFile pojo, ObjGroupIndexProvider indexProvider) {
-        List<Animation> animations = new ArrayList<>();
+    public static List<AnimationAsset> createAnimation(AnimationFile pojo, ObjGroupIndexProvider indexProvider) {
+        List<AnimationAsset> animationAssets = new ArrayList<>();
         if (pojo.getAnimations() != null) {
             for (Map.Entry<String, AnimationPOJO> entry : pojo.getAnimations().entrySet()) {
-                animations.add(createAnimation(entry.getKey(), entry.getValue(), indexProvider));
+                animationAssets.add(createAnimation(entry.getKey(), entry.getValue(), indexProvider));
             }
         }
-        return animations;
+        return animationAssets;
     }
 
     private static ArrayInterpolatableChannel<Rotation> parseRotationChannel(AnimationKeyframes keyframes,

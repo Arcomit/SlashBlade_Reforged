@@ -1,10 +1,17 @@
 package mod.slashblade.reforged.core.animation.event;
 
+import com.google.common.collect.Maps;
 import mod.slashblade.reforged.SlashbladeMod;
+import mod.slashblade.reforged.core.animation.AnimationAsset;
+import mod.slashblade.reforged.core.animation.pojo.AnimationFile;
+import mod.slashblade.reforged.core.animation.pojo.AnimationPOJO;
+import mod.slashblade.reforged.core.animation.utils.GsonUtil;
 import mod.slashblade.reforged.core.obj.ModelParseException;
+import mod.slashblade.reforged.core.obj.ObjGroupIndexProvider;
 import mod.slashblade.reforged.core.obj.ObjModel;
 import mod.slashblade.reforged.core.obj.ObjReader;
 import mod.slashblade.reforged.utils.DefaultResources;
+import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.Resource;
@@ -14,7 +21,10 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -23,24 +33,24 @@ import java.util.concurrent.Executor;
 /**
  * @Author: Arcomit
  * @CreateTime: 2025-08-18 15:08
- * @Description: TODO
+ * @Description: 动作管理器
  */
 @OnlyIn(Dist.CLIENT)
 public class AnimationManager implements PreparableReloadListener {
 
-    private static final Map<ResourceLocation, ObjModel> MODELS        = new HashMap<>();
-    private static final String                          MODEL_DIR     = "animation/obj";
-    private static final String                          FILE_TYPES    = ".json";
+    private static final Map<String, AnimationAsset> ANIMATIONS        = new HashMap<>();
+    private static final String                      FILE_DIR          = "slashblade/animations";
+    private static final String                      FILE_TYPES        = ".json";
 
-    private static       ObjModel                        DEFAULT_MODEL = null;
+    public static final  ObjGroupIndexProvider       INDEX_PROVIDER    = new ObjGroupIndexProvider();
 
     @Override
     public CompletableFuture<Void> reload(
             PreparationBarrier preparationBarrier,
-            ResourceManager resourceManager,
-            ProfilerFiller preparationsProfiler,
+            ResourceManager    resourceManager,
+            ProfilerFiller     preparationsProfiler,
             ProfilerFiller     reloadProfiler,
-            Executor backgroundExecutor,
+            Executor           backgroundExecutor,
             Executor           gameExecutor
     ) {
         return CompletableFuture.runAsync(
@@ -53,59 +63,44 @@ public class AnimationManager implements PreparableReloadListener {
     }
 
     private void loadResources(ResourceManager resourceManager) {
-        MODELS.clear();
-
-        try {
-
-            DEFAULT_MODEL = new ObjReader(DefaultResources.DEFAULT_MODEL).getModel();
-
-        } catch (IOException | ModelParseException e) {
-
-            throw new RuntimeException("Failed to load default model: " + DefaultResources.DEFAULT_MODEL, e);
-
-        }
+        ANIMATIONS.clear();
 
         Map<ResourceLocation, Resource> resources = resourceManager.listResources(
-                MODEL_DIR, resLoc -> resLoc.getPath().toLowerCase(Locale.ROOT).endsWith(FILE_TYPES)
+                FILE_DIR, resLoc -> resLoc.getPath().toLowerCase(Locale.ROOT).endsWith(FILE_TYPES)
         );
-        resources.forEach((resourceLocation, resource) -> {
-            ObjModel model;
 
+        resources.forEach((resourceLocation, resource) -> {
             try {
 
-                model = new ObjReader(resource).getModel();
+                InputStream inputStream = resource.open();
 
-            } catch (IOException | ModelParseException e) {
+                AnimationFile file = GsonUtil.CLIENT_GSON.fromJson(new InputStreamReader(inputStream), AnimationFile.class);
 
-                model = DEFAULT_MODEL;
+                List<AnimationAsset> animations = AnimationAsset.createAnimation(file, INDEX_PROVIDER);
 
-                SlashbladeMod.LOGGER.warn("Failed to load model: {}", resourceLocation, e);
+                for (AnimationAsset animation : animations) {
+
+                    ANIMATIONS.put(animation.getName(), animation);
+                    System.out.println("Loaded animation: " + animation.getName());
+
+                }
+
+            } catch (IOException e) {
+
+                throw new RuntimeException("Failed to load animation: " + resourceLocation, e);
 
             }
-
-            MODELS.put(resourceLocation, model);
         });
     }
 
-    public static ObjModel get(ResourceLocation resourceLocation) {
-        if (resourceLocation != null){
-            ObjModel model = MODELS.computeIfAbsent(resourceLocation, m -> {
-                try {
+    public static AnimationAsset get(String animationName) {
 
-                    return new ObjReader(resourceLocation).getModel();
+        if (animationName != null){
 
-                } catch (IOException | ModelParseException e) {
+            return ANIMATIONS.computeIfAbsent(animationName, m -> ANIMATIONS.get("default_idle_universal"));
 
-                    SlashbladeMod.LOGGER.warn("Failed to load model: {}", resourceLocation, e);
-
-                    return DEFAULT_MODEL;
-
-                }
-            });
-
-            return model;
         }
 
-        return DEFAULT_MODEL;
+        return ANIMATIONS.get("default_idle_universal");
     }
 }

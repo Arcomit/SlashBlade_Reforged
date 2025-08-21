@@ -12,10 +12,10 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 /**
  * @Author: Arcomit
  * @CreateTime: 2025-08-10 18:24
- * @Description: 注册物品渲染器
+ * @Description: 注册物品渲染器处理类
  */
 @EventBusSubscriber(value = Dist.CLIENT, modid = SlashbladeMod.MODID)
-public class RegisterItemRendererEvent {
+public class RegisterItemRendererHandler {
 
     @SubscribeEvent
     public static void registerDynamicItemRenderer(FMLClientSetupEvent event) {

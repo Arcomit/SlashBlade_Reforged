@@ -7,10 +7,11 @@ import net.minecraft.resources.ResourceLocation;
 /**
  * @Author: Arcomit
  * @CreateTime: 2025-08-14 17:31
- * @Description: TODO
+ * @Description: 音效关键帧
  */
 @Getter
 public class SoundEffectKeyframes {
+
     private final Double2ObjectRBTreeMap<ResourceLocation> keyframes;
 
     public SoundEffectKeyframes(Double2ObjectRBTreeMap<ResourceLocation> keyframes) {

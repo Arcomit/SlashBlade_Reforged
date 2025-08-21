@@ -13,18 +13,20 @@ import java.util.function.Supplier;
 /**
  * @Author: Arcomit
  * @CreateTime: 2025-08-05 16:36
- * @Description: TODO
+ * @Description: 集中管理所有模组物品的注册（且能够从中获取调用）
  */
 public class SbItems {
+
     public static final DeferredRegister.Items ITEMS       = DeferredRegister.createItems(SlashbladeMod.MODID);
 
-    public static final Supplier<SwordItem>    SLASH_BLADE = ITEMS.register("slash_blade",() -> new SlashBladeItem(
-                    Tiers.DIAMOND,
+    public static final Supplier<SwordItem>    SLASH_BLADE = ITEMS.register("slash_blade",
+            () -> new SlashBladeItem(
+                    Tiers.IRON,
                     new Item.Properties().attributes(
                             SwordItem.createAttributes(
-                                    Tiers.DIAMOND,
+                                    Tiers.IRON,
                                     3,
-                                    -2.4f
+                                    0.0f
                             )
                     )
             )

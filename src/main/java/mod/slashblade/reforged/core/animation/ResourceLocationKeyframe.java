@@ -6,9 +6,10 @@ import net.minecraft.resources.ResourceLocation;
 /**
  * @Author: Arcomit
  * @CreateTime: 2025-08-18 18:28
- * @Description: TODO
+ * @Description: 资源位置关键帧
  */
 public class ResourceLocationKeyframe extends BaseKeyframe<ResourceLocation> {
+
     private final ResourceLocation resourceLocation;
 
     public ResourceLocationKeyframe(float timeS, ResourceLocation resourceLocation) {

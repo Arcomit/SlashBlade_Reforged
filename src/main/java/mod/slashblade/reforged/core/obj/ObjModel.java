@@ -1,10 +1,16 @@
 package mod.slashblade.reforged.core.obj;
 
+import com.maydaymemory.mae.basic.BoneTransform;
+import com.maydaymemory.mae.basic.Pose;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import lombok.Getter;
+import mod.slashblade.reforged.core.animation.event.AnimationManager;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import org.joml.Quaternionfc;
+import org.joml.Vector3fc;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +24,24 @@ import java.util.Map;
 public class ObjModel {
 
     private final Map<String, ObjGroup> Groups = new HashMap<>();
+
+    public void applyPose(Pose pose) {
+        for (BoneTransform boneTransform : pose.getBoneTransforms()) {
+            ObjGroup group = Groups.get(AnimationManager.INDEX_PROVIDER.getGroupName(boneTransform.boneIndex()));
+            if (group != null) {
+                Vector3fc translation = boneTransform.translation();
+                Quaternionfc rotation = boneTransform.rotation().asQuaternion();
+                Vector3fc scale = boneTransform.scale();
+                group.setX(translation.x());
+                group.setY(translation.y());
+                group.setZ(translation.z());
+                group.getRotation().set(rotation);
+                group.setXScale(scale.x());
+                group.setYScale(scale.y());
+                group.setZScale(scale.z());
+            }
+        }
+    }
 
     /**
      * 写入所有模型组的顶点

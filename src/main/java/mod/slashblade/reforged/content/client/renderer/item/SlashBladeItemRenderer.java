@@ -1,13 +1,17 @@
 package mod.slashblade.reforged.content.client.renderer.item;
 
+import com.maydaymemory.mae.basic.BoneTransform;
+import com.maydaymemory.mae.basic.Pose;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import lombok.experimental.ExtensionMethod;
-import lombok.extern.slf4j.Slf4j;
 import mod.slashblade.reforged.content.client.camera.CameraAnimationHandler;
-import mod.slashblade.reforged.content.client.renderer.SBRenderTypes;
-import mod.slashblade.reforged.content.client.renderer.extension.ItemDisplayContextExtension;
+import mod.slashblade.reforged.content.client.renderer.SbRenderTypes;
+import mod.slashblade.reforged.content.init.SbDataComponents;
+import mod.slashblade.reforged.core.animation.event.AnimationManager;
+import mod.slashblade.reforged.core.obj.ObjGroupIndexProvider;
+import mod.slashblade.reforged.utils.extension.ItemDisplayContextExtension;
 import mod.slashblade.reforged.core.itemrenderer.DynamicItemRenderer;
 import mod.slashblade.reforged.core.obj.ObjModel;
 import mod.slashblade.reforged.core.obj.event.ObjModelManager;
@@ -23,12 +27,15 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.event.RenderHandEvent;
+import org.joml.Matrix4f;
 import org.joml.Quaternionf;
+import org.joml.Quaternionfc;
+import org.joml.Vector3fc;
 
 /**
  * @Author: Arcomit
  * @CreateTime: 2025-08-10 17:43
- * @Description: TODO
+ * @Description: 拔刀剑物品的渲染（不含第三人称）
  */
 @ExtensionMethod(ItemDisplayContextExtension.class)
 public class SlashBladeItemRenderer implements DynamicItemRenderer {
@@ -39,7 +46,7 @@ public class SlashBladeItemRenderer implements DynamicItemRenderer {
         if (transform.firstPerson() || transform.thirdPerson()) {
             return;
         }
-
+        System.out.println(stack.get(SbDataComponents.PUT_AWAY_ACTION));
         poseStack.pushPose();
 
         WriteVerticesInfo.setPoseStack(poseStack);
@@ -48,7 +55,7 @@ public class SlashBladeItemRenderer implements DynamicItemRenderer {
 
         ObjModel model = ObjModelManager.get(DefaultResources.DEFAULT_MODEL);
 
-        RenderType renderType = SBRenderTypes.getSlashBladeBlend(DefaultResources.DEFAULT_TEXTURE);
+        RenderType renderType = SbRenderTypes.getBlend(DefaultResources.DEFAULT_TEXTURE);
         VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
 
         //poseStack.scale(0.01f,0.01f,0.01f);
@@ -114,36 +121,6 @@ public class SlashBladeItemRenderer implements DynamicItemRenderer {
             );
 
             poseStack.mulPose(new Quaternionf(extraRot));
-
-//            // 抵消视角旋转
-//            Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
-//            Quaternionf inverseRot = new Quaternionf(camera.rotation()).conjugate();
-//            poseStack.mulPose(inverseRot);
-//
-//            Quaternionf Quaternionf = new Quaternionf();
-//            float yaw   = camera.getYRot() - CameraTestHandler.y;
-//            float pitch = camera.getYRot() - CameraTestHandler.x;
-//            float roll  = camera.getRoll() - CameraTestHandler.z;
-//            Quaternionf.rotationYXZ(
-//                    (float) Math.PI - yaw * (float) (Math.PI / 180.0),
-//                    -pitch * (float) (Math.PI / 180.0),
-//                    -roll * (float) (Math.PI / 180.0));
-//            poseStack.mulPose(Quaternionf);
-
-            // 抵消摄像机旋转Roll,Pitch,Yaw
-/*            poseStack.mulPose(Axis.ZN.rotation(-CameraTestHandler.z));
-            poseStack.mulPose(Axis.XN.rotation(-CameraTestHandler.x));
-            poseStack.mulPose(Axis.YN.rotation(-CameraTestHandler.y));*/
-
-/*            Quaternionf Quaternionf = new Quaternionf();
-            float yaw   = - CameraTestHandler.y;
-            float ptich = - CameraTestHandler.x;
-            float roll  = - CameraTestHandler.z;
-            Quaternionf.rotationYXZ(
-                    (float) Math.PI - yaw * (float) (Math.PI / 180.0),
-                    -ptich * (float) (Math.PI / 180.0),
-                    -roll * (float) (Math.PI / 180.0));
-            poseStack.mulPose(Quaternionf);*/
         }
 
 
@@ -155,7 +132,7 @@ public class SlashBladeItemRenderer implements DynamicItemRenderer {
 
         ObjModel model = ObjModelManager.get(DefaultResources.DEFAULT_MODEL);
 
-        RenderType renderType = SBRenderTypes.getSlashBladeBlend(DefaultResources.DEFAULT_TEXTURE);
+        RenderType renderType = SbRenderTypes.getBlend(DefaultResources.DEFAULT_TEXTURE);
         VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
 
         model.writeVerticesOnly(vertexConsumer, "blade");

@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * @Author: Arcomit
  * @CreateTime: 2025-08-12 15:56
- * @Description: TODO
+ * @Description: 动态物品渲染器的第一人称渲染事件处理类
  */
 @EventBusSubscriber(value = Dist.CLIENT, modid = SlashbladeMod.MODID)
 public class FirstPersonRenderHandler {

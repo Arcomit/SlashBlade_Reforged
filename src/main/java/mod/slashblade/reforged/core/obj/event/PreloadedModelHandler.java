@@ -14,7 +14,7 @@ import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
  */
 @OnlyIn(Dist.CLIENT)
 @EventBusSubscriber(value = Dist.CLIENT, modid = SlashbladeMod.MODID)
-public class PreloadedModelEvent {
+public class PreloadedModelHandler {
 
     @SubscribeEvent
     public static void onPreload(RegisterClientReloadListenersEvent event) {

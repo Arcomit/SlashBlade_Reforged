@@ -1,6 +1,9 @@
 package mod.slashblade.reforged.core.obj;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: Arcomit
@@ -8,9 +11,20 @@ import java.util.HashMap;
  * @Description: TODO
  */
 public class ObjGroupIndexProvider{
-    protected final HashMap<String, Integer> indexMap = new HashMap<>();
+
+    private final Map<String, Integer> nameToIndex = new HashMap<>();
+    private final List<String> indexToName = new ArrayList<>();
 
     public int getIndex(String groupName) {
-        return indexMap.putIfAbsent(groupName, indexMap.size());
+        return nameToIndex.computeIfAbsent(groupName, k -> {
+            indexToName.add(k);
+            return indexToName.size() - 1;
+        });
+    }
+
+    public String getGroupName(int index) {
+        return (index >= 0 && index < indexToName.size())
+                ? indexToName.get(index)
+                : "Default";
     }
 }

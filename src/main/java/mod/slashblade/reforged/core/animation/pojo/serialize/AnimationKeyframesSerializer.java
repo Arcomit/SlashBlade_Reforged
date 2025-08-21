@@ -11,6 +11,7 @@ import java.util.Map;
 
 @SuppressWarnings("ALL")
 public class AnimationKeyframesSerializer implements JsonDeserializer<AnimationKeyframes> {
+
     @Override
     public AnimationKeyframes deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
         Double2ObjectRBTreeMap<AnimationKeyframes.Keyframe> keyframes = new Double2ObjectRBTreeMap<>();
