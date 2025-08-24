@@ -7,6 +7,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import mod.slashblade.reforged.content.client.renderer.SbRenderTypes;
 import mod.slashblade.reforged.content.item.SlashBladeItem;
+import mod.slashblade.reforged.core.animation.AnimationAsset;
 import mod.slashblade.reforged.core.animation.event.AnimationManager;
 import mod.slashblade.reforged.core.obj.ObjModel;
 import mod.slashblade.reforged.core.obj.event.ObjModelManager;
@@ -50,14 +51,19 @@ public class SlashBladeThirdPersonLayer<T extends LivingEntity, M extends Entity
     {
         ItemStack itemStack = livingEntity.getMainHandItem();
         if (itemStack.isEmpty() || !(itemStack.getItem() instanceof SlashBladeItem)) return;
-        poseStack.pushPose();
-        poseStack.translate(0, 1.5f, 0);
-        poseStack.mulPose(Axis.ZP.rotationDegrees(180));
 
         ObjModel model = ObjModelManager.get(DefaultResources.DEFAULT_MODEL);
+        if (model == null) return;
 
-        Pose pose = AnimationManager.get(DefaultResources.DEFAULT_ANIMATION).evaluate(0f);
+        AnimationAsset animation = AnimationManager.get(DefaultResources.DEFAULT_ANIMATION);
+        if (animation == null) return;
+        Pose pose = animation.evaluate(0f);
         model.applyPose(pose);
+
+        poseStack.pushPose();
+        // 调整位置，使其于blockbench初始位置一致
+        poseStack.translate(0, 1.5f, 0);
+        poseStack.mulPose(Axis.ZP.rotationDegrees(180));
 
         WriteVerticesInfo.setPoseStack(poseStack);
         WriteVerticesInfo.setLightMap(packedLight);

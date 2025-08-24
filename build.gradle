@@ -120,8 +120,8 @@ dependencies {
     implementation        "curse.maven:accelerated-rendering-1314021:6839175"
 
     // 光子2特效库（前置）
-    implementation        "curse.maven:photon-871522:6854432"
-    implementation        "curse.maven:ldlib-626676:6843335"
+    implementation        "curse.maven:photon-871522:6911487"
+    implementation        "curse.maven:ldlib-626676:6911394"
 
     // 碰撞箱库
     implementation        "curse.maven:hitbox-api-1152734:5958930"

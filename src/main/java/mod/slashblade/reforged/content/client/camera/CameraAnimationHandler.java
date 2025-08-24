@@ -1,8 +1,10 @@
 package mod.slashblade.reforged.content.client.camera;
 
 import com.maydaymemory.mae.basic.YXZRotationView;
-import com.maydaymemory.mae.util.MathUtil;
 import mod.slashblade.reforged.SlashbladeMod;
+import mod.slashblade.reforged.content.item.SlashBladeItem;
+import net.minecraft.client.CameraType;
+import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -10,6 +12,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ViewportEvent;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
+import org.joml.Vector3fc;
 
 /**
  * @Author: Arcomit
@@ -19,49 +22,49 @@ import org.joml.Vector3f;
 @EventBusSubscriber(value = Dist.CLIENT, modid = SlashbladeMod.MODID)
 public class CameraAnimationHandler {
 
-    public static float x;
+    public static float posX;
+    public static float posY;
+    public static float posZ;
 
-
-    public static float y;
-
-
-    public static float z;
-
-
-    private static float rotationProgress = 0;
+    public static float xRotation;
+    public static float yRotation;
+    public static float zRotation;
 
 
     @SubscribeEvent
     public static void onCameraSetup(ViewportEvent.ComputeCameraAngles event) {
-        if (event.getCamera().getEntity() instanceof Player) {
-            rotationProgress += 0.02f;
+        CameraType cameraType = Minecraft.getInstance().options.getCameraType();
+        if (
+                event.getCamera().getEntity() instanceof Player player &&
+                cameraType == CameraType.FIRST_PERSON                  &&
+                player.getMainHandItem().getItem() instanceof SlashBladeItem
+        ) {
 
+            event.setYaw  (event.getYaw  () + yRotation);
 
-            Vector3f angles = new Vector3f((float) Math.toRadians(10), (float) Math.toRadians(78), (float) Math.toRadians(29));
+            event.setPitch(event.getPitch() + xRotation);
 
-            YXZRotationView view = new YXZRotationView(angles);
-            Quaternionf quat1 = new Quaternionf(view.asQuaternion());
-
-            Vector3f angles2 = new Vector3f((float) Math.toRadians(0), (float) Math.toRadians(0), (float) Math.toRadians(0));
-            YXZRotationView view2 = new YXZRotationView(angles2);
-            Quaternionf quat2 = new Quaternionf(view2.asQuaternion());
-
-            //Quaternionf quat3 = MathUtil.nlerpShortestPath(quat1,quat2,(float) ((Math.cos(rotationProgress) + 1) * 0.5));
-            Quaternionf quat3 = MathUtil.nlerpShortestPath(quat1,quat2,1);
-
-
-            YXZRotationView viewFromQuat = new YXZRotationView(quat3);
-            Vector3f resultAngles = new Vector3f(viewFromQuat.asEulerAngle());
-
-            x = (float) Math.toDegrees(resultAngles.x);
-            y = (float) Math.toDegrees(resultAngles.y);
-            z = (float) Math.toDegrees(resultAngles.z);
-
-            event.setYaw  (event.getYaw  () + y);
-
-            event.setPitch(event.getPitch() + x);
-
-            event.setRoll (event.getRoll () - z);
+            event.setRoll (event.getRoll () - zRotation);
         }
+
+
+    }
+
+    public static void setCameraPos(Vector3fc translation){
+        posX = translation.x() / 16.0f;
+        posY = translation.y() / 16.0f;
+        posZ = translation.z() / 16.0f;
+    }
+
+    public static void setCameraRotation(Vector3f rotationAngles){
+        xRotation = -(float) Math.toDegrees(rotationAngles.x);
+        yRotation = -(float) Math.toDegrees(rotationAngles.y);
+        zRotation =  (float) Math.toDegrees(rotationAngles.z);
+    }
+
+    public static void resetCameraRotation(){
+        xRotation = 0;
+        yRotation = 0;
+        zRotation = 0;
     }
 }

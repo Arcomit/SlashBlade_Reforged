@@ -1,5 +1,8 @@
 package mod.slashblade.reforged;
 
+import com.lowdragmc.photon.client.fx.EntityEffectExecutor;
+import com.lowdragmc.photon.client.fx.FX;
+import com.lowdragmc.photon.client.fx.FXHelper;
 import com.mojang.logging.LogUtils;
 import mod.slashblade.reforged.content.init.SbActions;
 import mod.slashblade.reforged.content.init.SbDataComponents;

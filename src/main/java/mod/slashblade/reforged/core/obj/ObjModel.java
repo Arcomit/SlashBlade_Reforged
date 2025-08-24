@@ -4,13 +4,14 @@ import com.maydaymemory.mae.basic.BoneTransform;
 import com.maydaymemory.mae.basic.Pose;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import lombok.Getter;
+import mod.slashblade.reforged.content.client.camera.CameraAnimationHandler;
 import mod.slashblade.reforged.core.animation.event.AnimationManager;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.joml.Quaternionfc;
+import org.joml.Vector3f;
 import org.joml.Vector3fc;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,18 +28,26 @@ public class ObjModel {
 
     public void applyPose(Pose pose) {
         for (BoneTransform boneTransform : pose.getBoneTransforms()) {
-            ObjGroup group = Groups.get(AnimationManager.INDEX_PROVIDER.getGroupName(boneTransform.boneIndex()));
-            if (group != null) {
+            String groupName = AnimationManager.INDEX_PROVIDER.getGroupName(boneTransform.boneIndex());
+            if (!groupName.equals("camera")){
+                ObjGroup group = Groups.get(groupName);
+                if (group != null) {
+                    Vector3fc translation = boneTransform.translation();
+                    Quaternionfc rotation = boneTransform.rotation().asQuaternion();
+                    Vector3fc scale = boneTransform.scale();
+                    group.setX(translation.x());
+                    group.setY(translation.y());
+                    group.setZ(translation.z());
+                    group.getRotation().set(rotation);
+                    group.setXScale(scale.x());
+                    group.setYScale(scale.y());
+                    group.setZScale(scale.z());
+                }
+            }else {
                 Vector3fc translation = boneTransform.translation();
-                Quaternionfc rotation = boneTransform.rotation().asQuaternion();
-                Vector3fc scale = boneTransform.scale();
-                group.setX(translation.x());
-                group.setY(translation.y());
-                group.setZ(translation.z());
-                group.getRotation().set(rotation);
-                group.setXScale(scale.x());
-                group.setYScale(scale.y());
-                group.setZScale(scale.z());
+                Vector3f rotationAngles = new Vector3f(boneTransform.rotation().asEulerAngle());
+                CameraAnimationHandler.setCameraPos(translation);
+                CameraAnimationHandler.setCameraRotation(rotationAngles);
             }
         }
     }
