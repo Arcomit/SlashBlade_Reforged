@@ -9,6 +9,7 @@ import net.minecraft.world.item.ItemDisplayContext;
  */
 public class ItemDisplayContextExtension {
 
+    // 判断是否为第三人称视角
     public static boolean thirdPerson(ItemDisplayContext transform){
         return  transform == ItemDisplayContext.THIRD_PERSON_LEFT_HAND ||
                 transform == ItemDisplayContext.THIRD_PERSON_RIGHT_HAND;

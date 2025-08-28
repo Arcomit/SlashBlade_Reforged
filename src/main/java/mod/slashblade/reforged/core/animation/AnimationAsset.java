@@ -22,6 +22,10 @@ public class AnimationAsset extends BasicAnimation {
     private static final float DEGREE_TO_ANGLE = (float) (Math.PI / 180);
     public static final String SOUND_CHANNEL_NAME = "sound_effects";
 
+    public InterpolatableChannel<? extends Vector3fc> cameraTranslationChannel;
+    public InterpolatableChannel<? extends Rotation> cameraRotationChannel;
+    public InterpolatableChannel<? extends Vector3fc> cameraScaleChannel;
+
     private float specifiedEndTimeS = -1;
 
     public AnimationAsset(String name) {
@@ -48,6 +52,11 @@ public class AnimationAsset extends BasicAnimation {
                     // 这里导出成基岩版模型之后旋转会 z 轴对称变成左手系等效旋转，现在我们逆转回来
                     ArrayInterpolatableChannel<Rotation> rotationChannel = parseRotationChannel(bone.getRotation(), -1, -1, 1);
                     ArrayInterpolatableChannel<Vector3fc> scaleChannel = parseChannel(bone.getScale(), 1, 1, 1);
+                    if (entry.getKey().equals("camera")) {
+                        animationAsset.cameraTranslationChannel = translationChannel;
+                        animationAsset.cameraRotationChannel = rotationChannel;
+                        animationAsset.cameraScaleChannel = scaleChannel;
+                    }
                     animationAsset.setTranslationChannel(boneIndex, translationChannel);
                     animationAsset.setRotationChannel(boneIndex, rotationChannel);
                     animationAsset.setScaleChannel(boneIndex, scaleChannel);

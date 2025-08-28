@@ -15,5 +15,4 @@ public interface DynamicItemRenderer {
 
     void renderByItem(ItemStack stack, ItemDisplayContext mode, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay);
 
-    void renderFristPerson(ItemStack stack, RenderHandEvent event, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, float partialTick);
 }

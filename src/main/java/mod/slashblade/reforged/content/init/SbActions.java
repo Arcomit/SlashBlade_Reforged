@@ -14,7 +14,7 @@ public class SbActions {
 
     public static final DeferredRegister<BasicAction> ACTIONS = DeferredRegister.create(SbRegistrys.ACTION_REGISTRY, SlashbladeMod.MODID);
 
-    //
+    // TODO: DefaultResources.DEFAULT_ACTION
 
     public static void register(IEventBus bus) {
         ACTIONS.register(bus);

@@ -6,12 +6,16 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import mod.slashblade.reforged.content.client.renderer.SbRenderTypes;
+import mod.slashblade.reforged.content.client.renderer.item.SlashBladeItemRenderer;
 import mod.slashblade.reforged.content.item.SlashBladeItem;
 import mod.slashblade.reforged.core.animation.AnimationAsset;
 import mod.slashblade.reforged.core.animation.event.AnimationManager;
+import mod.slashblade.reforged.core.itemrenderer.DynamicItemRenderer;
+import mod.slashblade.reforged.core.itemrenderer.DynamicItemRendererRegistry;
 import mod.slashblade.reforged.core.obj.ObjModel;
 import mod.slashblade.reforged.core.obj.event.ObjModelManager;
 import mod.slashblade.reforged.utils.DefaultResources;
+import mod.slashblade.reforged.utils.PoseStackAutoCloser;
 import mod.slashblade.reforged.utils.WriteVerticesInfo;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -22,6 +26,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Quaternionfc;
 import org.joml.Vector3fc;
@@ -50,38 +55,22 @@ public class SlashBladeThirdPersonLayer<T extends LivingEntity, M extends Entity
                        float                      headPitch)
     {
         ItemStack itemStack = livingEntity.getMainHandItem();
-        if (itemStack.isEmpty() || !(itemStack.getItem() instanceof SlashBladeItem)) return;
+        if (itemStack.isEmpty()) return;
 
-        ObjModel model = ObjModelManager.get(DefaultResources.DEFAULT_MODEL);
-        if (model == null) return;
-
-        AnimationAsset animation = AnimationManager.get(DefaultResources.DEFAULT_ANIMATION);
-        if (animation == null) return;
-        Pose pose = animation.evaluate(0f);
-        model.applyPose(pose);
-
-        poseStack.pushPose();
-        // 调整位置，使其于blockbench初始位置一致
-        poseStack.translate(0, 1.5f, 0);
-        poseStack.mulPose(Axis.ZP.rotationDegrees(180));
-
-        WriteVerticesInfo.setPoseStack(poseStack);
-        WriteVerticesInfo.setLightMap(packedLight);
-        WriteVerticesInfo.setOverlayMap(OverlayTexture.NO_OVERLAY);
-
-        RenderType renderType = SbRenderTypes.getBlend(DefaultResources.DEFAULT_TEXTURE);
-        VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
-
-        //poseStack.scale(0.01f,0.01f,0.01f);
-
-        model.writeVerticesOnly(vertexConsumer, "blade");
-        model.writeVerticesOnly(vertexConsumer, "sheath");
-
-
-        WriteVerticesInfo.resetPoseStack();
-        WriteVerticesInfo.resetLightMap();
-        WriteVerticesInfo.resetOverlayMap();
-
-        poseStack.popPose();
+        @Nullable
+        DynamicItemRenderer renderer = DynamicItemRendererRegistry.INSTANCE.get(itemStack.getItem());
+        if (renderer != null && renderer instanceof SlashBladeItemRenderer bladeRenderer) {
+            bladeRenderer.renderThirdPerson(
+                    poseStack,
+                    bufferSource,
+                    packedLight,
+                    itemStack,
+                    limbSwing,
+                    limbSwingAmount,
+                    partialTick,
+                    ageInTicks,
+                    netHeadYaw,
+                    headPitch);
+        }
     }
 }

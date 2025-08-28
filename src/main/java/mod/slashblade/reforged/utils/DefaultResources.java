@@ -14,4 +14,5 @@ public class DefaultResources {
     public static final ResourceLocation DEFAULT_TEXTURE   = SlashbladeMod.prefix("slashblade/models/blade.png");
 
     public static final String           DEFAULT_ANIMATION = "default_idle_universal";
+    public static final ResourceLocation DEFAULT_ACTION    = SlashbladeMod.prefix("default_idle");
 }

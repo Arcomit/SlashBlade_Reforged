@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import mod.slashblade.reforged.utils.PoseStackAutoCloser;
 import mod.slashblade.reforged.utils.WriteVerticesInfo;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -40,15 +41,25 @@ public class ObjGroup {
 
     public void writeVertices(VertexConsumer vertexConsumer){
         PoseStack poseStack = WriteVerticesInfo.getPoseStack();
-        poseStack.pushPose();
-        poseStack.translate(x / 16, y / 16, z / 16);
-        poseStack.mulPose(rotation);
-        poseStack.scale(xScale, yScale, zScale);
-        for (ObjFace face : faces) {
+        try (PoseStackAutoCloser PSAC1 = PoseStackAutoCloser.pushMatrix(poseStack)) {
+            poseStack.translate(x / 16, y / 16, z / 16);
+            poseStack.mulPose(rotation);
+            poseStack.scale(xScale, yScale, zScale);
+            for (ObjFace face : faces) {
 
-            face.writeVertices(vertexConsumer);
+                face.writeVertices(vertexConsumer);
 
+            }
         }
-        poseStack.popPose();
+    }
+
+    public void resetPose(){
+        x = 0;
+        y = 0;
+        z = 0;
+        rotation.identity();
+        xScale = 1;
+        yScale = 1;
+        zScale = 1;
     }
 }

@@ -2,22 +2,23 @@
 #moj_import <fog.glsl>
 #moj_import <photon:particle_utils.glsl>
 
+uniform sampler2D SamplerSceneColor;
 uniform sampler2D SamplerCurve;
 
+uniform vec2 ScreenSize;
 uniform float GameTime;
 uniform vec4 ColorModulator;
 uniform float FogStart;
 uniform float FogEnd;
 uniform vec4 FogColor;
-uniform float DiscardThreshold;
 
 uniform vec4 HDRColor;
 
 uniform float CellDensity;
 uniform float Spacing;
 
-uniform float Alpha;
-uniform vec4 NewColor;
+uniform float NoiseOffsetStrength;
+uniform float DispersionStrength;
 
 in float vertexDistance;
 in vec2 texCoord0;
@@ -63,6 +64,7 @@ float voronoi(vec2 uv, float angleOffset, float cellDensity, float spacing) {
 
 void main() {
     vec2 uv = texCoord0.xy;
+    vec2 screenUv = gl_FragCoord.xy / ScreenSize;
 
     // 输入参数 - 使用时间变量使角度偏移随时间变化
     float iTime = GameTime * 1000.;
@@ -83,13 +85,29 @@ void main() {
     RadialGradient = pow(RadialGradient , 2.85);
 
     float color = poweredVoronoi * RadialGradient;
-    float alpha = NewColor.a * color * Alpha;
 
-    vec4 compoundColor = vec4(vec3(color), clamp(alpha,0.0,1.0)) * vertexColor * ColorModulator;
+    // 使用噪声值对屏幕坐标进行偏移
+    vec2 noiseOffset = (vec2(voronoi(uv, angleOffset, CellDensity * 2.0, Spacing),
+                           voronoi(uv, angleOffset + 1.57, CellDensity * 2.0, Spacing)) - 0.5) * 2.0;
 
-    if (compoundColor.a < DiscardThreshold) discard;
+    // 色散效果参数
+    vec2 dispersionOffset = noiseOffset * NoiseOffsetStrength * color;
 
-    compoundColor.rgb *= HDRColor.a * HDRColor.rgb;
+    // 对RGB通道分别应用不同的偏移量来创建色散效果
+    vec2 redOffset = dispersionOffset * (1.0 + DispersionStrength);
+    vec2 greenOffset = dispersionOffset;
+    vec2 blueOffset = dispersionOffset * (1.0 - DispersionStrength);
 
-    fragColor = linear_fog(compoundColor, vertexDistance, FogStart, FogEnd, FogColor);
+    // 分别采样RGB通道
+    float r = texture(SamplerSceneColor, screenUv + redOffset).r;
+
+    // 不喜欢偏移绿色，B格不够
+    float g = texture(SamplerSceneColor, screenUv + greenOffset).g;
+    //float g = texture(SamplerSceneColor, screenUv).g;
+    float b = texture(SamplerSceneColor, screenUv + blueOffset).b;
+
+    // 组合RGB通道
+    vec4 sceneColor = vec4(r, g, b, 1.0);
+
+    fragColor = linear_fog(sceneColor, vertexDistance, FogStart, FogEnd, FogColor);
 }

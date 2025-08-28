@@ -9,12 +9,14 @@ import net.minecraft.resources.ResourceLocation;
 import java.util.Map;
 import java.util.WeakHashMap;
 
+import static net.minecraft.client.renderer.RenderStateShard.*;
+
 /**
  * @Author: Arcomit
  * @CreateTime: 2025-08-10 18:06
  * @Description: 集中管理所有模组渲染类型
  */
-public class SbRenderTypes extends RenderStateShard {
+public class SbRenderTypes{
 
     private static final Map<ResourceLocation, RenderType> SLASH_BLADE_BLEND_CACHE = new WeakHashMap<>();
 
@@ -37,9 +39,5 @@ public class SbRenderTypes extends RenderStateShard {
                     256, true, false, state
             );
         });
-    }
-
-    public SbRenderTypes(String name, Runnable setupState, Runnable clearState) {
-        super(name, setupState, clearState);
     }
 }

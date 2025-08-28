@@ -1,0 +1,9 @@
+{
+  "loader": "neoforge:obj",
+  "model": "slashblade_reforged:models/fx/summoned_swords.obj",
+  "textures": {
+  },
+  "automatic_culling": false,
+  "shade_quads": false,
+  "flip_v": true
+}

@@ -52,6 +52,14 @@ public class ObjModel {
         }
     }
 
+    public void resetPose() {
+        for (ObjGroup group : Groups.values()) {
+
+            group.resetPose();
+
+        }
+    }
+
     /**
      * 写入所有模型组的顶点
      * @param vertexConsumer 需要写入的顶点消费者

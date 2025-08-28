@@ -1,5 +1,6 @@
 package mod.slashblade.reforged.content.action;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.minecraft.resources.ResourceLocation;
 
@@ -8,14 +9,18 @@ import net.minecraft.resources.ResourceLocation;
  * @CreateTime: 2025-08-20 10:57
  * @Description: TODO
  */
-@Getter
+@Getter @AllArgsConstructor
 public class BasicAction {
 
-    private ResourceLocation animation;
+    private String animation;
 
-    public BasicAction(ResourceLocation animation) {
-        this.animation = animation;
-    }
+    // 动作的速度
+    private float  speed = 1.0f;
 
+    // 取消动作所需的Ticks
+    private int    cancelAfterTicks;
 
+    private String timeoutAnimation;
+
+    private int    priority;
 }

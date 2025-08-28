@@ -2,8 +2,10 @@
 #moj_import <fog.glsl>
 #moj_import <photon:particle_utils.glsl>
 
+uniform sampler2D SamplerSceneColor;
 uniform sampler2D SamplerCurve;
 
+uniform vec2 ScreenSize;
 uniform float GameTime;
 uniform vec4 ColorModulator;
 uniform float FogStart;
@@ -15,9 +17,8 @@ uniform vec4 HDRColor;
 
 uniform float CellDensity;
 uniform float Spacing;
+uniform float NoiseOffsetStrength;
 
-uniform float Alpha;
-uniform vec4 NewColor;
 
 in float vertexDistance;
 in vec2 texCoord0;
@@ -63,6 +64,7 @@ float voronoi(vec2 uv, float angleOffset, float cellDensity, float spacing) {
 
 void main() {
     vec2 uv = texCoord0.xy;
+    vec2 screenUv = gl_FragCoord.xy / ScreenSize;
 
     // 输入参数 - 使用时间变量使角度偏移随时间变化
     float iTime = GameTime * 1000.;
@@ -74,22 +76,31 @@ void main() {
     float DissolutionStrength = 0.0 + (getCurveValue(SamplerCurve, 0, pT) * 24.5);
     // 溶解后的Voronoi噪声
     float poweredVoronoi = pow(VoronoiNoise, DissolutionStrength);
+    vec2 noiseOffset = (vec2(voronoi(uv, angleOffset, CellDensity * 2.0, Spacing),
+                           voronoi(uv, angleOffset + 1.57, CellDensity * 2.0, Spacing)) - 0.5) * 2.0;
+    vec4 sceneColor = texture(SamplerSceneColor, screenUv + noiseOffset * NoiseOffsetStrength * poweredVoronoi);
 
-    // 径向渐变
-    vec2 delta = uv - vec2(0.5, 0.5);
-    float RadialGradient = length(delta) * 2.0;
-    RadialGradient = 1.0 - RadialGradient;
-    RadialGradient = clamp(RadialGradient,0.0,1.0);
-    RadialGradient = pow(RadialGradient , 2.85);
+    // 给vertexColor上HDR
+    vec4 VertexColorHDR = vertexColor * ColorModulator;
+    VertexColorHDR.rgb *= HDRColor.a * HDRColor.rgb;
 
-    float color = poweredVoronoi * RadialGradient;
-    float alpha = NewColor.a * color * Alpha;
+    // 计算屏幕颜色亮度
+    float luminance = dot(sceneColor.rgb, vec3(0.2126, 0.7152, 0.0722));
+    vec3 result;
+    if (luminance < 0.2) {
+        // 滤色混合 - 使暗部变亮
+        result = 1.0 - (1.0 - sceneColor.rgb) * (1.0 - VertexColorHDR.rgb);
+    } else {
+        // 正片叠底混合 - 使亮部变暗
+        result = sceneColor.rgb * VertexColorHDR.rgb;
+    }
 
-    vec4 compoundColor = vec4(vec3(color), clamp(alpha,0.0,1.0)) * vertexColor * ColorModulator;
+    //使用VertexColor的透明度
+    vec4 blendColor = vec4(result, VertexColorHDR.a);
+
+    vec4 compoundColor = blendColor;
 
     if (compoundColor.a < DiscardThreshold) discard;
-
-    compoundColor.rgb *= HDRColor.a * HDRColor.rgb;
 
     fragColor = linear_fog(compoundColor, vertexDistance, FogStart, FogEnd, FogColor);
 }

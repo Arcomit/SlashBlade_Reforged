@@ -2,6 +2,7 @@ package mod.slashblade.reforged.content.init;
 
 import mod.slashblade.reforged.SlashbladeMod;
 import mod.slashblade.reforged.content.action.BasicAction;
+import mod.slashblade.reforged.utils.DefaultResources;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -22,7 +23,7 @@ public class SbRegistrys {
     public static final Registry<BasicAction>              ACTION_REGISTRY     = new RegistryBuilder<>
             (ACTION_REGISTRY_KEY)
             .sync      (true)
-            .defaultKey(SlashbladeMod.prefix("default_idle"))
+            .defaultKey(DefaultResources.DEFAULT_ACTION)
             .create    ();
 
     @SubscribeEvent

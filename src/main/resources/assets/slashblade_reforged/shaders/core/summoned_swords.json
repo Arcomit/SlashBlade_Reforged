@@ -1,14 +1,16 @@
 {
   "vertex": "slashblade_reforged:slash",
-  "fragment": "slashblade_reforged:slash",
+  "fragment": "slashblade_reforged:summoned_swords",
   "samplers": [
     { "name": "Sampler2" },
 
+    { "name": "SamplerSceneColor" },
     { "name": "SamplerCurve" }
   ],
   "uniforms": [
     { "name": "ModelViewMat", "type": "matrix4x4", "count": 16, "values": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1] },
     { "name": "ProjMat", "type": "matrix4x4", "count": 16, "values": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1] },
+    { "name": "ScreenSize", "type": "float", "count": 2, "values": [0,0] },
     { "name": "ColorModulator", "type": "float", "count": 4, "values": [1,1,1,1] },
     { "name": "FogStart", "type": "float", "count": 1, "values": [0.0] },
     { "name": "FogEnd", "type": "float", "count": 1, "values": [1.0] },
@@ -20,11 +22,9 @@
     { "name": "CellDensity", "type": "float", "count": 1, "values": [ 6.0 ] },
     { "name": "Spacing", "type": "float", "count": 1, "values": [ 1.3 ] },
 
-    { "name": "NewColor", "type": "float", "count": 4, "values": [0,0,0,1] },
-
-    { "name": "Alpha", "type": "float", "count": 1, "values": [ 0.3 ] },
+    { "name": "NoiseOffsetStrength", "type": "float", "count": 1, "values": [ 0.1 ] },
 
     { "name": "DiscardThreshold", "type": "float", "count": 1, "values": [0.01] },
-    { "name": "HDRColor", "type": "float", "count": 4, "values": [0,0,0,1] }
+    { "name": "HDRColor", "type": "float", "count": 4, "values": [255,255,255,3.0] }
   ]
 }

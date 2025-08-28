@@ -2,12 +2,10 @@ package mod.slashblade.reforged.content.client.renderer.event;
 
 import mod.slashblade.reforged.SlashbladeMod;
 import mod.slashblade.reforged.content.client.renderer.item.layer.SlashBladeThirdPersonLayer;
-import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.resources.PlayerSkin;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -20,7 +18,7 @@ import net.neoforged.neoforge.client.event.EntityRenderersEvent;
  * @Description: 添加渲染层处理类
  */
 @EventBusSubscriber(value = Dist.CLIENT, modid = SlashbladeMod.MODID)
-public class AddRenderLayerHandler {
+public class ThirdPersonLayerAddHandler {
 
     @SubscribeEvent
     public static void addRenderLayer(EntityRenderersEvent.AddLayers event) {

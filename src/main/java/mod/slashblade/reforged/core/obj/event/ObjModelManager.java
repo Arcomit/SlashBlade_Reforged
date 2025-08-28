@@ -42,12 +42,12 @@ public class ObjModelManager implements PreparableReloadListener {
             Executor           gameExecutor
     ) {
         return CompletableFuture.runAsync(
-                () -> {
-                    loadResources(resourceManager);
-                }
+                        () -> {
+                            loadResources(resourceManager);
+                        }
                         , backgroundExecutor
-                                         )
-               .thenCompose(preparationBarrier::wait);
+                )
+                .thenCompose(preparationBarrier::wait);
     }
 
     private void loadResources(ResourceManager resourceManager) {

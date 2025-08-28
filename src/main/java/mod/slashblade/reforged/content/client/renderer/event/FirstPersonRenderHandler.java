@@ -1,6 +1,8 @@
-package mod.slashblade.reforged.core.itemrenderer.event;
+package mod.slashblade.reforged.content.client.renderer.event;
 
 import mod.slashblade.reforged.SlashbladeMod;
+import mod.slashblade.reforged.content.client.renderer.item.SlashBladeItemRenderer;
+import mod.slashblade.reforged.content.item.SlashBladeItem;
 import mod.slashblade.reforged.core.itemrenderer.DynamicItemRenderer;
 import mod.slashblade.reforged.core.itemrenderer.DynamicItemRendererRegistry;
 import net.minecraft.world.item.ItemStack;
@@ -22,10 +24,12 @@ public class FirstPersonRenderHandler {
     public static void firstPersonRender(RenderHandEvent event) {
         ItemStack stack = event.getItemStack();
 
+        if (stack.isEmpty()) return;
+
         @Nullable
         DynamicItemRenderer renderer = DynamicItemRendererRegistry.INSTANCE.get(stack.getItem());
-        if (renderer != null) {
-            renderer.renderFristPerson(
+        if (renderer != null && renderer instanceof SlashBladeItemRenderer bladeRenderer) {
+            bladeRenderer.renderFristPerson(
                     stack,
                     event,
                     event.getPoseStack        (),
