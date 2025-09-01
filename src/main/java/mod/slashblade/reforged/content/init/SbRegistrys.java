@@ -19,9 +19,7 @@ import net.neoforged.neoforge.registries.RegistryBuilder;
 public class SbRegistrys {
 
     public static final ResourceKey<Registry<BasicAction>> ACTION_REGISTRY_KEY = ResourceKey.createRegistryKey(SlashbladeMod.prefix("action"));
-
-    public static final Registry<BasicAction>              ACTION_REGISTRY     = new RegistryBuilder<>
-            (ACTION_REGISTRY_KEY)
+    public static final Registry<BasicAction>              ACTION_REGISTRY     = new RegistryBuilder<>(ACTION_REGISTRY_KEY)
             .sync      (true)
             .defaultKey(DefaultResources.DEFAULT_ACTION)
             .create    ();

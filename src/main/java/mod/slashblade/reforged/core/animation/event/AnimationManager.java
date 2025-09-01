@@ -1,6 +1,8 @@
 package mod.slashblade.reforged.core.animation.event;
 
 import com.google.common.collect.Maps;
+import com.maydaymemory.mae.control.montage.AnimationSegment;
+import com.maydaymemory.mae.control.montage.AnimationSegmentKeyframe;
 import mod.slashblade.reforged.SlashbladeMod;
 import mod.slashblade.reforged.core.animation.AnimationAsset;
 import mod.slashblade.reforged.core.animation.pojo.AnimationFile;
@@ -102,5 +104,9 @@ public class AnimationManager implements PreparableReloadListener {
         }
 
         return ANIMATIONS.get(DefaultResources.DEFAULT_ANIMATION);
+    }
+
+    public static AnimationSegmentKeyframe constructSegmentKeyframe(String animationName, float keyframeTime, float startTimeS, float endTimeS) {
+        return new AnimationSegmentKeyframe(keyframeTime, new AnimationSegment(AnimationManager.get(animationName), startTimeS, endTimeS));
     }
 }

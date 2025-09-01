@@ -19,7 +19,8 @@ public class SbItems {
 
     public static final DeferredRegister.Items ITEMS       = DeferredRegister.createItems(SlashbladeMod.MODID);
 
-    public static final Supplier<SwordItem>    SLASH_BLADE = ITEMS.register("slash_blade",
+    public static final Supplier<SwordItem>    SLASH_BLADE = ITEMS.register(
+            "slash_blade",
             () -> new SlashBladeItem(
                     Tiers.IRON,
                     new Item.Properties().attributes(
