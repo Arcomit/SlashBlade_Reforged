@@ -31,6 +31,7 @@ public class SlashbladeMod {
         SbDataComponents.register(modEventBus);
         SbCapabilities.register(modEventBus);
         SbAttackTypes.register(modEventBus);
+        SbEntityType.register(modEventBus);
     }
 
     public static ResourceLocation prefix(String path) {

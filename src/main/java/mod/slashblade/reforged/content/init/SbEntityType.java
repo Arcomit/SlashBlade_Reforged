@@ -36,5 +36,6 @@ public class SbEntityType {
     );
 
     public static void register(IEventBus bus) {
+        bus.register(ENTITY_TYPE_REGISTER);
     }
 }
