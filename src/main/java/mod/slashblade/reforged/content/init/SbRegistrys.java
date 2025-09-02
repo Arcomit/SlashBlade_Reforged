@@ -2,6 +2,7 @@ package mod.slashblade.reforged.content.init;
 
 import mod.slashblade.reforged.SlashbladeMod;
 import mod.slashblade.reforged.content.action.BasicAction;
+import mod.slashblade.reforged.content.register.AttackType;
 import mod.slashblade.reforged.utils.DefaultResources;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
@@ -24,8 +25,14 @@ public class SbRegistrys {
             .defaultKey(DefaultResources.DEFAULT_ACTION)
             .create    ();
 
+    public static final ResourceKey<Registry<AttackType>> ATTACK_TYPE_KEY = ResourceKey.createRegistryKey(SlashbladeMod.prefix("attack_type"));
+    public static final Registry<AttackType> ATTACK_TYPE_REGISTRY = new RegistryBuilder<>(ATTACK_TYPE_KEY)
+            .sync(true)
+            .create();
+
     @SubscribeEvent
     public static void registerRegistries(NewRegistryEvent event) {
         event.register(ACTION_REGISTRY);
+        event.register(ATTACK_TYPE_REGISTRY);
     }
 }

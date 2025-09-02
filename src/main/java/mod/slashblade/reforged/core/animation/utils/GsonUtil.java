@@ -23,4 +23,8 @@ public class GsonUtil {
             .registerTypeAdapter(AnimationKeyframes.class, new AnimationKeyframesSerializer())
             .registerTypeAdapter(SoundEffectKeyframes.class, new SoundEffectKeyframesSerializer())
             .create();
+
+    public static final Gson GSON = new GsonBuilder()
+            .create();
+
 }

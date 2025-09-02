@@ -9,5 +9,5 @@ import com.maydaymemory.mae.control.statemachine.AnimationStateMachine;
  */
 public class SlashBladeAnimationInstance {
 
-    private final AnimationStateMachine<SlashBladeAnimationContext> stateMachine;
+    private AnimationStateMachine<SlashBladeAnimationContext> stateMachine;
 }
