@@ -2,7 +2,7 @@ package mod.slashblade.reforged.content.entity;
 
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import mod.slashblade.reforged.content.init.SbAttackTypes;
-import mod.slashblade.reforged.utils.constant.EntityDataSerializerConstants;
+import mod.slashblade.reforged.content.init.SbEntityDataSerializers;
 import mod.slashblade.reforged.utils.CallbackPoint;
 import mod.slashblade.reforged.utils.helper.AttackHelper;
 import mod.slashblade.reforged.utils.helper.EntityPredicateHelper;
@@ -21,7 +21,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -72,7 +71,7 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
     /**
      * 当前的行动类型
      */
-    protected static final EntityDataAccessor<ActionType> ACTION_TYPE = SynchedEntityData.defineId(SummondSwordEntity.class, EntityDataSerializerConstants.SUMMOND_SWORD_ENTITY_ACTION_TYPE);
+    protected static final EntityDataAccessor<ActionType> ACTION_TYPE = SynchedEntityData.defineId(SummondSwordEntity.class, SbEntityDataSerializers.SUMMOND_SWORD_ENTITY_ACTION_TYPE.get());
 
     /***
      * 表示已经攻击的目标数量
@@ -122,6 +121,7 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
             lookAt(getDeltaMovement(), true, true);
         }
 
+
     }
 
     @Override
@@ -131,7 +131,7 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
         builder.define(MAX_PIERCE, 1);
         builder.define(BREAK_DELAY, 20);
         builder.define(START_DELAY, 0);
-        builder.define(SEEP, 0.0f);
+        builder.define(SEEP, 3.25f);
         builder.define(IGNORING_BLOCK, false);
         builder.define(ACTION_TYPE, ActionType.PREPARE);
     }
@@ -203,7 +203,7 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
 
                 EntityHitResult entityHitResult = getRayTrace(positionVec, movedVec);
 
-                if (entityHitResult.getType() == HitResult.Type.ENTITY) {
+                if (entityHitResult != null && entityHitResult.getType() == HitResult.Type.ENTITY) {
                     Entity target = entityHitResult.getEntity();
                     onHitEntity(target, SummondAttackType.HIT);
                     return;
@@ -265,7 +265,7 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
         }
         setMaxLifeTime(tickCount + getBreakDelay());
         setMaxPierce(0);
-        attackBlockCallbackPoint.call(a -> a.attackBlock(this, inBlockState, blockHitResult.getBlockPos()));
+        attackBlockCallbackPoint.call(a -> a.attackBlock(inBlockState, blockHitResult.getBlockPos()));
     }
 
     protected void onHitEntity(Entity targetEntity, SummondAttackType summondAttackType) {
@@ -289,11 +289,11 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
     }
 
     public void doAttackEntity(Entity target, SummondAttackType summondAttackType) {
-        AttackHelper.doAttack(getShooter(), target, getDamage(), true, true, List.of(SbAttackTypes.SUMMOND_SWORD_ATTACK_TYPE.get()));
+        AttackHelper.doAttack(getShooter(), target, getDamage(), true, List.of(SbAttackTypes.SUMMOND_SWORD_ATTACK_TYPE.get()));
         target.setDeltaMovement(0, 0.1, 0);
         switch (summondAttackType) {
-            case HIT -> attackActionCallbackPoint.call(a -> a.attack(this, target));
-            case BROKEN -> attackEndActionCallbackPoint.call(a -> a.attack(this, target));
+            case HIT -> attackActionCallbackPoint.call(a -> a.attack(target));
+            case BROKEN -> attackEndActionCallbackPoint.call(a -> a.attack(target));
         }
 
         if (target instanceof LivingEntity targetLivingEntity) {
@@ -316,6 +316,7 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
     }
 
 
+    @Nullable
     protected EntityHitResult getRayTrace(Vec3 startVec, Vec3 endVec) {
         return ProjectileUtil.getEntityHitResult(
                 level(),
@@ -323,7 +324,8 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
                 startVec,
                 endVec,
                 getBoundingBox().expandTowards(getDeltaMovement()).inflate(1.0D),
-                entity -> EntityPredicateHelper.canTarget(getShooter(), entity));
+                entity -> EntityPredicateHelper.canTarget(getShooter(), entity)
+        );
     }
 
     @Override
@@ -507,21 +509,21 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
      * 攻击到实体时
      */
     public interface IAttackAction {
-        void attack(SummondSwordEntity summondSwordEntity, Entity hitEntity);
+        void attack(Entity hitEntity);
     }
 
     /***
      * 破碎时再次造成伤害时
      */
     public interface IAttackEndAction {
-        void attack(SummondSwordEntity summondSwordEntity, Entity hitEntity);
+        void attack(Entity hitEntity);
     }
 
     /***
      * 击中地面
      */
     public interface IAttackBlock {
-        void attackBlock(SummondSwordEntity summondSwordEntity, BlockState blockState, BlockPos blockPos);
+        void attackBlock(BlockState blockState, BlockPos blockPos);
 
     }
 }

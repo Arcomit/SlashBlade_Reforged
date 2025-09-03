@@ -19,7 +19,7 @@ import java.util.function.Supplier;
 
 public class SbEntityType {
 
-    public static final DeferredRegister<EntityType<?>> ENTITY_TYPE_REGISTER = DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, SlashbladeMod.MODID);
+    public static final DeferredRegister<EntityType<?>> ENTITY_TYPE_REGISTER = DeferredRegister.create(Registries.ENTITY_TYPE, SlashbladeMod.MODID);
 
     public static final Supplier<EntityType<SummondSwordEntity>> SUMMOND_SWORD_ENTITY = ENTITY_TYPE_REGISTER.register(
             "summond_sword_entity",
@@ -36,6 +36,6 @@ public class SbEntityType {
     );
 
     public static void register(IEventBus bus) {
-        bus.register(ENTITY_TYPE_REGISTER);
+        ENTITY_TYPE_REGISTER.register(bus);
     }
 }

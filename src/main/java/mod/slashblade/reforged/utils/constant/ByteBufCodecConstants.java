@@ -133,7 +133,7 @@ public class ByteBufCodecConstants {
         @NotNull
         @Override
         public E decode(@NotNull ByteBuf byteBuf) {
-            int in = byteBuf.readInt();
+            int in = byteBuf.readByte();
             return enumClass.getEnumConstants()[in];
         }
 

@@ -1,6 +1,6 @@
 package mod.slashblade.reforged.content.entity;
 
-import mod.slashblade.reforged.utils.constant.EntityDataSerializerConstants;
+import mod.slashblade.reforged.content.init.SbEntityDataSerializers;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -31,12 +31,12 @@ public abstract class StandardizationAttackEntity extends Entity {
     /**
      * 模型资源位置
      */
-    protected static final EntityDataAccessor<ResourceLocation> MODEL = SynchedEntityData.defineId(StandardizationAttackEntity.class, EntityDataSerializerConstants.RESOURCE_LOCATION);
+    protected static final EntityDataAccessor<ResourceLocation> MODEL = SynchedEntityData.defineId(StandardizationAttackEntity.class, SbEntityDataSerializers.RESOURCE_LOCATION.get());
 
     /**
      * 纹理资源位置
      */
-    protected static final EntityDataAccessor<ResourceLocation> TEXTURE = SynchedEntityData.defineId(StandardizationAttackEntity.class, EntityDataSerializerConstants.RESOURCE_LOCATION);
+    protected static final EntityDataAccessor<ResourceLocation> TEXTURE = SynchedEntityData.defineId(StandardizationAttackEntity.class, SbEntityDataSerializers.RESOURCE_LOCATION.get());
 
     /**
      * 最大存活时间
@@ -46,7 +46,7 @@ public abstract class StandardizationAttackEntity extends Entity {
     /**
      * 颜色
      */
-    protected static final EntityDataAccessor<Color> COLOR = SynchedEntityData.defineId(StandardizationAttackEntity.class, EntityDataSerializerConstants.COLOR);
+    protected static final EntityDataAccessor<Color> COLOR = SynchedEntityData.defineId(StandardizationAttackEntity.class, SbEntityDataSerializers.COLOR.get());
 
     /**
      * 伤害值
@@ -76,6 +76,7 @@ public abstract class StandardizationAttackEntity extends Entity {
             this.discard();
         }
         setShooter(shooting);
+        setNoGravity(true);
     }
 
     @Override

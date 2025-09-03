@@ -14,9 +14,14 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
 
+import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.Consumer;
 
 /**
  * @Author: til
@@ -24,7 +29,50 @@ import java.util.List;
  */
 public class AttackHelper {
 
-    public static void doAttack(LivingEntity attacker, Entity target, float modifiedRatio, boolean bypassesCooldown, boolean postEvent, List<AttackType> attackTypeList) {
+    /***
+     * 访问攻击
+     */
+    public static List<Entity> areaAttack(
+            LivingEntity attacker,
+            Vec3 pos,
+            Consumer<Entity> beforeHit,
+            float range,
+            float modifiedRatio,
+            boolean bypassesCooldown,
+            Set<Entity> exclude,
+            List<AttackType> attackTypeList
+    ) {
+
+
+        if (modifiedRatio == 0) {
+            return List.of();
+        }
+
+        ItemStack mainHandItem = attacker.getMainHandItem();
+        SlashBladeLogic slashBladeLogic = mainHandItem.get(SbDataComponents.SLASH_BLADE_LOGIC);
+
+        if (slashBladeLogic == null) {
+            return List.of();
+        }
+
+        if (!slashBladeLogic.canUse()) {
+            return List.of();
+        }
+
+
+        return EntityHelper.getTargettableEntitiesWithinAABB(attacker.level(), attacker, pos, range).stream()
+                .filter(e -> !exclude.contains(e))
+                .peek(beforeHit)
+                .peek(e -> doAttack(attacker, e, modifiedRatio, bypassesCooldown, attackTypeList))
+                .toList();
+
+    }
+
+
+    /***
+     * 简单单次攻击
+     */
+    public static void doAttack(LivingEntity attacker, Entity target, float modifiedRatio, boolean bypassesCooldown, List<AttackType> attackTypeList) {
         if (modifiedRatio == 0) {
             return;
         }
@@ -40,11 +88,9 @@ public class AttackHelper {
             return;
         }
 
-        if (postEvent) {
-            SlashBladeAttackEvent slashBladeAttackEvent = new SlashBladeAttackEvent(mainHandItem, slashBladeLogic, modifiedRatio, attackTypeList);
-            NeoForge.EVENT_BUS.post(slashBladeAttackEvent);
-            modifiedRatio = slashBladeAttackEvent.getModifiedRatio();
-        }
+        SlashBladeAttackEvent slashBladeAttackEvent = new SlashBladeAttackEvent(mainHandItem, slashBladeLogic, modifiedRatio, attackTypeList);
+        NeoForge.EVENT_BUS.post(slashBladeAttackEvent);
+        modifiedRatio = slashBladeAttackEvent.getModifiedRatio();
 
         if (bypassesCooldown) {
             target.invulnerableTime = 0;

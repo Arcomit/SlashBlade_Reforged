@@ -4,11 +4,13 @@ import com.lowdragmc.photon.client.fx.EntityEffectExecutor;
 import com.lowdragmc.photon.client.fx.FX;
 import com.lowdragmc.photon.client.fx.FXHelper;
 import com.mojang.logging.LogUtils;
+import mod.slashblade.reforged.content.client.init.SbEntityRenderer;
 import mod.slashblade.reforged.content.init.*;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.loading.FMLEnvironment;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 
@@ -31,7 +33,12 @@ public class SlashbladeMod {
         SbDataComponents.register(modEventBus);
         SbCapabilities.register(modEventBus);
         SbAttackTypes.register(modEventBus);
+        SbEntityDataSerializers.register(modEventBus);
         SbEntityType.register(modEventBus);
+
+        if (FMLEnvironment.dist.isClient()) {
+            SbEntityRenderer.register(modEventBus);
+        }
     }
 
     public static ResourceLocation prefix(String path) {
