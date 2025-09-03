@@ -5,6 +5,7 @@ import mod.slashblade.reforged.SlashbladeMod;
 import mod.slashblade.reforged.content.data.SlashBladeLogic;
 import mod.slashblade.reforged.content.data.network.SpecialOperationPack;
 import mod.slashblade.reforged.content.data.network.SummoningSummondSwordPack;
+import mod.slashblade.reforged.content.entity.LightningEntity;
 import mod.slashblade.reforged.content.entity.SummondSwordEntity;
 import mod.slashblade.reforged.utils.constant.ByteBufCodecConstants;
 import mod.slashblade.reforged.utils.helper.SwordsmanHelper;
@@ -48,6 +49,12 @@ public class SbRegisterPayloads {
                                             summondSwordEntity.setDamage(0.2f); //TODO 从配置加载
                                             summondSwordEntity.setMaxLifeTime(100);
                                             summondSwordEntity.lookAt(SwordsmanHelper.getAttackPos(player, slashBladeLogic), false);
+                                            summondSwordEntity.attackActionCallbackPoint.register(e -> {
+                                                LightningEntity lightningEntity = new LightningEntity(SbEntityType.LIGHTNING_ENTITY.get(), player.level(), player);
+                                                lightningEntity.setDamage(0.2f); //TODO 从配置加载
+                                                lightningEntity.setPos(e.getX(), e.getY(), e.getZ());
+                                                player.level().addFreshEntity(lightningEntity);
+                                            });
                                             player.level().addFreshEntity(summondSwordEntity);
                                             player.playSound(SoundEvents.CHORUS_FRUIT_TELEPORT, 0.2F, 1.45F);
                                         }

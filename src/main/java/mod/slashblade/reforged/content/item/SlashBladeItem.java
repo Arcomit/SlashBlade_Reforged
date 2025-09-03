@@ -44,22 +44,4 @@ public class SlashBladeItem extends SwordItem {
 
     }
 
-    @Override
-    public @NotNull InteractionResult useOn(@NotNull UseOnContext context) {
-        InteractionResult interactionResult = super.useOn(context);
-
-        if (context.getPlayer() == null) {
-            return interactionResult;
-        }
-
-        if (context.getPlayer().level().isClientSide()) {
-            return interactionResult;
-        }
-
-        SummondSwordEntity summondSwordEntity = new SummondSwordEntity(SbEntityType.SUMMOND_SWORD_ENTITY.get(), context.getPlayer().level(), context.getPlayer());
-
-        context.getPlayer().level().addFreshEntity(summondSwordEntity);
-
-        return interactionResult;
-    }
 }

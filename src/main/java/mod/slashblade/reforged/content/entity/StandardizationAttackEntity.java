@@ -138,7 +138,7 @@ public abstract class StandardizationAttackEntity extends Entity {
 
     @Override
     public boolean shouldRenderAtSqrDistance(double distance) {
-        double d0 = 128.0D * getViewScale();
+        double d0 = 256.0D * getViewScale();
         return distance < d0 * d0;
     }
 
