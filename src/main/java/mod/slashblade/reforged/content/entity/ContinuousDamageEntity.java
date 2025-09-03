@@ -8,6 +8,8 @@ import mod.slashblade.reforged.utils.helper.AttackHelper;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -44,7 +46,15 @@ public abstract class ContinuousDamageEntity extends StandardizationAttackEntity
     @Nullable
     protected Set<Entity> alreadyHits;
 
+    /***
+     * 附带的攻击类型
+     */
+    public List<AttackType> attackTypeModelList = List.of();
+
     public final CallbackPoint<IAttackAction> attackActionCallbackPoint = new CallbackPoint<>();
+    public final CallbackPoint<IAttackEnd> attackEndCallbackPoint = new CallbackPoint<>();
+
+    public SoundEvent hitEntitySound = SoundEvents.WITHER_HURT;
 
     public ContinuousDamageEntity(EntityType<?> entityTypeIn, Level worldIn, LivingEntity shooting) {
         super(entityTypeIn, worldIn, shooting);
@@ -82,7 +92,7 @@ public abstract class ContinuousDamageEntity extends StandardizationAttackEntity
             alreadyHits = new HashSet<>(List.of(this, shooter));
         }
 
-        AttackHelper.areaAttack(
+        List<Entity> list = AttackHelper.areaAttack(
                         shooter,
                         getPos(),
                         e -> {},
@@ -90,7 +100,7 @@ public abstract class ContinuousDamageEntity extends StandardizationAttackEntity
                         getDamage(),
                         true,
                         alreadyHits,
-                        getAttackTypes()
+                        new ArrayList<>(attackTypeModelList)
                 )
                 .stream()
                 .peek(
@@ -98,9 +108,16 @@ public abstract class ContinuousDamageEntity extends StandardizationAttackEntity
                             if (!isRepeatedAttack()) {
                                 alreadyHits.add(e);
                             }
+                            attackActionCallbackPoint.call(r -> r.attack(e));
                         }
                 )
-                .forEach(e -> attackActionCallbackPoint.call(r -> r.attack(e)));
+
+                .toList();
+
+        if (!list.isEmpty()) {
+            playSound(hitEntitySound, 1.0F, 1.2F / (getRandom().nextFloat() * 0.2F + 0.9F));
+            attackEndCallbackPoint.call(r -> r.attacked(list));
+        }
 
     }
 
@@ -128,12 +145,17 @@ public abstract class ContinuousDamageEntity extends StandardizationAttackEntity
         this.entityData.set(PARAMETER_RANGE, parameterRange);
     }
 
-    public abstract List<AttackType> getAttackTypes();
-
     /***
      * 攻击到实体时
      */
     public interface IAttackAction {
         void attack(Entity hitEntity);
+    }
+
+    /***
+     * 攻击判定结束并且打到目标
+     */
+    public interface IAttackEnd {
+        void attacked(List<Entity> entities);
     }
 }

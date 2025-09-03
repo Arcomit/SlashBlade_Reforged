@@ -101,7 +101,8 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
 
     public SummondSwordEntity(EntityType<? extends SummondSwordEntity> entityTypeIn, Level worldIn, LivingEntity shooting) {
         super(entityTypeIn, worldIn, shooting);
-        this.setNoGravity(true);
+        setModel(ResourceLocationConstants.DEFAULT_SUMMOND_MODEL);
+        setTexture(ResourceLocationConstants.DEFAULT_SUMMOND_TEXTURE);
 
         //设定初始角度等信息
         if (shooting != null) {
@@ -139,17 +140,6 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
     protected SoundEvent hitEntitySound = SoundEvents.TRIDENT_HIT;
     protected SoundEvent hitGroundSound = SoundEvents.TRIDENT_HIT_GROUND;
     protected SoundEvent breakSound = SoundEvents.GLASS_BREAK;
-
-
-    @Override
-    public ResourceLocation getDefaultModel() {
-        return ResourceLocationConstants.DEFAULT_SUMMOND_MODEL;
-    }
-
-    @Override
-    public ResourceLocation getDefaultTexture() {
-        return ResourceLocationConstants.DEFAULT_SUMMOND_TEXTURE;
-    }
 
     @Override
     public void tick() {
@@ -212,6 +202,7 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
 
             }
             case HIT_ENTITY -> {
+
                 Entity hits = getHitEntity();
 
                 if (hits == null || !hits.isAlive()) {
@@ -239,7 +230,9 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
             }
             case HIT_GROUND -> {
 
-                if (level().isClientSide()) {
+                // 提升性能不做处理
+
+                /*if (level().isClientSide()) {
                     return;
                 }
 
@@ -248,7 +241,7 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
 
                 if (inBlockState != blockstate && level().noCollision(getBoundingBox().inflate(0.06D))) {
                     discard();
-                }
+                }*/
 
             }
         }
@@ -315,7 +308,6 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
             }
         }
     }
-
 
     @Nullable
     protected EntityHitResult getRayTrace(Vec3 startVec, Vec3 endVec) {
@@ -419,47 +411,6 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
         }
     }
 
-
-    public void lookAt(Vec3 target, boolean isDistance) {
-        lookAt(target, isDistance, true);
-    }
-
-
-    public void lookAt(Vec3 target, boolean isDistance, boolean prevSynchronous) {
-        Vec3 distance = isDistance
-                ? target
-                : target.subtract(getPos());
-
-        distance = distance.normalize();
-        double d0 = distance.x;
-        double d1 = distance.y;
-        double d2 = distance.z;
-        double d3 = MathHelper.sqrt(d0 * d0 + d2 * d2);
-
-        //attackPitch = MathHelper.wrapDegrees((float) (-(MathHelper.atan2(d1, d3) * (double) (180F / (float) Math.PI))));
-        //attackYaw = MathHelper.wrapDegrees((float) (MathHelper.atan2(d2, d0) * (double) (180F / (float) Math.PI)) - 90.0F);
-
-        //rotationPitch = MathHelper.wrapDegrees((float) ((MathHelper.atan2(d1, d3)) * (double) (180F / (float) Math.PI)));
-        //rotationYaw = MathHelper.wrapDegrees((float) (MathHelper.atan2(d0, d2) * (double) (180F / (float) Math.PI)));
-
-
-        float rotationPitch = MathHelper.wrapDegrees((float) (-(MathHelper.atan2(d1, d3) * (double) (180F / (float) Math.PI))));
-        float rotationYaw = MathHelper.wrapDegrees((float) (MathHelper.atan2(d2, d0) * (double) (180F / (float) Math.PI)) - 90.0F);
-
-        setRot(rotationYaw, rotationPitch, prevSynchronous);
-        updateMotion(getSeep());
-    }
-
-
-    public void updateMotion(float seep) {
-        float fYawDtoR = (getYRot() / 180F) * (float) Math.PI;
-        float fPitDtoR = (getXRot() / 180F) * (float) Math.PI;
-        float motionX = -MathHelper.sin(fYawDtoR) * MathHelper.cos(fPitDtoR) * seep;
-        float motionY = -MathHelper.sin(fPitDtoR) * seep;
-        float motionZ = MathHelper.cos(fYawDtoR) * MathHelper.cos(fPitDtoR) * seep;
-        lerpMotion(motionX, motionY, motionZ);
-    }
-
     public boolean isIgnoringBlock() {
         return entityData.get(IGNORING_BLOCK);
     }
@@ -474,6 +425,12 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
 
     public void setActionType(ActionType actionType) {
         entityData.set(ACTION_TYPE, actionType);
+    }
+
+    @Override
+    public void lookAt(Vec3 target, boolean isDistance, boolean prevSynchronous) {
+        super.lookAt(target, isDistance, prevSynchronous);
+        updateMotion(getSeep());
     }
 
     /**
