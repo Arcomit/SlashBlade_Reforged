@@ -6,6 +6,8 @@ import mod.slashblade.reforged.SlashbladeMod;
 import mod.slashblade.reforged.content.data.SaveField;
 import mod.slashblade.reforged.content.data.SlashBladeLogic;
 import mod.slashblade.reforged.content.data.SlashBladeStyle;
+import mod.slashblade.reforged.content.data.network.SpecialOperationPack;
+import mod.slashblade.reforged.content.data.network.SummoningSummondSwordPack;
 import mod.slashblade.reforged.content.entity.SummondSwordEntity;
 import mod.slashblade.reforged.utils.Util;
 import mod.slashblade.reforged.utils.tuple.Tuple2;
@@ -50,6 +52,10 @@ public class ByteBufCodecConstants {
     };
     public static final StreamCodec<ByteBuf, SlashBladeLogic> SLASH_BLADE_LOGIC = new DataStreamCodec<>(SlashBladeLogic.class);
     public static final StreamCodec<ByteBuf, SlashBladeStyle> SLASH_BLADE_STYLE = new DataStreamCodec<>(SlashBladeStyle.class);
+
+    public static final StreamCodec<ByteBuf, SummoningSummondSwordPack> SUMMONING_SUMMOND_SWORD_PACK = StreamCodec.unit(SummoningSummondSwordPack.INSTANCE);
+    public static final StreamCodec<ByteBuf, SpecialOperationPack> SPECIAL_OPERATION_PACK = StreamCodec.unit(SpecialOperationPack.INSTANCE);
+
 
     static {
         // 基本数值类型

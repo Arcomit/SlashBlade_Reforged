@@ -5,6 +5,7 @@ import mod.slashblade.reforged.content.entity.SummondSwordEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,6 +20,7 @@ public class SummondSwordEntityRenderer<E extends SummondSwordEntity> extends En
 
     @Override
     public void render(@NotNull E p_entity, float entityYaw, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedLight) {
+        this.renderNameTag(p_entity, Component.literal("SummondSword"), poseStack, bufferSource, packedLight, partialTick);
         super.render(p_entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
     }
 

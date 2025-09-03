@@ -157,12 +157,6 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
 
         setOldPosAndRot();
 
-        if (level().isClientSide()) {
-            return;
-        }
-
-        BlockPos blockpos = new BlockPos((int) getX(), (int) getY(), (int) getZ());
-        BlockState blockstate = level().getBlockState(blockpos);
 
         switch (getActionType()) {
             case PREPARE -> {
@@ -173,20 +167,20 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
             case FLYING -> {
 
                 //process inAir
-                Vec3 positionVec = new Vec3(getX(), getY(), getZ());
+                Vec3 positionVec = getPos();
                 Vec3 deltaMovement = getDeltaMovement();
                 Vec3 movedVec = positionVec.add(deltaMovement.x, deltaMovement.y, deltaMovement.z);
 
                 double mx = movedVec.x;
                 double my = movedVec.y;
                 double mz = movedVec.z;
-                moveTo(movedVec.x, movedVec.y, movedVec.z);
+                setPos(mx, my, mz);
 
                 if (!isIgnoringBlock()) {
                     BlockHitResult hitResult = level().clip(
                             new ClipContext(
-                                    new Vec3(positionVec.x, positionVec.y, positionVec.z),
-                                    new Vec3(movedVec.x, movedVec.y, movedVec.z),
+                                    positionVec,
+                                    movedVec,
                                     ClipContext.Block.COLLIDER,
                                     ClipContext.Fluid.NONE,
                                     this
@@ -244,6 +238,13 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
 
             }
             case HIT_GROUND -> {
+
+                if (level().isClientSide()) {
+                    return;
+                }
+
+                BlockPos blockpos = new BlockPos((int) getX(), (int) getY(), (int) getZ());
+                BlockState blockstate = level().getBlockState(blockpos);
 
                 if (inBlockState != blockstate && level().noCollision(getBoundingBox().inflate(0.06D))) {
                     discard();

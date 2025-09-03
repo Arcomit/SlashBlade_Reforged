@@ -18,8 +18,6 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public class SbEntityRenderer {
 
 
-    public static void register(IEventBus bus) {
-    }
 
     @SubscribeEvent
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {

@@ -97,7 +97,7 @@ public class AttackHelper {
         }
 
 
-        AttributeModifier am = new AttributeModifier(ResourceLocationConstants.SLASH_BLADE_ATTACK_MULTIPLIED_TOTAL, modifiedRatio, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+        AttributeModifier am = new AttributeModifier(ResourceLocationConstants.SLASH_BLADE_ATTACK_MULTIPLIED_TOTAL, modifiedRatio -1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
 
         AttributeInstance attribute = attacker.getAttribute(Attributes.ATTACK_DAMAGE);
 

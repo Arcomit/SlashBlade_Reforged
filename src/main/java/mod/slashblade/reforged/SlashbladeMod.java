@@ -1,17 +1,12 @@
 package mod.slashblade.reforged;
 
-import com.lowdragmc.photon.client.fx.EntityEffectExecutor;
-import com.lowdragmc.photon.client.fx.FX;
-import com.lowdragmc.photon.client.fx.FXHelper;
 import com.mojang.logging.LogUtils;
-import mod.slashblade.reforged.content.client.init.SbEntityRenderer;
+import lombok.Getter;
 import mod.slashblade.reforged.content.init.*;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.loading.FMLEnvironment;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 
 import java.util.Objects;
@@ -27,7 +22,16 @@ public class SlashbladeMod {
     public static final String MODID = "slashblade_reforged";
     public static final Logger LOGGER = LogUtils.getLogger();
 
+    @Getter
+    private static SlashbladeMod instance;
+
+    @Getter
+    private ModContainer modContainer;
+
     public SlashbladeMod(IEventBus modEventBus, ModContainer modContainer) {
+        instance = this;
+        this.modContainer = modContainer;
+
         SbItems.register(modEventBus);
         SbActions.register(modEventBus);
         SbDataComponents.register(modEventBus);
@@ -35,10 +39,7 @@ public class SlashbladeMod {
         SbAttackTypes.register(modEventBus);
         SbEntityDataSerializers.register(modEventBus);
         SbEntityType.register(modEventBus);
-
-        if (FMLEnvironment.dist.isClient()) {
-            SbEntityRenderer.register(modEventBus);
-        }
+        SbRegisterPayloads.register(modEventBus);
     }
 
     public static ResourceLocation prefix(String path) {
