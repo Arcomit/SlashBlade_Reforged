@@ -1,5 +1,6 @@
 package mod.slashblade.reforged.utils.helper;
 
+import mod.slashblade.reforged.content.config.SbConfig;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 
@@ -11,10 +12,10 @@ import javax.annotation.Nullable;
  */
 public class EntityPredicateHelper {
     public static boolean canTarget(@Nullable Entity attacker, Entity target) {
-        boolean allowInvulnerable = true; // TODO 配置
-        boolean isLivingEntity = true;// TODO 配置
-        boolean friendlyFire = true;// TODO 配置
-        boolean skipAttackChecks = true;// TODO 配置
+        boolean allowInvulnerable = SbConfig.COMMON.allowInvulnerable.get();
+        boolean isLivingEntity = SbConfig.COMMON.isLivingEntity.get();
+        boolean friendlyFire = SbConfig.COMMON.friendlyFire.get();
+        boolean skipAttackChecks = SbConfig.COMMON.skipAttackChecks.get();
 
 
         if (target == null) {

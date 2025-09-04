@@ -2,11 +2,13 @@ package mod.slashblade.reforged;
 
 import com.mojang.logging.LogUtils;
 import lombok.Getter;
+import mod.slashblade.reforged.content.config.SbConfig;
 import mod.slashblade.reforged.content.init.*;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
 import org.slf4j.Logger;
 
 import java.util.Objects;
@@ -31,6 +33,9 @@ public class SlashbladeMod {
     public SlashbladeMod(IEventBus modEventBus, ModContainer modContainer) {
         instance = this;
         this.modContainer = modContainer;
+
+        // 注册配置
+        modContainer.registerConfig(ModConfig.Type.COMMON, SbConfig.COMMON_CONFIG);
 
         SbItems.register(modEventBus);
         SbActions.register(modEventBus);

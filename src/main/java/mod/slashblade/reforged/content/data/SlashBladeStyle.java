@@ -1,6 +1,8 @@
 package mod.slashblade.reforged.content.data;
 
 import lombok.Data;
+import mod.slashblade.reforged.content.entity.JudgementCutEntity;
+import mod.slashblade.reforged.content.entity.SummondSwordEntity;
 import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nullable;
@@ -46,5 +48,26 @@ public class SlashBladeStyle {
     boolean noScabbard;
 
     @SaveField
-    Color carryColor = new Color(0x3333FF);
+    Color color = new Color(0x3333FF);
+
+    public void decorate(SummondSwordEntity summondSwordEntity) {
+        summondSwordEntity.setColor(color);
+        if (summondSwordModel != null) {
+            summondSwordEntity.setModel(summondSwordModel);
+        }
+        if (summondSwordTexture != null) {
+            summondSwordEntity.setTexture(summondSwordTexture);
+        }
+    }
+
+    public void decorate(JudgementCutEntity judgementCutEntity) {
+        judgementCutEntity.setColor(color);
+        if (judgementCutModel != null) {
+            judgementCutEntity.setModel(judgementCutModel);
+        }
+        if (judgementCutTexture != null) {
+            judgementCutEntity.setTexture(judgementCutTexture);
+        }
+    }
+
 }

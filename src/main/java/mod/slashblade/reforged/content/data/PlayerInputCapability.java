@@ -37,11 +37,16 @@ public class PlayerInputCapability implements IPlayerInputCapability, INBTSerial
 
     @Override
     public void acceptNewInput(KeyInputPack keyInputPack) {
+        EnumMap<KeyInput, Boolean> oldDown = new EnumMap<>(downMap);
         EnumMap<KeyInput, Boolean> newDown = keyInputPack.getIsDown();
         NeoForge.EVENT_BUS.post(new KeyUpdateEvent(player, this, newDown));
 
         for(KeyInput key : KeyInput.values()) {
-            if (downMap.get(key) && !newDown.get(key)) {
+            downMap.put(key, newDown.get(key));
+        }
+
+        for(KeyInput key : KeyInput.values()) {
+            if (oldDown.get(key) && !newDown.get(key)) {
                 if (isLongHold(key)) {
                     NeoForge.EVENT_BUS.post(new KeyInputEvent(player, this, key, KeyInputEvent.KeyType.HOLD_UP));
                 }
@@ -50,7 +55,7 @@ public class PlayerInputCapability implements IPlayerInputCapability, INBTSerial
                 holdMemoryMap.put(key, false);
                 continue;
             }
-            if (!downMap.get(key) && newDown.get(key)) {
+            if (!oldDown.get(key) && newDown.get(key)) {
                 NeoForge.EVENT_BUS.post(new KeyInputEvent(player, this, key, KeyInputEvent.KeyType.DOWN));
                 continue;
             }
@@ -61,9 +66,6 @@ public class PlayerInputCapability implements IPlayerInputCapability, INBTSerial
             }
         }
 
-        for(KeyInput key : KeyInput.values()) {
-            downMap.put(key, newDown.get(key));
-        }
 
     }
 

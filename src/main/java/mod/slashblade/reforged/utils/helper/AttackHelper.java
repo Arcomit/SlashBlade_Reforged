@@ -1,5 +1,7 @@
 package mod.slashblade.reforged.utils.helper;
 
+import mod.slashblade.reforged.SlashbladeMod;
+import mod.slashblade.reforged.content.config.SbConfig;
 import mod.slashblade.reforged.content.data.SlashBladeLogic;
 import mod.slashblade.reforged.content.event.SlashBladeAttackEvent;
 import mod.slashblade.reforged.content.init.SbDataComponents;
@@ -15,6 +17,8 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.NeoForge;
 
 import javax.annotation.Nullable;
@@ -27,6 +31,7 @@ import java.util.function.Consumer;
  * @Author: til
  * @Description: 通用攻击处理逻辑
  */
+@EventBusSubscriber(modid = SlashbladeMod.MODID)
 public class AttackHelper {
 
     /***
@@ -37,7 +42,7 @@ public class AttackHelper {
             Vec3 pos,
             Consumer<Entity> beforeHit,
             float range,
-            float modifiedRatio,
+            double modifiedRatio,
             boolean bypassesCooldown,
             Set<Entity> exclude,
             List<AttackType> attackTypeList
@@ -72,7 +77,7 @@ public class AttackHelper {
     /***
      * 简单单次攻击
      */
-    public static void doAttack(LivingEntity attacker, Entity target, float modifiedRatio, boolean bypassesCooldown, List<AttackType> attackTypeList) {
+    public static void doAttack(LivingEntity attacker, Entity target, double modifiedRatio, boolean bypassesCooldown, List<AttackType> attackTypeList) {
         if (modifiedRatio == 0) {
             return;
         }
@@ -90,14 +95,16 @@ public class AttackHelper {
 
         SlashBladeAttackEvent slashBladeAttackEvent = new SlashBladeAttackEvent(mainHandItem, slashBladeLogic, modifiedRatio, attackTypeList);
         NeoForge.EVENT_BUS.post(slashBladeAttackEvent);
-        modifiedRatio = slashBladeAttackEvent.getModifiedRatio();
 
         if (bypassesCooldown) {
             target.invulnerableTime = 0;
         }
 
-
-        AttributeModifier am = new AttributeModifier(ResourceLocationConstants.SLASH_BLADE_ATTACK_MULTIPLIED_TOTAL, modifiedRatio -1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+        AttributeModifier am = new AttributeModifier(
+                ResourceLocationConstants.SLASH_BLADE_ATTACK_MULTIPLIED_TOTAL,
+                (slashBladeAttackEvent.getUltimatelyModifiedRatio()) - 1,
+                AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
+        );
 
         AttributeInstance attribute = attacker.getAttribute(Attributes.ATTACK_DAMAGE);
 
@@ -125,5 +132,30 @@ public class AttackHelper {
 
         //TODO ArrowReflector.doReflect(target, attacker);
         //TODO TNTExtinguisher.doExtinguishing(target, attacker);
+    }
+
+    /***
+     * 默认倍率添加
+     */
+    @SubscribeEvent
+    public static void onSlashBladeAttackEvent(SlashBladeAttackEvent event) {
+
+        SlashBladeLogic slashBladeLogic = event.getSlashBladeLogic();
+
+        // TODO 评分表加成
+        event.addModifiedRatio(SbConfig.COMMON.refineAttackBonus.get() * slashBladeLogic.getRefine());
+
+        if (slashBladeLogic.getKillCount() > 1000) {
+            event.addModifiedRatioAmplifier(SbConfig.COMMON.thousandKillReward.get());
+        }
+        if (slashBladeLogic.getKillCount() > 10000) {
+            event.addModifiedRatioAmplifier(SbConfig.COMMON.tenThousandKillReward.get());
+        }
+        if (slashBladeLogic.getRefine() > 1000) {
+            event.addModifiedRatioAmplifier(SbConfig.COMMON.thousandRefineReward.get());
+        }
+        if (slashBladeLogic.getRefine() > 10000) {
+            event.addModifiedRatioAmplifier(SbConfig.COMMON.tenThousandRefineReward.get());
+        }
     }
 }

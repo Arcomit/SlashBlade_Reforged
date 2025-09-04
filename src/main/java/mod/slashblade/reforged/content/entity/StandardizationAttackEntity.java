@@ -54,7 +54,7 @@ public abstract class StandardizationAttackEntity extends Entity {
     /**
      * 伤害值
      */
-    protected static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(StandardizationAttackEntity.class, EntityDataSerializers.FLOAT);
+    protected static final EntityDataAccessor<Double> DAMAGE = SynchedEntityData.defineId(StandardizationAttackEntity.class, SbEntityDataSerializers.DOUBLE.get());
 
     /**
      * 旋转角度
@@ -93,7 +93,7 @@ public abstract class StandardizationAttackEntity extends Entity {
         builder.define(TEXTURE, ResourceLocationConstants.DEFAULT);
         builder.define(MAX_LIFE_TIEM, 100);
         builder.define(COLOR, new Color(0x3333FF));
-        builder.define(DAMAGE, 1f);
+        builder.define(DAMAGE, 1d);
         builder.define(ROLL, 0f);
         builder.define(SIZE, 1f);
         builder.define(MUTE, false);
@@ -207,11 +207,11 @@ public abstract class StandardizationAttackEntity extends Entity {
         entityData.set(COLOR, color);
     }
 
-    public float getDamage() {
+    public double getDamage() {
         return entityData.get(DAMAGE);
     }
 
-    public void setDamage(float damage) {
+    public void setDamage(double damage) {
         entityData.set(DAMAGE, damage);
     }
 
