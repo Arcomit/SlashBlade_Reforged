@@ -26,7 +26,7 @@ public class SlashbladeMod {
     private static SlashbladeMod instance;
 
     @Getter
-    private ModContainer modContainer;
+    private final ModContainer modContainer;
 
     public SlashbladeMod(IEventBus modEventBus, ModContainer modContainer) {
         instance = this;
@@ -34,6 +34,7 @@ public class SlashbladeMod {
 
         SbItems.register(modEventBus);
         SbActions.register(modEventBus);
+        SbAttachmentType.register(modEventBus);
         SbDataComponents.register(modEventBus);
         SbCapabilities.register(modEventBus);
         SbAttackTypes.register(modEventBus);

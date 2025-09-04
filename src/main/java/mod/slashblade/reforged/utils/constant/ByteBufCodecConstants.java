@@ -52,21 +52,32 @@ public class ByteBufCodecConstants {
     public static final StreamCodec<ByteBuf, SlashBladeStyle> SLASH_BLADE_STYLE = new DataStreamCodec<>(SlashBladeStyle.class);
 
     public static final StreamCodec<ByteBuf, KeyInput> KEY_INPUT = new EnumStreamCodec<>(KeyInput.class);
-    public static final StreamCodec<ByteBuf, KeyInputPack> KEY_INPUT_PACK = new StreamCodec<>() {
+    public static final StreamCodec<ByteBuf, EnumMap<KeyInput, Boolean>> KEY_INPUT_MAP = new StreamCodec<ByteBuf, EnumMap<KeyInput, Boolean>>() {
         @Override
-        public @NotNull KeyInputPack decode(@NotNull ByteBuf buffer) {
+        public @NotNull EnumMap<KeyInput, Boolean> decode(@NotNull ByteBuf buffer) {
             EnumMap<KeyInput, Boolean> isDown = new EnumMap<>(KeyInput.class);
             for(KeyInput value : KeyInput.values()) {
                 isDown.put(value, buffer.readBoolean());
             }
-            return new KeyInputPack(isDown);
+            return isDown;
+        }
+
+        @Override
+        public void encode(@NotNull ByteBuf buffer, @NotNull EnumMap<KeyInput, Boolean> value) {
+            for(KeyInput keyInput : KeyInput.values()) {
+                buffer.writeBoolean(value.get(keyInput));
+            }
+        }
+    };
+    public static final StreamCodec<ByteBuf, KeyInputPack> KEY_INPUT_PACK = new StreamCodec<>() {
+        @Override
+        public @NotNull KeyInputPack decode(@NotNull ByteBuf buffer) {
+            return new KeyInputPack(KEY_INPUT_MAP.decode(buffer));
         }
 
         @Override
         public void encode(@NotNull ByteBuf buffer, @NotNull KeyInputPack value) {
-            for(KeyInput keyInput : KeyInput.values()) {
-                buffer.writeBoolean(value.getIsDown().get(keyInput));
-            }
+            KEY_INPUT_MAP.encode(buffer, value.getIsDown());
         }
     };
 
@@ -107,6 +118,7 @@ public class ByteBufCodecConstants {
         // 自定义数据类型
         BASIC_TYPE_CODEC_MAP.put(SlashBladeLogic.class, SLASH_BLADE_LOGIC);
         BASIC_TYPE_CODEC_MAP.put(SlashBladeStyle.class, SLASH_BLADE_STYLE);
+
     }
 
     public static class CanBeNullStreamCodec<O> implements StreamCodec<ByteBuf, O> {

@@ -99,7 +99,7 @@ public class SbRegisterPayloads {
                                                 SlashbladeMod.LOGGER.warn("player {} does not have the PlayerInputCapability", player.getDisplayName().getString());
                                                 return;
                                             }
-                                            capability.acceptNewInput(payload);
+                                            capability.acceptNewInput( payload);
                                         }
                                 )
                                 .exceptionally(

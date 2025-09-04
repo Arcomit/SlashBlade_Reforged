@@ -1,9 +1,11 @@
 package mod.slashblade.reforged.content.event.key;
 
+import lombok.Getter;
 import mod.slashblade.reforged.content.data.KeyInput;
 import mod.slashblade.reforged.content.data.capabilitie.IPlayerInputCapability;
 import net.minecraft.world.entity.player.Player;
 
+@Getter
 public class KeyInputEvent extends KeyEvent {
 
     final KeyInput keyInput;

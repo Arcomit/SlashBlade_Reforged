@@ -10,6 +10,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.common.util.Lazy;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -69,8 +70,14 @@ public class SbKeys {
 
     @SubscribeEvent
     public static void onClientTick(ClientTickEvent.Post event) {
-        EnumMap<KeyInput, Boolean> isDown = new EnumMap<>(KeyInput.class);
-        KEY_BINDINGS.get().forEach((key, binding) -> isDown.put(key, binding.isDown()));
-        PacketDistributor.sendToServer(new KeyInputPack(isDown));
+        // 只有在游戏世界存在且玩家存在时才发送按键状态
+        Minecraft minecraft = Minecraft.getInstance();
+        if (minecraft.level != null && minecraft.player != null) {
+            EnumMap<KeyInput, Boolean> isDown = new EnumMap<>(KeyInput.class);
+            KEY_BINDINGS.get().forEach((key, binding) -> isDown.put(key, binding.isDown()));
+            PacketDistributor.sendToServer(new KeyInputPack(isDown));
+        }
     }
+    
+
 }
