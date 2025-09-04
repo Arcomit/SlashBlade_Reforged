@@ -1,10 +1,9 @@
 package mod.slashblade.reforged.content.init;
 
-import lombok.Getter;
 import mod.slashblade.reforged.SlashbladeMod;
 import mod.slashblade.reforged.content.data.SlashBladeLogic;
-import mod.slashblade.reforged.content.data.network.SpecialOperationPack;
-import mod.slashblade.reforged.content.data.network.SummoningSummondSwordPack;
+import mod.slashblade.reforged.content.data.capabilitie.IPlayerInputCapability;
+import mod.slashblade.reforged.content.data.network.KeyInputPack;
 import mod.slashblade.reforged.content.entity.LightningEntity;
 import mod.slashblade.reforged.content.entity.SummondSwordEntity;
 import mod.slashblade.reforged.utils.constant.ByteBufCodecConstants;
@@ -31,7 +30,7 @@ public class SbRegisterPayloads {
     public static void register(final RegisterPayloadHandlersEvent event) {
         PayloadRegistrar payloadRegistrar = event.registrar(SlashbladeMod.getInstance().getModContainer().getModInfo().getVersion().getQualifier());
 
-        payloadRegistrar.playBidirectional(
+       /* payloadRegistrar.playBidirectional(
                 SummoningSummondSwordPack.TYPE,
                 ByteBufCodecConstants.SUMMONING_SUMMOND_SWORD_PACK,
                 new DirectionalPayloadHandler<>(
@@ -78,10 +77,37 @@ public class SbRegisterPayloads {
                                             //TODO 特殊行动带实现
                                         }
                                 )
-                                .exceptionally(e -> {
-                                    SlashbladeMod.LOGGER.error("Failed to handle SpecialOperationPack: {}", e.getMessage(), e);
-                                    return null;
-                                })
+                                .exceptionally(
+                                        e -> {
+                                            SlashbladeMod.LOGGER.error("Failed to handle SpecialOperationPack: {}", e.getMessage(), e);
+                                            return null;
+                                        }
+                                )
+                )
+        );*/
+
+        payloadRegistrar.playBidirectional(
+                KeyInputPack.TYPE,
+                ByteBufCodecConstants.KEY_INPUT_PACK,
+                new DirectionalPayloadHandler<>(
+                        SbRegisterPayloads::noClientInvocation,
+                        (payload, context) -> context.enqueueWork(
+                                        () -> {
+                                            Player player = context.player();
+                                            IPlayerInputCapability capability = player.getCapability(SbCapabilities.PLAYER_INPUT_CAPABILITY);
+                                            if (capability == null) {
+                                                SlashbladeMod.LOGGER.warn("player {} does not have the PlayerInputCapability", player.getDisplayName().getString());
+                                                return;
+                                            }
+                                            capability.acceptNewInput(payload);
+                                        }
+                                )
+                                .exceptionally(
+                                        e -> {
+                                            SlashbladeMod.LOGGER.error("Failed to handle KeyInputPack: {}", e.getMessage(), e);
+                                            return null;
+                                        }
+                                )
                 )
         );
     }

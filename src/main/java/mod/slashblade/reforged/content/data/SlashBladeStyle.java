@@ -39,6 +39,12 @@ public class SlashBladeStyle {
     @SaveField
     CarryType carryType = CarryType.NAKED;
 
+    /***
+     * 没有刀鞘
+     */
+    @SaveField
+    boolean noScabbard;
+
     @SaveField
     Color carryColor = new Color(0x3333FF);
 }

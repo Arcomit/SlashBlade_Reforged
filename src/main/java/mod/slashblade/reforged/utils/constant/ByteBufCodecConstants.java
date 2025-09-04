@@ -3,11 +3,11 @@ package mod.slashblade.reforged.utils.constant;
 
 import io.netty.buffer.ByteBuf;
 import mod.slashblade.reforged.SlashbladeMod;
+import mod.slashblade.reforged.content.data.KeyInput;
 import mod.slashblade.reforged.content.data.SaveField;
 import mod.slashblade.reforged.content.data.SlashBladeLogic;
 import mod.slashblade.reforged.content.data.SlashBladeStyle;
-import mod.slashblade.reforged.content.data.network.SpecialOperationPack;
-import mod.slashblade.reforged.content.data.network.SummoningSummondSwordPack;
+import mod.slashblade.reforged.content.data.network.KeyInputPack;
 import mod.slashblade.reforged.content.entity.SummondSwordEntity;
 import mod.slashblade.reforged.utils.Util;
 import mod.slashblade.reforged.utils.tuple.Tuple2;
@@ -24,10 +24,8 @@ import org.joml.Vector3f;
 
 import java.awt.*;
 import java.lang.reflect.*;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -53,9 +51,24 @@ public class ByteBufCodecConstants {
     public static final StreamCodec<ByteBuf, SlashBladeLogic> SLASH_BLADE_LOGIC = new DataStreamCodec<>(SlashBladeLogic.class);
     public static final StreamCodec<ByteBuf, SlashBladeStyle> SLASH_BLADE_STYLE = new DataStreamCodec<>(SlashBladeStyle.class);
 
-    public static final StreamCodec<ByteBuf, SummoningSummondSwordPack> SUMMONING_SUMMOND_SWORD_PACK = StreamCodec.unit(SummoningSummondSwordPack.INSTANCE);
-    public static final StreamCodec<ByteBuf, SpecialOperationPack> SPECIAL_OPERATION_PACK = StreamCodec.unit(SpecialOperationPack.INSTANCE);
+    public static final StreamCodec<ByteBuf, KeyInput> KEY_INPUT = new EnumStreamCodec<>(KeyInput.class);
+    public static final StreamCodec<ByteBuf, KeyInputPack> KEY_INPUT_PACK = new StreamCodec<>() {
+        @Override
+        public @NotNull KeyInputPack decode(@NotNull ByteBuf buffer) {
+            EnumMap<KeyInput, Boolean> isDown = new EnumMap<>(KeyInput.class);
+            for(KeyInput value : KeyInput.values()) {
+                isDown.put(value, buffer.readBoolean());
+            }
+            return new KeyInputPack(isDown);
+        }
 
+        @Override
+        public void encode(@NotNull ByteBuf buffer, @NotNull KeyInputPack value) {
+            for(KeyInput keyInput : KeyInput.values()) {
+                buffer.writeBoolean(value.getIsDown().get(keyInput));
+            }
+        }
+    };
 
     static {
         // 基本数值类型
@@ -90,7 +103,7 @@ public class ByteBufCodecConstants {
         BASIC_TYPE_CODEC_MAP.put(Quaternionf.class, ByteBufCodecs.QUATERNIONF);
 
         BASIC_TYPE_CODEC_MAP.put(ResourceLocation.class, ResourceLocation.STREAM_CODEC);
-        
+
         // 自定义数据类型
         BASIC_TYPE_CODEC_MAP.put(SlashBladeLogic.class, SLASH_BLADE_LOGIC);
         BASIC_TYPE_CODEC_MAP.put(SlashBladeStyle.class, SLASH_BLADE_STYLE);
@@ -260,4 +273,5 @@ public class ByteBufCodecConstants {
             return null;
         }
     }
+
 }

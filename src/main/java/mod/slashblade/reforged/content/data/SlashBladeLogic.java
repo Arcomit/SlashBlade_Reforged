@@ -58,12 +58,6 @@ public class SlashBladeLogic {
     boolean broken;
 
     /***
-     * 没有刀鞘
-     */
-    @SaveField
-    boolean noScabbard;
-
-    /***
      * 你拔不出来(原版有这个属性就搬过来了)
      */
     @SaveField
