@@ -44,7 +44,7 @@ public class EnchantmentHelper {
         if (target instanceof LivingEntity livingTarget) {
             // 亡灵杀手附魔 - 仅对亡灵生物有效
             int smiteLevel = item.getEnchantmentLevel(enchantmentRegistry.getOrThrow(Enchantments.SMITE));
-            if (smiteLevel > 0 && livingTarget.getType().is(EntityTypeTags.UNDEAD)) {
+            if (smiteLevel > 0 && livingTarget.getType().is(EntityTypeTags.SENSITIVE_TO_SMITE)) {
                 event.addModifiedRatio(SbConfig.COMMON.smiteAttackBonus.get() * smiteLevel);
             }
 
