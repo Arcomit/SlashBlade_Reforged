@@ -3,10 +3,18 @@ package mod.slashblade.reforged.utils.helper;
 import mod.slashblade.reforged.SlashbladeMod;
 import mod.slashblade.reforged.content.config.SbConfig;
 import mod.slashblade.reforged.content.data.SlashBladeLogic;
+import mod.slashblade.reforged.content.data.SlashBladeStyle;
+import mod.slashblade.reforged.content.entity.SlashEffectEntity;
 import mod.slashblade.reforged.content.event.SlashBladeAttackEvent;
+import mod.slashblade.reforged.content.event.SlashBladeDoSlashEvent;
+import mod.slashblade.reforged.content.event.SlashBladeDurabilityLoss;
+import mod.slashblade.reforged.content.init.SbAttackTypes;
 import mod.slashblade.reforged.content.init.SbDataComponents;
+import mod.slashblade.reforged.content.init.SbEntityType;
 import mod.slashblade.reforged.content.register.AttackType;
 import mod.slashblade.reforged.utils.constant.ResourceLocationConstants;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -16,10 +24,14 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.NeoForge;
+import org.joml.Vector3d;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -34,6 +46,61 @@ import java.util.function.Consumer;
  */
 @EventBusSubscriber(modid = SlashbladeMod.MODID)
 public class AttackHelper {
+
+    public static void doSlash(
+            LivingEntity attacker,
+            float roll,
+            Vec3 centerOffset,
+            double damage,
+            float basicsRange,
+            @Nullable Consumer<SlashEffectEntity> advanceOperation
+    ) {
+        if (damage == 0) {
+            return;
+        }
+
+        ItemStack mainHandItem = attacker.getMainHandItem();
+        SlashBladeLogic slashBladeLogic = mainHandItem.get(SbDataComponents.SLASH_BLADE_LOGIC);
+        SlashBladeStyle slashBladeStyle = mainHandItem.get(SbDataComponents.SLASH_BLADE_STYLE);
+
+        if (slashBladeLogic == null || slashBladeStyle == null) {
+            return;
+        }
+
+        if (!slashBladeLogic.canUse()) {
+            return;
+        }
+
+
+        Vec3 pos = attacker.getPosition(1)
+                .add(0.0D, (double) attacker.getEyeHeight() * 0.75D, 0.0D)
+                .add(attacker.getLookAngle().scale(0.3f));
+
+        pos = pos.add(VectorHelper.getVectorForRotation(-90.0F, attacker.getViewYRot(0)).scale(centerOffset.y))
+                .add(VectorHelper.getVectorForRotation(0, attacker.getViewYRot(0) + 90).scale(centerOffset.z))
+                .add(attacker.getLookAngle().scale(centerOffset.z));
+
+        SlashEffectEntity jc = new SlashEffectEntity(
+                SbEntityType.SLASH_EFFECT_ENTITY.get(),
+                attacker.level(),
+                attacker
+        );
+
+        slashBladeStyle.decorate(jc);
+
+        jc.setPos(pos.x(), pos.y(), pos.z());
+        jc.setRoll(roll);
+        jc.setDamage(damage);
+        jc.setSize(slashBladeLogic.getAttackDistance() * basicsRange);
+
+        if (advanceOperation != null) {
+            advanceOperation.accept(jc);
+        }
+
+        NeoForge.EVENT_BUS.post(new SlashBladeDoSlashEvent(mainHandItem, slashBladeLogic, attacker, jc));
+
+        attacker.level().addFreshEntity(jc);
+    }
 
     /***
      * 访问攻击
@@ -94,7 +161,7 @@ public class AttackHelper {
             return;
         }
 
-        SlashBladeAttackEvent slashBladeAttackEvent = new SlashBladeAttackEvent(attacker, target, mainHandItem, slashBladeLogic, modifiedRatio, attackTypeList);
+        SlashBladeAttackEvent slashBladeAttackEvent = new SlashBladeAttackEvent(mainHandItem, slashBladeLogic, attacker, target, modifiedRatio, attackTypeList);
         NeoForge.EVENT_BUS.post(slashBladeAttackEvent);
 
         if (bypassesCooldown) {
@@ -128,8 +195,19 @@ public class AttackHelper {
                     .filter(Objects::nonNull)
                     .toList();
 
+            if (list.isEmpty()) {
+                list = List.of(
+                        attacker.damageSources().source(
+                                attacker instanceof Player
+                                        ? DamageTypes.PLAYER_ATTACK
+                                        : DamageTypes.MOB_ATTACK,
+                                attacker
+                        )
+                );
+            }
 
-            list.forEach(damageSource -> target.hurt(damageSource, (float) attribute.getValue() / list.size()));
+            List<DamageSource> finalList = list;
+            list.forEach(damageSource -> target.hurt(damageSource, (float) attribute.getValue() / finalList.size()));
 
         } finally {
             attribute.removeModifier(am.id());
@@ -138,9 +216,36 @@ public class AttackHelper {
         if (bypassesCooldown) {
             target.invulnerableTime = 0;
         }
+    }
 
-        //TODO ArrowReflector.doReflect(target, attacker);
-        //TODO TNTExtinguisher.doExtinguishing(target, attacker);
+    public static void durabilityLoss(LivingEntity user, ItemStack itemStack, SlashBladeLogic slashBladeLogic, double loss) {
+
+        if (loss <= 0) {
+            return;
+        }
+        SlashBladeDurabilityLoss slashBladeDurabilityLoss = new SlashBladeDurabilityLoss(itemStack, slashBladeLogic, user, loss);
+        NeoForge.EVENT_BUS.post(slashBladeDurabilityLoss);
+
+        double durabilityReductionRate = Math.max(slashBladeDurabilityLoss.getDurabilityLevel() * SbConfig.COMMON.durabilityReductionRate.get(), 0);
+
+        // -Sigmoid函数
+        double modifiedRatio = 1 / (durabilityReductionRate + Math.pow(Math.E, -durabilityReductionRate));
+
+        loss = slashBladeDurabilityLoss.getBasicLoss() * modifiedRatio;
+
+        if (loss <= 0) {
+            return;
+        }
+
+        slashBladeLogic.setDurable(slashBladeLogic.getDurable() - loss);
+
+        if (slashBladeLogic.getDurable() > 0) {
+            return;
+        }
+
+        slashBladeLogic.setDurable(0);
+
+        //TODO 刀损坏
     }
 
     /***
@@ -156,16 +261,27 @@ public class AttackHelper {
         event.addModifiedRatio(SbConfig.COMMON.refineAttackBonus.get() * slashBladeLogic.getRefine());
 
         if (slashBladeLogic.getKillCount() > 1000) {
-            event.addModifiedRatioAmplifier(SbConfig.COMMON.thousandKillReward.get());
+            event.addModifiedRatioAmplifier(SbConfig.COMMON.thousandKillAttackBonus.get());
         }
         if (slashBladeLogic.getKillCount() > 10000) {
-            event.addModifiedRatioAmplifier(SbConfig.COMMON.tenThousandKillReward.get());
+            event.addModifiedRatioAmplifier(SbConfig.COMMON.tenThousandKillAttackBonus.get());
         }
         if (slashBladeLogic.getRefine() > 1000) {
-            event.addModifiedRatioAmplifier(SbConfig.COMMON.thousandRefineReward.get());
+            event.addModifiedRatioAmplifier(SbConfig.COMMON.thousandRefineAttackBonus.get());
         }
         if (slashBladeLogic.getRefine() > 10000) {
-            event.addModifiedRatioAmplifier(SbConfig.COMMON.tenThousandRefineReward.get());
+            event.addModifiedRatioAmplifier(SbConfig.COMMON.tenThousandRefineAttackBonus.get());
         }
     }
+
+    @SubscribeEvent
+    public static void durabilitySettlement(SlashBladeAttackEvent event) {
+        if (!event.getAttackTypeList().contains(SbAttackTypes.SLASH_BLADE_ATTACK_TYPE.get())) {
+            return;
+        }
+
+        durabilityLoss(event.getUser(), event.getItem(), event.getSlashBladeLogic(), event.getBasicsModifiedRatio() * SbConfig.COMMON.durabilityLoss.get());
+    }
+
+
 }

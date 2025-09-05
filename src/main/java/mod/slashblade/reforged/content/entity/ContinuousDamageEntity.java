@@ -54,7 +54,7 @@ public abstract class ContinuousDamageEntity extends StandardizationAttackEntity
     public final CallbackPoint<IAttackAction> attackActionCallbackPoint = new CallbackPoint<>();
     public final CallbackPoint<IAttackEnd> attackEndCallbackPoint = new CallbackPoint<>();
 
-    public SoundEvent hitEntitySound = SoundEvents.WITHER_HURT;
+    public SoundEvent hitEntitySound = SoundEvents.PLAYER_ATTACK_WEAK;
 
     public ContinuousDamageEntity(EntityType<?> entityTypeIn, Level worldIn, LivingEntity shooting) {
         super(entityTypeIn, worldIn, shooting);

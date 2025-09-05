@@ -14,6 +14,7 @@ import mod.slashblade.reforged.content.init.SbDataComponents;
 import mod.slashblade.reforged.content.init.SbEntityType;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
@@ -35,9 +36,9 @@ public class KeyHelper {
             return;
         }
 
-        Player player = keyInputEvent.getEntity();
+        LivingEntity livingEntity = keyInputEvent.getLivingEntity();
 
-        ItemStack mainHandItem = player.getMainHandItem();
+        ItemStack mainHandItem = livingEntity.getMainHandItem();
         SlashBladeLogic slashBladeLogic = mainHandItem.get(SbDataComponents.SLASH_BLADE_LOGIC);
         SlashBladeStyle slashBladeStyle = mainHandItem.get(SbDataComponents.SLASH_BLADE_STYLE);
 
@@ -45,13 +46,13 @@ public class KeyHelper {
             return;
         }
 
-        SummondSwordEntity summondSwordEntity = new SummondSwordEntity(SbEntityType.SUMMOND_SWORD_ENTITY.get(), player.level(), player);
+        SummondSwordEntity summondSwordEntity = new SummondSwordEntity(SbEntityType.SUMMOND_SWORD_ENTITY.get(), livingEntity.level(), livingEntity);
         slashBladeStyle.decorate(summondSwordEntity);
         summondSwordEntity.setDamage(SbConfig.COMMON.ordinaryAttack.get());
         summondSwordEntity.setMaxLifeTime(100);
-        summondSwordEntity.lookAt(SwordsmanHelper.getAttackPos(player, slashBladeLogic), false);
-        player.level().addFreshEntity(summondSwordEntity);
-        player.playSound(SoundEvents.CHORUS_FRUIT_TELEPORT, 0.2F, 1.45F);
+        summondSwordEntity.lookAt(SwordsmanHelper.getAttackPos(livingEntity, slashBladeLogic), false);
+        livingEntity.level().addFreshEntity(summondSwordEntity);
+        livingEntity.playSound(SoundEvents.CHORUS_FRUIT_TELEPORT, 0.2F, 1.45F);
     }
 
 
@@ -71,9 +72,9 @@ public class KeyHelper {
             return;
         }
 
-        Player player = keyInputEvent.getEntity();
+        LivingEntity livingEntity = keyInputEvent.getLivingEntity();
 
-        ItemStack mainHandItem = player.getMainHandItem();
+        ItemStack mainHandItem = livingEntity.getMainHandItem();
         SlashBladeLogic slashBladeLogic = mainHandItem.get(SbDataComponents.SLASH_BLADE_LOGIC);
         SlashBladeStyle slashBladeStyle = mainHandItem.get(SbDataComponents.SLASH_BLADE_STYLE);
 
@@ -82,9 +83,9 @@ public class KeyHelper {
         }
 
 
-        player.playSound(SoundEvents.CHORUS_FRUIT_TELEPORT, 0.2F, 1.45F);
+        livingEntity.playSound(SoundEvents.CHORUS_FRUIT_TELEPORT, 0.2F, 1.45F);
 
-        Vec3 attackPos = SwordsmanHelper.getAttackPos(player, slashBladeLogic);
+        Vec3 attackPos = SwordsmanHelper.getAttackPos(livingEntity, slashBladeLogic);
 
         // 剑雨
         if (playerInputCapability.isDown(KeyInput.FORWARD) && playerInputCapability.isDown(KeyInput.BACK)) {
@@ -113,8 +114,8 @@ public class KeyHelper {
                 );
                 SummondSwordEntity summondSwordEntity = new SummondSwordEntity(
                         SbEntityType.SUMMOND_SWORD_ENTITY.get(),
-                        player.level(),
-                        player
+                        livingEntity.level(),
+                        livingEntity
                 );
 
                 slashBladeStyle.decorate(summondSwordEntity);
@@ -127,7 +128,7 @@ public class KeyHelper {
                         false
                 );
                 summondSwordEntity.setRoll(random.nextInt(360));
-                player.level().addFreshEntity(summondSwordEntity);
+                livingEntity.level().addFreshEntity(summondSwordEntity);
             }
 
             return;
@@ -139,18 +140,18 @@ public class KeyHelper {
             for(int i = 0; i < amount; i++) {
                 SummondSwordEntity summondSwordEntity = new SummondSwordEntity(
                         SbEntityType.SUMMOND_SWORD_ENTITY.get(),
-                        player.level(),
-                        player
+                        livingEntity.level(),
+                        livingEntity
                 );
                 slashBladeStyle.decorate(summondSwordEntity);
                 summondSwordEntity.setDamage(SbConfig.COMMON.stormSwordAttack.get());
                 summondSwordEntity.setMaxLifeTime(100);
                 summondSwordEntity.setStartDelay((i / 2) * 2);
-                Vec3 pos = player.getEyePosition(1.0f)
+                Vec3 pos = livingEntity.getEyePosition(1.0f)
                         .add(
                                 VectorHelper.getVectorForRotation(
                                                 0.0f,
-                                                player.getViewYRot(0) + 90)
+                                                livingEntity.getViewYRot(0) + 90)
                                         .scale(
                                                 i % 2 == 0
                                                         ? 1
@@ -159,7 +160,7 @@ public class KeyHelper {
                         );
                 summondSwordEntity.setPos(pos.x(), pos.y() + ofBlisteringOffset(i, amount), pos.z());
                 summondSwordEntity.lookAt(attackPos, false);
-                player.level().addFreshEntity(summondSwordEntity);
+                livingEntity.level().addFreshEntity(summondSwordEntity);
             }
             return;
         }
@@ -175,8 +176,8 @@ public class KeyHelper {
                 double offsetZ = Math.cos(stepping * i);
                 SummondSwordEntity summondSwordEntity = new SummondSwordEntity(
                         SbEntityType.SUMMOND_SWORD_ENTITY.get(),
-                        player.level(),
-                        player
+                        livingEntity.level(),
+                        livingEntity
                 );
                 slashBladeStyle.decorate(summondSwordEntity);
                 summondSwordEntity.setStartDelay(5);
@@ -189,7 +190,7 @@ public class KeyHelper {
                 );
                 summondSwordEntity.lookAt(attackPos, false);
 
-                player.level().addFreshEntity(summondSwordEntity);
+                livingEntity.level().addFreshEntity(summondSwordEntity);
             }
             return;
         }
@@ -199,15 +200,15 @@ public class KeyHelper {
             int amount = SbConfig.COMMON.spiralSwordAttackNumber.get();
             double stepping = Math.PI * 2 / amount;
 
-            Vec3 pos = player.getPosition(1);
+            Vec3 pos = livingEntity.getPosition(1);
 
             for(int i = 0; i < amount; i++) {
                 double offsetX = Math.sin(stepping * i);
                 double offsetZ = Math.cos(stepping * i);
                 SummondSwordEntity summondSwordEntity = new SummondSwordEntity(
                         SbEntityType.SUMMOND_SWORD_ENTITY.get(),
-                        player.level(),
-                        player
+                        livingEntity.level(),
+                        livingEntity
                 );
                 slashBladeStyle.decorate(summondSwordEntity);
                 summondSwordEntity.setDamage(SbConfig.COMMON.spiralSwordAttack.get());
@@ -217,12 +218,12 @@ public class KeyHelper {
                         pos.y(),
                         pos.z() + offsetZ * 3
                 );
-                float yaw = player.getYRot();
+                float yaw = livingEntity.getYRot();
                 yaw = yaw / 180;
                 yaw += (float) (stepping * i);
                 Vec3 lookAtPosRotated = new Vec3(Math.sin(yaw), 0, Math.cos(yaw));
                 summondSwordEntity.lookAt(lookAtPosRotated, true);
-                player.level().addFreshEntity(summondSwordEntity);
+                livingEntity.level().addFreshEntity(summondSwordEntity);
             }
         }
 
@@ -235,6 +236,30 @@ public class KeyHelper {
         return maxOffset - ratio * (maxOffset - minOffset);
     }
 
+
+    @SubscribeEvent
+    public static void onAttackTest(KeyInputEvent keyInputEvent) {
+        if (keyInputEvent.getKeyInput() != KeyInput.LEFT_CLICK && keyInputEvent.getKeyInput() != KeyInput.RIGHT_CLICK) {
+            return;
+        }
+
+        if (keyInputEvent.getKeyType() != KeyInputEvent.KeyType.DOWN) {
+            return;
+        }
+
+        LivingEntity livingEntity = keyInputEvent.getLivingEntity();
+
+        ItemStack mainHandItem = livingEntity.getMainHandItem();
+        SlashBladeLogic slashBladeLogic = mainHandItem.get(SbDataComponents.SLASH_BLADE_LOGIC);
+        SlashBladeStyle slashBladeStyle = mainHandItem.get(SbDataComponents.SLASH_BLADE_STYLE);
+
+        if (slashBladeLogic == null || slashBladeStyle == null) {
+            return;
+        }
+
+        AttackHelper.doSlash(livingEntity, livingEntity.getRandom().nextInt(360), Vec3.ZERO, 0.5, 1, null);
+
+    }
 }
 
 

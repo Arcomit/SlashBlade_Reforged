@@ -25,13 +25,13 @@ public class SlashBladeLogic {
      * 最大耐久度
      */
     @SaveField
-    float maxDurable = 4096;
+    double maxDurable = 4096;
 
     /***
      * 当前的耐久度
      */
     @SaveField
-    float durable = 4096;
+    double durable = 4096;
 
     /***
      * 荣耀数
@@ -86,7 +86,6 @@ public class SlashBladeLogic {
 
         setTargetEntityId(entity.getId());
     }
-
 
     public boolean canUse() {
         return !isBroken() && !isSealed();

@@ -15,6 +15,9 @@ public class AttackType implements ICreateDamageSource {
 
     final ICreateDamageSource iCreateDamageSource;
 
+    public AttackType() {
+        this.iCreateDamageSource = (attacker, target) -> null;
+    }
 
     @Override
     public DamageSource createDamageSource(LivingEntity attacker, Entity target) {

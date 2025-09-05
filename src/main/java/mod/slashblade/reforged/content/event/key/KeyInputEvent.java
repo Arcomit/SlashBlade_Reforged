@@ -3,6 +3,8 @@ package mod.slashblade.reforged.content.event.key;
 import lombok.Getter;
 import mod.slashblade.reforged.content.data.KeyInput;
 import mod.slashblade.reforged.content.data.capabilitie.IPlayerInputCapability;
+import mod.slashblade.reforged.content.event.SlashBladeDurabilityLoss;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
 @Getter
@@ -11,8 +13,8 @@ public class KeyInputEvent extends KeyEvent {
     final KeyInput keyInput;
     final KeyType keyType;
 
-    public KeyInputEvent(Player player, IPlayerInputCapability playerInputCapability, KeyInput keyInput, KeyType keyType) {
-        super(player, playerInputCapability);
+    public KeyInputEvent(LivingEntity livingEntity, IPlayerInputCapability playerInputCapability, KeyInput keyInput, KeyType keyType) {
+        super(livingEntity, playerInputCapability);
         this.keyInput = keyInput;
         this.keyType = keyType;
     }

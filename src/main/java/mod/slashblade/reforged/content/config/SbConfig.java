@@ -33,10 +33,12 @@ public class SbConfig {
         // Attack configuration
         public final ModConfigSpec.ConfigValue<Double> refineAttackBonus;
         public final ModConfigSpec.ConfigValue<Double> rankMaxAttackBonus;
-        public final ModConfigSpec.ConfigValue<Double> thousandKillReward;
-        public final ModConfigSpec.ConfigValue<Double> tenThousandKillReward;
-        public final ModConfigSpec.ConfigValue<Double> thousandRefineReward;
-        public final ModConfigSpec.ConfigValue<Double> tenThousandRefineReward;
+        public final ModConfigSpec.ConfigValue<Double> thousandKillAttackBonus;
+        public final ModConfigSpec.ConfigValue<Double> tenThousandKillAttackBonus;
+        public final ModConfigSpec.ConfigValue<Double> thousandRefineAttackBonus;
+        public final ModConfigSpec.ConfigValue<Double> tenThousandRefineAttackBonus;
+        public final ModConfigSpec.ConfigValue<Double> durabilityLoss;
+        public final ModConfigSpec.ConfigValue<Double> durabilityReductionRate;
 
         // Copy SA configuration
         public final ModConfigSpec.ConfigValue<Double> getSuccessRate;
@@ -79,6 +81,15 @@ public class SbConfig {
         // Preload configuration
         public final ModConfigSpec.ConfigValue<Boolean> preload;
 
+        // Enchantment configuration
+        public final ModConfigSpec.ConfigValue<Double> sharpnessAttackBonus;
+        public final ModConfigSpec.ConfigValue<Double> smiteAttackBonus;
+        public final ModConfigSpec.ConfigValue<Double> baneOfArthropodsAttackBonus;
+        public final ModConfigSpec.ConfigValue<Double> powerAttackBonus;
+        public final ModConfigSpec.ConfigValue<Double> sweepingEdgeSizeBonus;
+
+
+
         Common(ModConfigSpec.Builder builder) {
             // Entity targeting configuration
             builder.comment("Entity targeting configuration")
@@ -108,11 +119,11 @@ public class SbConfig {
 
             seCost = builder
                     .comment("SE cost for anvil operations")
-                    .defineInRange("se_cost", 0.1, 0.0, 1.0);
+                    .define("se_cost", 0.1);
 
             enchantmentCost = builder
                     .comment("Enchantment cost for anvil operations")
-                    .defineInRange("enchantment_cost", 0.1, 0.0, 1.0);
+                    .define("enchantment_cost", 0.1);
 
             builder.pop();
 
@@ -122,27 +133,35 @@ public class SbConfig {
 
             refineAttackBonus = builder
                     .comment("Attack bonus per refine level")
-                    .defineInRange("refine_attack_bonus", 0.002, 0.0, 0.1);
+                    .define("refine_attack_bonus", 0.002);
 
             rankMaxAttackBonus = builder
                     .comment("Maximum attack bonus from rank")
-                    .defineInRange("rank_max_attack_bonus", 0.2, 0.0, 1.0);
+                    .define("rank_max_attack_bonus", 0.2);
 
-            thousandKillReward = builder
-                    .comment("Reward for thousand kills")
-                    .defineInRange("thousand_kill_reward", 0.1, 0.0, 1.0);
+            thousandKillAttackBonus = builder
+                    .comment("Attack bonus for thousand kills")
+                    .define("thousand_kill_attack_bonus", 0.1);
 
-            tenThousandKillReward = builder
-                    .comment("Reward for ten thousand kills")
-                    .defineInRange("ten_thousand_kill_reward", 0.1, 0.0, 1.0);
+            tenThousandKillAttackBonus = builder
+                    .comment("Attack bonus for ten thousand kills")
+                    .define("ten_thousand_kill_attack_bonus", 0.1);
 
-            thousandRefineReward = builder
-                    .comment("Reward for thousand refines")
-                    .defineInRange("thousand_refine_reward", 0.1, 0.0, 1.0);
+            thousandRefineAttackBonus = builder
+                    .comment("Attack bonus for thousand refines")
+                    .define("thousand_refine_attack_bonus", 0.1);
 
-            tenThousandRefineReward = builder
-                    .comment("Reward for ten thousand refines")
-                    .defineInRange("ten_thousand_refine_reward", 0.1, 0.0, 1.0);
+            tenThousandRefineAttackBonus = builder
+                    .comment("Attack bonus for ten thousand refines")
+                    .define("ten_thousand_refine_attack_bonus", 0.1);
+
+            durabilityLoss = builder
+                    .comment("Durability loss per slash attack")
+                    .define("durability_loss", 1.0);
+
+            durabilityReductionRate = builder
+                    .comment("Define the effect of durability enchantment and durability reduction")
+                    .define("durability_reduction_rate", 0.5);
 
             builder.pop();
 
@@ -152,19 +171,19 @@ public class SbConfig {
 
             getSuccessRate = builder
                     .comment("Success rate for getting special attacks")
-                    .defineInRange("get_success_rate", 0.33, 0.0, 1.0);
+                    .define("get_success_rate", 0.33);
 
             lossRefine = builder
                     .comment("Refine loss on failure")
-                    .defineInRange("loss_refine", 0.2, 0.0, 1.0);
+                    .define("loss_refine", 0.2);
 
             minRefine = builder
                     .comment("Minimum refine required")
-                    .defineInRange("min_refine", 500.0, 0.0, 10000.0);
+                    .define("min_refine", 500.0);
 
             minKill = builder
                     .comment("Minimum kills required")
-                    .defineInRange("min_kill", 1000.0, 0.0, 100000.0);
+                    .define("min_kill", 1000.0);
 
             builder.pop();
 
@@ -174,23 +193,23 @@ public class SbConfig {
 
             soulDropChance = builder
                     .comment("Soul drop chance")
-                    .defineInRange("soul_drop_chance", 0.1, 0.0, 1.0);
+                    .define("soul_drop_chance", 0.1);
 
             tinySoulDropChance = builder
                     .comment("Tiny soul drop chance")
-                    .defineInRange("tiny_soul_drop_chance", 0.2, 0.0, 1.0);
+                    .define("tiny_soul_drop_chance", 0.2);
 
             enchantmentSoulDropChance = builder
                     .comment("Enchantment soul drop chance")
-                    .defineInRange("enchantment_soul_drop_chance", 0.05, 0.0, 1.0);
+                    .define("enchantment_soul_drop_chance", 0.05);
 
             enchantmentSoulSuccessRate = builder
                     .comment("Enchantment soul success rate")
-                    .defineInRange("enchantment_soul_success_rate", 0.25, 0.0, 1.0);
+                    .define("enchantment_soul_success_rate", 0.25);
 
             entityDropChance = builder
                     .comment("Entity drop chance")
-                    .defineInRange("entity_drop_chance", 0.01, 0.0, 1.0);
+                    .define("entity_drop_chance", 0.01);
 
             builder.pop();
 
@@ -210,11 +229,11 @@ public class SbConfig {
 
             sprintAttack = builder
                     .comment("Sprint attack bonus")
-                    .defineInRange("sprint_attack", 0.01, 0.0, 1.0);
+                    .define("sprint_attack", 0.01);
 
             sprintPower = builder
                     .comment("Sprint power")
-                    .defineInRange("sprint_power", 5.0, 0.0, 100.0);
+                    .define("sprint_power", 5.0);
 
             builder.pop();
 
@@ -224,55 +243,55 @@ public class SbConfig {
 
             ordinaryAttack = builder
                     .comment("Ordinary attack damage")
-                    .defineInRange("ordinary_attack", 0.15, 0.0, 10.0);
+                    .define("ordinary_attack", 0.15);
 
             blisteringAttack = builder
                     .comment("Blistering attack damage")
-                    .defineInRange("blistering_attack", 0.1, 0.0, 10.0);
+                    .define("blistering_attack", 0.1);
 
             blisteringAttackNumber = builder
                     .comment("Number of blistering attacks")
-                    .defineInRange("blistering_attack_number", 8, 1, 64);
+                    .define("blistering_attack_number", 8);
 
             heavyRainAttack = builder
                     .comment("Heavy rain attack damage")
-                    .defineInRange("heavy_rain_attack", 0.12, 0.0, 10.0);
+                    .define("heavy_rain_attack", 0.12);
 
             heavyRainAttackNumber = builder
                     .comment("Number of heavy rain attacks")
-                    .defineInRange("heavy_rain_attack_number", 16, 1, 64);
+                    .define("heavy_rain_attack_number", 16);
 
             heavyRainYOffset = builder
                     .comment("Y offset for heavy rain attacks")
-                    .defineInRange("heavy_rain_y_offset", 10.0, 0.0, 100.0);
+                    .define("heavy_rain_y_offset", 10.0);
 
             heavyRainOffsetX = builder
                     .comment("X offset for heavy rain area")
-                    .defineInRange("heavy_rain_offset_x", 6.0, 0.0, 100.0);
+                    .define("heavy_rain_offset_x", 6.0);
 
             heavyRainOffsetY = builder
                     .comment("Y offset for heavy rain area")
-                    .defineInRange("heavy_rain_offset_y", 3.0, 0.0, 100.0);
+                    .define("heavy_rain_offset_y", 3.0);
 
             heavyRainOffsetZ = builder
                     .comment("Z offset for heavy rain area")
-                    .defineInRange("heavy_rain_offset_z", 6.0, 0.0, 100.0);
+                    .define("heavy_rain_offset_z", 6.0);
 
             stormSwordAttack = builder
                     .comment("Storm sword attack damage")
-                    .defineInRange("storm_sword_attack", 0.1, 0.0, 10.0);
+                    .define("storm_sword_attack", 0.1);
 
             stormSwordAttackNumber = builder
                     .comment("Number of storm sword attacks")
-                    .defineInRange("storm_sword_attack_number", 8, 1, 64);
+                    .define("storm_sword_attack_number", 8);
 
             spiralSwordAttack = builder
                     .comment("Spiral sword attack damage")
-                    .defineInRange("spiral_sword_attack", 0.15, 0.0, 10.0);
+                    .define("spiral_sword_attack", 0.15);
 
             spiralSwordAttackNumber = builder
                     .comment("Number of spiral sword attacks")
-                    .defineInRange("spiral_sword_attack_number", 8, 1, 64);
+                    .define("spiral_sword_attack_number", 8);
 
             builder.pop();
 
@@ -282,7 +301,33 @@ public class SbConfig {
 
             probabilityFactor = builder
                     .comment("Probability factor for UP SE")
-                    .defineInRange("probability_factor", 0.1, 0.0, 1.0);
+                    .define("probability_factor", 0.1);
+
+            builder.pop();
+
+            // Enchantment configuration
+            builder.comment("Enchantment configuration")
+                    .push("enchantment");
+
+            sharpnessAttackBonus = builder
+                    .comment("Attack bonus per sharpness level")
+                    .define("sharpness_attack_bonus", 0.03);
+
+            smiteAttackBonus = builder
+                    .comment("Attack bonus per smite level against undead")
+                    .define("smite_attack_bonus", 0.05);
+
+            baneOfArthropodsAttackBonus = builder
+                    .comment("Attack bonus per bane of arthropods level against arthropods")
+                    .define("bane_of_arthropods_attack_bonus", 0.05);
+
+            powerAttackBonus = builder
+                    .comment("Attack bonus per power level for summoned sword attacks")
+                    .define("power_attack_bonus", 0.05);
+
+            sweepingEdgeSizeBonus = builder
+                    .comment("Attack range per sweeping edge level")
+                    .define("sweeping_edge_size_bonus", 0.04);
 
             builder.pop();
 

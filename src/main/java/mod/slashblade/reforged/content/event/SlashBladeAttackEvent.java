@@ -7,6 +7,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import org.checkerframework.checker.units.qual.A;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -15,6 +16,11 @@ public class SlashBladeAttackEvent extends SlashBladeEvent {
 
     LivingEntity attacker;
     Entity target;
+
+    /***
+     * 基础攻击倍率
+     */
+    double basicsModifiedRatio;
 
     /***
      * 当前的攻击倍率
@@ -31,10 +37,11 @@ public class SlashBladeAttackEvent extends SlashBladeEvent {
 
     final List<AttackType> attackTypeList;
 
-    public SlashBladeAttackEvent(LivingEntity attacker, Entity target, ItemStack item, SlashBladeLogic slashBladeLogic, double modifiedRatio, List<AttackType> attackTypeList) {
-        super(item, slashBladeLogic);
+    public SlashBladeAttackEvent(ItemStack item, SlashBladeLogic slashBladeLogic, LivingEntity attacker, Entity target, double modifiedRatio, List<AttackType> attackTypeList) {
+        super(item, slashBladeLogic, attacker);
         this.attacker = attacker;
         this.target = target;
+        this.basicsModifiedRatio = modifiedRatio;
         this.modifiedRatio = modifiedRatio;
         this.attackTypeList = attackTypeList;
     }

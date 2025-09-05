@@ -78,7 +78,7 @@ public class SlashEffectEntity extends ContinuousDamageEntity {
     public void tick() {
         super.tick();
 
-        if (tickCount == 2 && level().isClientSide()) {
+        if (tickCount == 2) {
 
             if (!isMute()) {
                 if (isThump()) {

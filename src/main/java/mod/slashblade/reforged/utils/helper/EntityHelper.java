@@ -30,7 +30,7 @@ public class EntityHelper {
 
 
         return world.getEntities(null,  aabb).stream()
-                .filter(e -> Objects.equals(e, shooter))
+                .filter(e -> !Objects.equals(e, shooter))
                 .filter(e -> EntityPredicateHelper.canTarget(shooter, e))
                 .collect(Collectors.toList());
 

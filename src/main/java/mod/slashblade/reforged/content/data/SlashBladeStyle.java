@@ -2,6 +2,7 @@ package mod.slashblade.reforged.content.data;
 
 import lombok.Data;
 import mod.slashblade.reforged.content.entity.JudgementCutEntity;
+import mod.slashblade.reforged.content.entity.SlashEffectEntity;
 import mod.slashblade.reforged.content.entity.SummondSwordEntity;
 import net.minecraft.resources.ResourceLocation;
 
@@ -67,6 +68,16 @@ public class SlashBladeStyle {
         }
         if (judgementCutTexture != null) {
             judgementCutEntity.setTexture(judgementCutTexture);
+        }
+    }
+
+    public void decorate(SlashEffectEntity slashEffectEntity) {
+        slashEffectEntity.setColor(color);
+        if (slashEffectModel != null) {
+            slashEffectEntity.setModel(slashEffectModel);
+        }
+        if (slashEffectTexture != null) {
+            slashEffectEntity.setTexture(slashEffectTexture);
         }
     }
 
