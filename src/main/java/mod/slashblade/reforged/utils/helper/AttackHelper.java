@@ -239,13 +239,14 @@ public class AttackHelper {
 
         slashBladeLogic.setDurable(slashBladeLogic.getDurable() - loss);
 
-        if (slashBladeLogic.getDurable() > 0) {
-            return;
+        if (slashBladeLogic.getDurable() <= 0) {
+            slashBladeLogic.setDurable(0);
+            //TODO 刀损坏
         }
 
-        slashBladeLogic.setDurable(0);
+        itemStack.set(SbDataComponentTypes.SLASH_BLADE_LOGIC, slashBladeLogic);
 
-        //TODO 刀损坏
+
     }
 
     /***

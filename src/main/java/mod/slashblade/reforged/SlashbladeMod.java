@@ -42,6 +42,7 @@ public class SlashbladeMod {
         modContainer.registerConfig(ModConfig.Type.COMMON, SbConfig.COMMON_CONFIG);
 
         SbItems.register(modEventBus);
+        SbCreativeModeTab.register(modEventBus);
         SbActions.register(modEventBus);
         SbDataComponentTypes.register(modEventBus);
         SbAttachmentTypes.register(modEventBus);

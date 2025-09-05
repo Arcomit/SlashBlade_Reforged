@@ -8,14 +8,20 @@ import mod.slashblade.reforged.content.init.SbEntityType;
 import mod.slashblade.reforged.content.init.SbActions;
 import mod.slashblade.reforged.content.init.SbDataComponentTypes;
 import mod.slashblade.reforged.utils.DefaultResources;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.function.Consumer;
+
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 
@@ -43,7 +49,42 @@ public class SlashBladeItem extends SwordItem {
                 .component(SbDataComponentTypes.SLASH_BLADE_STYLE, new SlashBladeStyle())
         );
 
+    }
+
+
+
+    @Override
+    public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag tooltipFlag) {
+        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
+
+        SlashBladeLogic slashBladeLogic = stack.get(SbDataComponentTypes.SLASH_BLADE_LOGIC);
+
+        if (slashBladeLogic != null) {
+            tooltipComponents.add(Component.translatable("item.slashblade_reforged.slashblade.tooltip.1"));
+        }
+
 
     }
+
+
+
+    /*@Override
+    public void appendHoverText(@NotNull ItemStack stack, @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag isAdvanced) {
+        super.appendHoverText(stack, tooltipComponents, isAdvanced);
+        
+        // 添加拔刀剑的特殊提示
+        tooltipComponents.add(Component.translatable("item.slashblade_reforged.slashblade.tooltip.1")
+                .withStyle(ChatFormatting.GRAY));
+        tooltipComponents.add(Component.translatable("item.slashblade_reforged.slashblade.tooltip.2")
+                .withStyle(ChatFormatting.GRAY));
+        tooltipComponents.add(Component.translatable("item.slashblade_reforged.slashblade.tooltip.3")
+                .withStyle(ChatFormatting.GRAY));
+        
+        // 添加使用说明
+        tooltipComponents.add(Component.empty());
+        tooltipComponents.add(Component.translatable("item.slashblade_reforged.slashblade.tooltip.usage")
+                .withStyle(ChatFormatting.YELLOW));
+    }*/
+
 
 }

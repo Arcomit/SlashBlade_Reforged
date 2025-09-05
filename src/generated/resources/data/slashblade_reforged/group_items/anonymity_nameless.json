@@ -1,0 +1,19 @@
+{
+  "components": {
+    "slashblade_reforged:slash_blade_logic": {
+      "attack": 3,
+      "attackDistance": 1,
+      "broken": false,
+      "durable": 4096,
+      "gloryCount": 0,
+      "key": "anonymity_nameless",
+      "killCount": 0,
+      "maxDurable": 4096,
+      "refine": 0,
+      "sealed": false,
+      "targetEntityId": 0
+    }
+  },
+  "count": 1,
+  "id": "slashblade_reforged:slash_blade"
+}

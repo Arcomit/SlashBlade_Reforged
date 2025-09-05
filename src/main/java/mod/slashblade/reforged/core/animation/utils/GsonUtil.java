@@ -9,6 +9,7 @@ import mod.slashblade.reforged.core.animation.pojo.serialize.AnimationKeyframesS
 import mod.slashblade.reforged.core.animation.pojo.serialize.SoundEffectKeyframesSerializer;
 import mod.slashblade.reforged.core.animation.pojo.serialize.Vector3fSerializer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import org.joml.Vector3f;
 
 /**
