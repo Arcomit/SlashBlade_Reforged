@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import mod.slashblade.reforged.core.animation.pojo.AnimationKeyframes;
 import mod.slashblade.reforged.core.animation.pojo.SoundEffectKeyframes;
+import mod.slashblade.reforged.core.animation.pojo.exclusion.ServerExclusionStrategy;
 import mod.slashblade.reforged.core.animation.pojo.serialize.AnimationKeyframesSerializer;
 import mod.slashblade.reforged.core.animation.pojo.serialize.SoundEffectKeyframesSerializer;
 import mod.slashblade.reforged.core.animation.pojo.serialize.Vector3fSerializer;
@@ -24,7 +25,9 @@ public class GsonUtil {
             .registerTypeAdapter(SoundEffectKeyframes.class, new SoundEffectKeyframesSerializer())
             .create();
 
-    public static final Gson GSON = new GsonBuilder()
+    public static final Gson SERVER_GSON = new GsonBuilder()
+            .addDeserializationExclusionStrategy(new ServerExclusionStrategy())
+            .registerTypeAdapter(ResourceLocation.class, new ResourceLocation.Serializer())
+            .registerTypeAdapter(SoundEffectKeyframes.class, new SoundEffectKeyframesSerializer())
             .create();
-
 }

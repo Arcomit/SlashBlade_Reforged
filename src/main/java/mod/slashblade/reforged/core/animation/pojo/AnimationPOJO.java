@@ -2,6 +2,7 @@ package mod.slashblade.reforged.core.animation.pojo;
 
 import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
+import mod.slashblade.reforged.core.animation.pojo.exclusion.ClientOnly;
 
 import java.util.Map;
 
@@ -19,6 +20,7 @@ public class AnimationPOJO {
     @SerializedName("animation_length")
     private double                     animationLength;
 
+    @ClientOnly
     @SerializedName("bones"           )
     private Map<String, AnimationBone> bones;
 

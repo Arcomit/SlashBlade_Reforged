@@ -1,6 +1,10 @@
 package mod.slashblade.reforged;
 
 import com.mojang.logging.LogUtils;
+import mod.slashblade.reforged.content.init.SbActions;
+import mod.slashblade.reforged.content.init.SbAttachmentTypes;
+import mod.slashblade.reforged.content.init.SbDataComponentTypes;
+import mod.slashblade.reforged.content.init.SbItems;
 import lombok.Getter;
 import mod.slashblade.reforged.content.config.SbConfig;
 import mod.slashblade.reforged.content.init.*;
@@ -39,6 +43,8 @@ public class SlashbladeMod {
 
         SbItems.register(modEventBus);
         SbActions.register(modEventBus);
+        SbDataComponentTypes.register(modEventBus);
+        SbAttachmentTypes.register(modEventBus);
         SbAttachmentType.register(modEventBus);
         SbDataComponents.register(modEventBus);
         SbCapabilities.register(modEventBus);

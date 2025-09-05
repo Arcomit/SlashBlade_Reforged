@@ -19,7 +19,7 @@ import java.util.function.Supplier;
  * @CreateTime: 2025-08-19 16:24
  * @Description: 集中管理所有模组数据组件的注册（且能够从中获取调用）
  */
-public class SbDataComponents {
+public class SbDataComponentTypes {
 
     public static final DeferredRegister.DataComponents DATA_COMPONENTS = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, SlashbladeMod.MODID);
 
