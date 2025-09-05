@@ -66,6 +66,14 @@ public class SlashBladeItem extends SwordItem {
 
     }
 
+    @Override
+    public @NotNull String getDescriptionId(@NotNull ItemStack stack) {
+        SlashBladeLogic slashBladeLogic = stack.get(SbDataComponentTypes.SLASH_BLADE_LOGIC);
+        if (slashBladeLogic == null) {
+            return getDescriptionId();
+        }
+        return slashBladeLogic.getDescriptionId();
+    }
 
 
     /*@Override
