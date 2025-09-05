@@ -45,8 +45,6 @@ public class SlashbladeMod {
         SbActions.register(modEventBus);
         SbDataComponentTypes.register(modEventBus);
         SbAttachmentTypes.register(modEventBus);
-        SbAttachmentType.register(modEventBus);
-        SbDataComponents.register(modEventBus);
         SbCapabilities.register(modEventBus);
         SbAttackTypes.register(modEventBus);
         SbEntityDataSerializers.register(modEventBus);

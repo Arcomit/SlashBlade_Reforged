@@ -10,7 +10,7 @@ import mod.slashblade.reforged.content.entity.LightningEntity;
 import mod.slashblade.reforged.content.entity.SummondSwordEntity;
 import mod.slashblade.reforged.content.event.key.KeyEvent;
 import mod.slashblade.reforged.content.event.key.KeyInputEvent;
-import mod.slashblade.reforged.content.init.SbDataComponents;
+import mod.slashblade.reforged.content.init.SbDataComponentTypes;
 import mod.slashblade.reforged.content.init.SbEntityType;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
@@ -39,8 +39,8 @@ public class KeyHelper {
         LivingEntity livingEntity = keyInputEvent.getLivingEntity();
 
         ItemStack mainHandItem = livingEntity.getMainHandItem();
-        SlashBladeLogic slashBladeLogic = mainHandItem.get(SbDataComponents.SLASH_BLADE_LOGIC);
-        SlashBladeStyle slashBladeStyle = mainHandItem.get(SbDataComponents.SLASH_BLADE_STYLE);
+        SlashBladeLogic slashBladeLogic = mainHandItem.get(SbDataComponentTypes.SLASH_BLADE_LOGIC);
+        SlashBladeStyle slashBladeStyle = mainHandItem.get(SbDataComponentTypes.SLASH_BLADE_STYLE);
 
         if (slashBladeLogic == null || slashBladeStyle == null) {
             return;
@@ -75,8 +75,8 @@ public class KeyHelper {
         LivingEntity livingEntity = keyInputEvent.getLivingEntity();
 
         ItemStack mainHandItem = livingEntity.getMainHandItem();
-        SlashBladeLogic slashBladeLogic = mainHandItem.get(SbDataComponents.SLASH_BLADE_LOGIC);
-        SlashBladeStyle slashBladeStyle = mainHandItem.get(SbDataComponents.SLASH_BLADE_STYLE);
+        SlashBladeLogic slashBladeLogic = mainHandItem.get(SbDataComponentTypes.SLASH_BLADE_LOGIC);
+        SlashBladeStyle slashBladeStyle = mainHandItem.get(SbDataComponentTypes.SLASH_BLADE_STYLE);
 
         if (slashBladeLogic == null || slashBladeStyle == null) {
             return;
@@ -95,7 +95,7 @@ public class KeyHelper {
                     SbConfig.COMMON.heavyRainOffsetY.get(),
                     SbConfig.COMMON.heavyRainOffsetZ.get()
             );
-            RandomSource random = keyInputEvent.getEntity().getRandom();
+            RandomSource random = keyInputEvent.getLivingEntity().getRandom();
 
             int amount = SbConfig.COMMON.heavyRainAttackNumber.get();
 
@@ -250,8 +250,8 @@ public class KeyHelper {
         LivingEntity livingEntity = keyInputEvent.getLivingEntity();
 
         ItemStack mainHandItem = livingEntity.getMainHandItem();
-        SlashBladeLogic slashBladeLogic = mainHandItem.get(SbDataComponents.SLASH_BLADE_LOGIC);
-        SlashBladeStyle slashBladeStyle = mainHandItem.get(SbDataComponents.SLASH_BLADE_STYLE);
+        SlashBladeLogic slashBladeLogic = mainHandItem.get(SbDataComponentTypes.SLASH_BLADE_LOGIC);
+        SlashBladeStyle slashBladeStyle = mainHandItem.get(SbDataComponentTypes.SLASH_BLADE_STYLE);
 
         if (slashBladeLogic == null || slashBladeStyle == null) {
             return;

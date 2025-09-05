@@ -1,7 +1,7 @@
 package mod.slashblade.reforged.utils.helper;
 
 import mod.slashblade.reforged.content.data.SlashBladeLogic;
-import mod.slashblade.reforged.content.init.SbDataComponents;
+import mod.slashblade.reforged.content.init.SbDataComponentTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.EntityHitResult;
@@ -21,7 +21,7 @@ public class SwordsmanHelper {
             return Vec3.ZERO;
         }
 
-        return getAttackPos(livingEntity, livingEntity.getMainHandItem().get(SbDataComponents.SLASH_BLADE_LOGIC));
+        return getAttackPos(livingEntity, livingEntity.getMainHandItem().get(SbDataComponentTypes.SLASH_BLADE_LOGIC));
     }
 
     public static Vec3 getAttackPos(LivingEntity livingEntity, SlashBladeLogic slashBladeLogic) {

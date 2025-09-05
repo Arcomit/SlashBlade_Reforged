@@ -20,7 +20,7 @@ public class CodecConstants {
 
     public static <D> Codec<D> ofJson(Type type) {
         return Codec.STRING
-                .<D>comapFlatMap(s -> DataResult.success(GsonUtil.GSON.fromJson(s, type)), GsonUtil.GSON::toJson)
+                .<D>comapFlatMap(s -> DataResult.success(GsonUtil.SERVER_GSON.fromJson(s, type)), GsonUtil.SERVER_GSON::toJson)
                 .stable();
     }
 

@@ -26,7 +26,7 @@ public class SbCapabilities {
 
     @SubscribeEvent
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
-        event.registerEntity(PLAYER_INPUT_CAPABILITY, EntityType.PLAYER, (e, c) -> e.getData(SbAttachmentType.PLAYER_INPUT_CAPABILITY));
+        event.registerEntity(PLAYER_INPUT_CAPABILITY, EntityType.PLAYER, (e, c) -> e.getData(SbAttachmentTypes.PLAYER_INPUT_CAPABILITY));
     }
 
 

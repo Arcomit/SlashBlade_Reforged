@@ -9,7 +9,7 @@ import mod.slashblade.reforged.content.event.SlashBladeAttackEvent;
 import mod.slashblade.reforged.content.event.SlashBladeDoSlashEvent;
 import mod.slashblade.reforged.content.event.SlashBladeDurabilityLoss;
 import mod.slashblade.reforged.content.init.SbAttackTypes;
-import mod.slashblade.reforged.content.init.SbDataComponents;
+import mod.slashblade.reforged.content.init.SbDataComponentTypes;
 import mod.slashblade.reforged.content.init.SbEntityType;
 import mod.slashblade.reforged.content.register.AttackType;
 import mod.slashblade.reforged.utils.constant.ResourceLocationConstants;
@@ -60,8 +60,8 @@ public class AttackHelper {
         }
 
         ItemStack mainHandItem = attacker.getMainHandItem();
-        SlashBladeLogic slashBladeLogic = mainHandItem.get(SbDataComponents.SLASH_BLADE_LOGIC);
-        SlashBladeStyle slashBladeStyle = mainHandItem.get(SbDataComponents.SLASH_BLADE_STYLE);
+        SlashBladeLogic slashBladeLogic = mainHandItem.get(SbDataComponentTypes.SLASH_BLADE_LOGIC);
+        SlashBladeStyle slashBladeStyle = mainHandItem.get(SbDataComponentTypes.SLASH_BLADE_STYLE);
 
         if (slashBladeLogic == null || slashBladeStyle == null) {
             return;
@@ -122,7 +122,7 @@ public class AttackHelper {
         }
 
         ItemStack mainHandItem = attacker.getMainHandItem();
-        SlashBladeLogic slashBladeLogic = mainHandItem.get(SbDataComponents.SLASH_BLADE_LOGIC);
+        SlashBladeLogic slashBladeLogic = mainHandItem.get(SbDataComponentTypes.SLASH_BLADE_LOGIC);
 
         if (slashBladeLogic == null) {
             return List.of();
@@ -151,7 +151,7 @@ public class AttackHelper {
         }
 
         ItemStack mainHandItem = attacker.getMainHandItem();
-        SlashBladeLogic slashBladeLogic = mainHandItem.get(SbDataComponents.SLASH_BLADE_LOGIC);
+        SlashBladeLogic slashBladeLogic = mainHandItem.get(SbDataComponentTypes.SLASH_BLADE_LOGIC);
 
         if (slashBladeLogic == null) {
             return;

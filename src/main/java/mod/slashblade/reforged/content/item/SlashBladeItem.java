@@ -1,7 +1,6 @@
 package mod.slashblade.reforged.content.item;
 
 import mod.slashblade.reforged.SlashbladeMod;
-import mod.slashblade.reforged.content.animation.SlashBladeAnimationGraph;
 import mod.slashblade.reforged.content.data.SlashBladeLogic;
 import mod.slashblade.reforged.content.data.SlashBladeStyle;
 import mod.slashblade.reforged.content.entity.SummondSwordEntity;
@@ -31,13 +30,13 @@ public class SlashBladeItem extends SwordItem {
         super(tier, properties
                 .component(SbDataComponentTypes.MODEL_LOCATION, DefaultResources.DEFAULT_MODEL)
                 .component(SbDataComponentTypes.TEXTURE_LOCATION, DefaultResources.DEFAULT_TEXTURE)
-                .component(SbDataComponentTypes.DRAW_ACTION, DefaultResources.DEFAULT_ACTION)
-                .component(SbDataComponentTypes.WALK_ACTION, DefaultResources.DEFAULT_ACTION)
-                .component(SbDataComponentTypes.SPRINT_ACTION, DefaultResources.DEFAULT_ACTION)
-                .component(SbDataComponentTypes.WALK_UNSHEATHE_ACTION, DefaultResources.DEFAULT_ACTION)
-                .component(SbDataComponentTypes.SPRINT_UNSHEATHE_ACTION, DefaultResources.DEFAULT_ACTION)
-                .component(SbDataComponentTypes.SHEATH_ACTION, DefaultResources.DEFAULT_ACTION)
-                .component(SbDataComponentTypes.PUT_AWAY_ACTION, DefaultResources.DEFAULT_ACTION)
+                .component(SbDataComponentTypes.DRAW_ACTION, SbActions.IDLE_ACTION.getId())
+                .component(SbDataComponentTypes.WALK_ACTION, SbActions.IDLE_ACTION.getId())
+                .component(SbDataComponentTypes.SPRINT_ACTION, SbActions.IDLE_ACTION.getId())
+                .component(SbDataComponentTypes.WALK_UNSHEATHE_ACTION, SbActions.IDLE_ACTION.getId())
+                .component(SbDataComponentTypes.SPRINT_UNSHEATHE_ACTION, SbActions.IDLE_ACTION.getId())
+                .component(SbDataComponentTypes.SHEATH_ACTION, SbActions.IDLE_ACTION.getId())
+                .component(SbDataComponentTypes.PUT_AWAY_ACTION, SbActions.IDLE_ACTION.getId())
                 //                .component(SbDataComponents.BASIC_EXAMPLE,           new SlashBladeAnimationGraph(1,true))
 
                 .component(SbDataComponentTypes.SLASH_BLADE_LOGIC, new SlashBladeLogic())
