@@ -1,16 +1,10 @@
 package mod.slashblade.reforged.content.item;
 
-import mod.slashblade.reforged.SlashbladeMod;
-import mod.slashblade.reforged.content.animation.SlashBladeAnimationGraph;
-import mod.slashblade.reforged.content.init.SbDataComponents;
+import mod.slashblade.reforged.content.init.SbActions;
+import mod.slashblade.reforged.content.init.SbDataComponentTypes;
 import mod.slashblade.reforged.utils.DefaultResources;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
-import net.minecraft.world.item.Tiers;
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
-
-import java.util.function.Consumer;
 
 /**
  * @Author: Arcomit
@@ -21,15 +15,15 @@ public class SlashBladeItem extends SwordItem {
 
     public SlashBladeItem(Tier tier, Properties properties) {
         super(tier, properties
-                .component(SbDataComponents.MODEL_LOCATION,          DefaultResources.DEFAULT_MODEL)
-                .component(SbDataComponents.TEXTURE_LOCATION,        DefaultResources.DEFAULT_TEXTURE)
-                .component(SbDataComponents.DRAW_ACTION,             DefaultResources.DEFAULT_ACTION)
-                .component(SbDataComponents.WALK_ACTION,             DefaultResources.DEFAULT_ACTION)
-                .component(SbDataComponents.SPRINT_ACTION,           DefaultResources.DEFAULT_ACTION)
-                .component(SbDataComponents.WALK_UNSHEATHE_ACTION,   DefaultResources.DEFAULT_ACTION)
-                .component(SbDataComponents.SPRINT_UNSHEATHE_ACTION, DefaultResources.DEFAULT_ACTION)
-                .component(SbDataComponents.SHEATH_ACTION,           DefaultResources.DEFAULT_ACTION)
-                .component(SbDataComponents.PUT_AWAY_ACTION,         DefaultResources.DEFAULT_ACTION)
+                .component(SbDataComponentTypes.MODEL_LOCATION,          DefaultResources.DEFAULT_MODEL)
+                .component(SbDataComponentTypes.TEXTURE_LOCATION,        DefaultResources.DEFAULT_TEXTURE)
+                .component(SbDataComponentTypes.DRAW_ACTION,             SbActions.IDLE_ACTION.getId())
+                .component(SbDataComponentTypes.WALK_ACTION,             SbActions.IDLE_ACTION.getId())
+                .component(SbDataComponentTypes.SPRINT_ACTION,           SbActions.IDLE_ACTION.getId())
+                .component(SbDataComponentTypes.WALK_UNSHEATHE_ACTION,   SbActions.IDLE_ACTION.getId())
+                .component(SbDataComponentTypes.SPRINT_UNSHEATHE_ACTION, SbActions.IDLE_ACTION.getId())
+                .component(SbDataComponentTypes.SHEATH_ACTION,           SbActions.IDLE_ACTION.getId())
+                .component(SbDataComponentTypes.PUT_AWAY_ACTION,         SbActions.IDLE_ACTION.getId())
 //                .component(SbDataComponents.BASIC_EXAMPLE,           new SlashBladeAnimationGraph(1,true))
         );
     }

@@ -1,7 +1,7 @@
 package mod.slashblade.reforged.content.init;
 
 import mod.slashblade.reforged.SlashbladeMod;
-import mod.slashblade.reforged.content.action.BasicAction;
+import mod.slashblade.reforged.content.action.Action;
 import mod.slashblade.reforged.utils.DefaultResources;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
@@ -18,12 +18,14 @@ import net.neoforged.neoforge.registries.RegistryBuilder;
 @EventBusSubscriber(modid = SlashbladeMod.MODID)
 public class SbRegistrys {
 
-    public static final ResourceKey<Registry<BasicAction>> ACTION_REGISTRY_KEY = ResourceKey.createRegistryKey(SlashbladeMod.prefix("action"));
-    public static final Registry<BasicAction>              ACTION_REGISTRY     = new RegistryBuilder<>(ACTION_REGISTRY_KEY)
+    // 动作注册表
+    public static final ResourceKey<Registry<Action>> ACTION_REGISTRY_KEY = ResourceKey.createRegistryKey(SlashbladeMod.prefix("action"));
+    public static final Registry<Action>              ACTION_REGISTRY     = new RegistryBuilder<>(ACTION_REGISTRY_KEY)
             .sync      (true)
-            .defaultKey(DefaultResources.DEFAULT_ACTION)
+            .defaultKey(SlashbladeMod.prefix("idle"))
             .create    ();
 
+    // 注册注册表
     @SubscribeEvent
     public static void registerRegistries(NewRegistryEvent event) {
         event.register(ACTION_REGISTRY);

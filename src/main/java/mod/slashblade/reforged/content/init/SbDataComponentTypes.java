@@ -1,15 +1,8 @@
 package mod.slashblade.reforged.content.init;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import io.netty.buffer.ByteBuf;
 import mod.slashblade.reforged.SlashbladeMod;
-import mod.slashblade.reforged.content.animation.SlashBladeAnimationGraph;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.network.VarInt;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -22,7 +15,7 @@ import java.util.function.Supplier;
  * @CreateTime: 2025-08-19 16:24
  * @Description: 集中管理所有模组数据组件的注册（且能够从中获取调用）
  */
-public class SbDataComponents {
+public class SbDataComponentTypes {
 
     public static final DeferredRegister.DataComponents DATA_COMPONENTS = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, SlashbladeMod.MODID);
 

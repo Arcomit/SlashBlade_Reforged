@@ -5,14 +5,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import lombok.experimental.ExtensionMethod;
-import mod.slashblade.reforged.content.animation.SlashBladeAnimationGraph;
+import mod.slashblade.reforged.content.animation.SlashBladeAnimationInstance;
 import mod.slashblade.reforged.content.client.camera.CameraAnimationHandler;
 import mod.slashblade.reforged.content.client.renderer.SbRenderTypes;
-import mod.slashblade.reforged.content.init.SbDataComponents;
-import mod.slashblade.reforged.content.item.SlashBladeItem;
+import mod.slashblade.reforged.content.init.SbDataComponentTypes;
 import mod.slashblade.reforged.core.animation.AnimationAsset;
 import mod.slashblade.reforged.core.animation.event.AnimationManager;
-import mod.slashblade.reforged.core.itemrenderer.DynamicItemRendererRegistry;
 import mod.slashblade.reforged.utils.PoseStackAutoCloser;
 import mod.slashblade.reforged.utils.extension.ItemDisplayContextExtension;
 import mod.slashblade.reforged.core.itemrenderer.DynamicItemRenderer;
@@ -23,20 +21,17 @@ import mod.slashblade.reforged.utils.WriteVerticesInfo;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.event.RenderHandEvent;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
-
-import java.awt.*;
 
 /**
  * @Author: Arcomit
@@ -61,7 +56,6 @@ public class SlashBladeItemRenderer implements DynamicItemRenderer {
         }
 
         ObjModel model = ObjModelManager.get(DefaultResources.DEFAULT_MODEL);
-        if (model == null) return;
 
         AnimationAsset animation = AnimationManager.get(DefaultResources.DEFAULT_ANIMATION);
         if (animation == null) return;
@@ -113,11 +107,16 @@ public class SlashBladeItemRenderer implements DynamicItemRenderer {
         Minecraft mc = Minecraft.getInstance();
 
         ObjModel model = ObjModelManager.get(DefaultResources.DEFAULT_MODEL);
-        if (model == null) return;
 
-        AnimationAsset animation = AnimationManager.get(DefaultResources.DEFAULT_ANIMATION);
-        if (animation == null) return;
-        Pose pose = animation.evaluate(0f);
+        if (!(mc.getCameraEntity() instanceof LocalPlayer)) return;
+        LocalPlayer playerTest = (LocalPlayer) mc.getCameraEntity();
+        SlashBladeAnimationInstance instance = SlashBladeAnimationInstance.get(playerTest);
+        instance.renderTick();
+
+        Pose pose = instance.stateMachine.getPose();
+//        AnimationAsset animation = AnimationManager.get(DefaultResources.DEFAULT_ANIMATION);
+//        if (animation == null) return;
+//        Pose pose = animation.evaluate(0f);
         model.applyPose(pose);
 
         try (PoseStackAutoCloser PSAC1 = PoseStackAutoCloser.pushMatrix(poseStack)) {
@@ -139,7 +138,7 @@ public class SlashBladeItemRenderer implements DynamicItemRenderer {
                 }
             }
 
-            if (false){
+            if (true){
                 // 抵消上下移动摄像机视角时的跟随旋转（类似拔刀剑2，重锋的视角）
                 Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
                 Quaternionf inverseRot = new Quaternionf(camera.rotation()).conjugate();
@@ -191,6 +190,7 @@ public class SlashBladeItemRenderer implements DynamicItemRenderer {
                        @NotNull PoseStack         poseStack,
                        @NotNull MultiBufferSource bufferSource,
                        int                        packedLight,
+                       @NotNull LivingEntity      livingEntity,
                        @NotNull ItemStack         itemStack,
                        float                      limbSwing,
                        float                      limbSwingAmount,
@@ -207,8 +207,10 @@ public class SlashBladeItemRenderer implements DynamicItemRenderer {
 //        System.out.println(itemStack.get(SbDataComponents.BASIC_EXAMPLE).getTest());
 //        System.out.println(itemStack.get(SbDataComponents.BASIC_EXAMPLE).isTest2());
 
+        ResourceLocation test = itemStack.get(SbDataComponentTypes.DRAW_ACTION);
+        System.out.println(test);
+
         ObjModel model = ObjModelManager.get(DefaultResources.DEFAULT_MODEL);
-        if (model == null) return;
 
         AnimationAsset animation = AnimationManager.get(DefaultResources.DEFAULT_ANIMATION);
         if (animation == null) return;

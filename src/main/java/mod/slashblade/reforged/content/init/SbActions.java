@@ -1,14 +1,10 @@
 package mod.slashblade.reforged.content.init;
 
 import mod.slashblade.reforged.SlashbladeMod;
-import mod.slashblade.reforged.content.action.BasicAction;
-import mod.slashblade.reforged.utils.DefaultResources;
-import net.minecraft.core.component.DataComponentType;
-import net.minecraft.resources.ResourceLocation;
+import mod.slashblade.reforged.content.action.Action;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-
-import java.util.function.Supplier;
 
 /**
  * @Author: Arcomit
@@ -17,11 +13,28 @@ import java.util.function.Supplier;
  */
 public class SbActions {
 
-    public static final DeferredRegister<BasicAction> ACTIONS = DeferredRegister.create(SbRegistrys.ACTION_REGISTRY, SlashbladeMod.MODID);
+    public static final DeferredRegister<Action> ACTIONS = DeferredRegister.create(SbRegistrys.ACTION_REGISTRY, SlashbladeMod.MODID);
 
-    public static final Supplier<BasicAction> DEFAULT_ACTION = ACTIONS.register(
-            DefaultResources.DEFAULT_ACTION.getPath(),
-            () -> BasicAction.builder().build()
+    public static final DeferredHolder<Action, Action> IDLE_ACTION = ACTIONS.register(
+            "idle",
+            () -> new Action()
+                    .isLoop(true)
+    );
+
+    public static final DeferredHolder<Action, Action> WALKING_ACTION = ACTIONS.register(
+            "walking",
+            () -> new Action()
+                    .animation("default_walk_universal", 0.0f, 1.0f)
+                    .fristPersonAnimation("default_walk_universal", 0.0f, 1.0f)
+                    .isLoop(true)
+    );
+
+    public static final DeferredHolder<Action, Action> SPRINTING_ACTION = ACTIONS.register(
+            "sprinting",
+            () -> new Action()
+                    .animation("default_sprint_universal", 0.0f, 0.5f)
+                    .fristPersonAnimation("default_sprint_universal", 0.0f, 0.5f)
+                    .isLoop(true)
     );
 
     public static void register(IEventBus bus) {

@@ -6,6 +6,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tiers;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.function.Supplier;
@@ -19,7 +20,7 @@ public class SbItems {
 
     public static final DeferredRegister.Items ITEMS       = DeferredRegister.createItems(SlashbladeMod.MODID);
 
-    public static final Supplier<SwordItem>    SLASH_BLADE = ITEMS.register(
+    public static final DeferredHolder<Item, SwordItem> SLASH_BLADE = ITEMS.register(
             "slash_blade",
             () -> new SlashBladeItem(
                     Tiers.IRON,

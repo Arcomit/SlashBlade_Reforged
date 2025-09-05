@@ -1,11 +1,9 @@
 package mod.slashblade.reforged;
 
-import com.lowdragmc.photon.client.fx.EntityEffectExecutor;
-import com.lowdragmc.photon.client.fx.FX;
-import com.lowdragmc.photon.client.fx.FXHelper;
 import com.mojang.logging.LogUtils;
 import mod.slashblade.reforged.content.init.SbActions;
-import mod.slashblade.reforged.content.init.SbDataComponents;
+import mod.slashblade.reforged.content.init.SbAttachmentTypes;
+import mod.slashblade.reforged.content.init.SbDataComponentTypes;
 import mod.slashblade.reforged.content.init.SbItems;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
@@ -27,7 +25,8 @@ public class SlashbladeMod {
     public SlashbladeMod(IEventBus modEventBus, ModContainer modContainer) {
         SbItems.register(modEventBus);
         SbActions.register(modEventBus);
-        SbDataComponents.register(modEventBus);
+        SbDataComponentTypes.register(modEventBus);
+        SbAttachmentTypes.register(modEventBus);
     }
 
     public static ResourceLocation prefix(String path){
