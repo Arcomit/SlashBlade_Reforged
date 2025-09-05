@@ -23,6 +23,7 @@ import net.neoforged.neoforge.common.NeoForge;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -93,7 +94,7 @@ public class AttackHelper {
             return;
         }
 
-        SlashBladeAttackEvent slashBladeAttackEvent = new SlashBladeAttackEvent(mainHandItem, slashBladeLogic, modifiedRatio, attackTypeList);
+        SlashBladeAttackEvent slashBladeAttackEvent = new SlashBladeAttackEvent(attacker, target, mainHandItem, slashBladeLogic, modifiedRatio, attackTypeList);
         NeoForge.EVENT_BUS.post(slashBladeAttackEvent);
 
         if (bypassesCooldown) {
@@ -115,12 +116,20 @@ public class AttackHelper {
         try {
             attribute.addTransientModifier(am);
 
-            if (attacker instanceof Player player) {
+            /*if (attacker instanceof Player player) {
                 player.attack(target);
             } else {
                 DamageSource damageSource = attacker.damageSources().mobAttack(attacker);
                 target.hurt(damageSource, (float) attribute.getValue());
-            }
+            }*/
+
+            List<DamageSource> list = attackTypeList.stream()
+                    .map(a -> a.createDamageSource(attacker, target))
+                    .filter(Objects::nonNull)
+                    .toList();
+
+
+            list.forEach(damageSource -> target.hurt(damageSource, (float) attribute.getValue() / list.size()));
 
         } finally {
             attribute.removeModifier(am.id());
@@ -143,6 +152,7 @@ public class AttackHelper {
         SlashBladeLogic slashBladeLogic = event.getSlashBladeLogic();
 
         // TODO 评分表加成
+
         event.addModifiedRatio(SbConfig.COMMON.refineAttackBonus.get() * slashBladeLogic.getRefine());
 
         if (slashBladeLogic.getKillCount() > 1000) {

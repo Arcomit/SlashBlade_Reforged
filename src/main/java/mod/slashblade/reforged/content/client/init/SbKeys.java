@@ -47,19 +47,28 @@ public class SbKeys {
      * 包含原版按键和自定义按键的映射关系
      */
     public static final Lazy<Map<KeyInput, KeyMapping>> KEY_BINDINGS = Lazy.of(
-            () -> Map.of(
-                    // 原版移动按键映射
-                    KeyInput.FORWARD, Minecraft.getInstance().options.keyUp,           // W - 前进
-                    KeyInput.BACK, Minecraft.getInstance().options.keyDown,            // S - 后退
-                    KeyInput.LEFT, Minecraft.getInstance().options.keyLeft,            // A - 左移
-                    KeyInput.RIGHT, Minecraft.getInstance().options.keyRight,          // D - 右移
-                    KeyInput.SNEAK, Minecraft.getInstance().options.keyShift,          // SHIFT - 潜行
-                    KeyInput.JUMP, Minecraft.getInstance().options.keyJump,            // SPACE - 跳跃
-
-                    // 自定义按键映射
-                    KeyInput.SUMMONING_SUMMOND_SWORD, SUMMONING_SUMMOND_SWORD.get(),  // 鼠标中键 - 召唤剑
-                    KeyInput.SPECIAL_OPERATION, SPECIAL_OPERATION.get()               // V - 特殊操作
-            )
+            () -> {
+                Map<KeyInput, KeyMapping> bindings = new EnumMap<>(KeyInput.class);
+                Minecraft minecraft = Minecraft.getInstance();
+                
+                // 原版移动按键映射
+                bindings.put(KeyInput.FORWARD, minecraft.options.keyUp);           // W - 前进
+                bindings.put(KeyInput.BACK, minecraft.options.keyDown);            // S - 后退
+                bindings.put(KeyInput.LEFT, minecraft.options.keyLeft);            // A - 左移
+                bindings.put(KeyInput.RIGHT, minecraft.options.keyRight);          // D - 右移
+                bindings.put(KeyInput.SNEAK, minecraft.options.keyShift);          // SHIFT - 潜行
+                bindings.put(KeyInput.JUMP, minecraft.options.keyJump);            // SPACE - 跳跃
+                
+                // 鼠标按键映射
+                bindings.put(KeyInput.LEFT_CLICK, minecraft.options.keyAttack);    // 左键 - 攻击
+                bindings.put(KeyInput.RIGHT_CLICK, minecraft.options.keyUse);      // 右键 - 使用物品
+                
+                // 自定义按键映射
+                bindings.put(KeyInput.SUMMONING_SUMMOND_SWORD, SUMMONING_SUMMOND_SWORD.get());  // 鼠标中键 - 召唤剑
+                bindings.put(KeyInput.SPECIAL_OPERATION, SPECIAL_OPERATION.get());               // V - 特殊操作
+                
+                return bindings;
+            }
     );
 
     @SubscribeEvent

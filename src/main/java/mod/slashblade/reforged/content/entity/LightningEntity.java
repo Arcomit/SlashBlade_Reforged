@@ -1,6 +1,7 @@
 package mod.slashblade.reforged.content.entity;
 
 import lombok.Getter;
+import mod.slashblade.reforged.content.init.SbAttackTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EntityType;
@@ -8,6 +9,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+
+import java.util.List;
 
 /**
  * @Author: til
@@ -22,6 +25,7 @@ public class LightningEntity extends ContinuousDamageEntity {
         setMaxLifeTime(this.getRandom().nextInt(15) + 5);
         boltVertex = this.getRandom().nextLong();
         setParameterRange(3);
+        attackTypeModelList = List.of(SbAttackTypes.LIGHTNING_ATTACK_TYPE.get());
     }
 
     @Override

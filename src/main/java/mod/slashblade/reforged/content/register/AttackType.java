@@ -1,12 +1,24 @@
 package mod.slashblade.reforged.content.register;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import net.minecraft.world.damagesource.DamageType;
+import mod.slashblade.reforged.utils.ICreateDamageSource;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 
 /**
  * @Author: til
  * @Description: 攻击类型
  */
-public class AttackType {
+@AllArgsConstructor
+public class AttackType implements ICreateDamageSource {
+
+    final ICreateDamageSource iCreateDamageSource;
+
+
+    @Override
+    public DamageSource createDamageSource(LivingEntity attacker, Entity target) {
+        return iCreateDamageSource.createDamageSource(attacker, target);
+    }
+
 }
