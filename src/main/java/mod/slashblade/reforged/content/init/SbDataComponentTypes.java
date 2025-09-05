@@ -1,11 +1,15 @@
 package mod.slashblade.reforged.content.init;
 
 import mod.slashblade.reforged.SlashbladeMod;
+import mod.slashblade.reforged.content.data.PlayerInputCapability;
+import mod.slashblade.reforged.content.data.SlashBladeLogic;
+import mod.slashblade.reforged.content.data.SlashBladeStyle;
+import mod.slashblade.reforged.utils.constant.ByteBufCodecConstants;
+import mod.slashblade.reforged.utils.constant.CodecConstants;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.function.Supplier;
@@ -77,7 +81,7 @@ public class SbDataComponentTypes {
 
     public static final Supplier<DataComponentType<ResourceLocation>> SHEATH_ACTION = DATA_COMPONENTS.register(
             "sheath_action",
-            () ->  DataComponentType.<ResourceLocation>builder()
+            () -> DataComponentType.<ResourceLocation>builder()
                     .persistent(ResourceLocation.CODEC)
                     .networkSynchronized(ResourceLocation.STREAM_CODEC)
                     .build()
@@ -114,6 +118,29 @@ public class SbDataComponentTypes {
 //                    // The codec to read/write the data across the network
 //                    .networkSynchronized(BASIC_STREAM_CODEC)
 //    );
+
+    public static final Supplier<DataComponentType<SlashBladeLogic>> SLASH_BLADE_LOGIC = DATA_COMPONENTS.register(
+            "slash_blade_logic",
+            () -> DataComponentType.<SlashBladeLogic>builder()
+                    .persistent(CodecConstants.SLASH_BLADE_LOGIC)
+                    .networkSynchronized(ByteBufCodecConstants.SLASH_BLADE_LOGIC)
+                    .build()
+    );
+
+    public static final Supplier<DataComponentType<SlashBladeStyle>> SLASH_BLADE_STYLE = DATA_COMPONENTS.register(
+            "slash_blade_style",
+            () -> DataComponentType.<SlashBladeStyle>builder()
+                    .persistent(CodecConstants.SLASH_BLADE_STYLE)
+                    .networkSynchronized(ByteBufCodecConstants.SLASH_BLADE_STYLE)
+                    .build()
+    );
+
+    /*public static final Supplier<DataComponentType<PlayerInputCapability>> PLAYER_INPUT_CAPABILITY = DATA_COMPONENTS.register(
+            "player_input_capability",
+            () -> DataComponentType.<PlayerInputCapability>builder()
+                    .persistent(CodecConstants.PLAYER_INPUT_CAPABILITY)
+                    .build()
+    );*/
 
     public static void register(IEventBus bus) {
         DATA_COMPONENTS.register(bus);

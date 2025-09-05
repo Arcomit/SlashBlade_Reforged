@@ -2,6 +2,7 @@ package mod.slashblade.reforged.content.init;
 
 import mod.slashblade.reforged.SlashbladeMod;
 import mod.slashblade.reforged.content.action.Action;
+import mod.slashblade.reforged.content.register.AttackType;
 import mod.slashblade.reforged.utils.DefaultResources;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
@@ -25,9 +26,15 @@ public class SbRegistrys {
             .defaultKey(SlashbladeMod.prefix("idle"))
             .create    ();
 
+    public static final ResourceKey<Registry<AttackType>> ATTACK_TYPE_KEY = ResourceKey.createRegistryKey(SlashbladeMod.prefix("attack_type"));
+    public static final Registry<AttackType> ATTACK_TYPE_REGISTRY = new RegistryBuilder<>(ATTACK_TYPE_KEY)
+            .sync(true)
+            .create();
+
     // 注册注册表
     @SubscribeEvent
     public static void registerRegistries(NewRegistryEvent event) {
         event.register(ACTION_REGISTRY);
+        event.register(ATTACK_TYPE_REGISTRY);
     }
 }
