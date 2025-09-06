@@ -6,9 +6,11 @@ import mod.slashblade.reforged.core.animation.pojo.AnimationKeyframes;
 import mod.slashblade.reforged.core.animation.pojo.SoundEffectKeyframes;
 import mod.slashblade.reforged.core.animation.pojo.exclusion.ServerExclusionStrategy;
 import mod.slashblade.reforged.core.animation.pojo.serialize.AnimationKeyframesSerializer;
+import mod.slashblade.reforged.core.animation.pojo.serialize.BooleanSerializer;
 import mod.slashblade.reforged.core.animation.pojo.serialize.SoundEffectKeyframesSerializer;
 import mod.slashblade.reforged.core.animation.pojo.serialize.Vector3fSerializer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import org.joml.Vector3f;
 
 /**
@@ -23,11 +25,15 @@ public class GsonUtil {
             .registerTypeAdapter(Vector3f.class, new Vector3fSerializer())
             .registerTypeAdapter(AnimationKeyframes.class, new AnimationKeyframesSerializer())
             .registerTypeAdapter(SoundEffectKeyframes.class, new SoundEffectKeyframesSerializer())
+            .registerTypeAdapter(Boolean.class, new BooleanSerializer())
+            .registerTypeAdapter(boolean.class, new BooleanSerializer())
             .create();
 
     public static final Gson SERVER_GSON = new GsonBuilder()
             .addDeserializationExclusionStrategy(new ServerExclusionStrategy())
             .registerTypeAdapter(ResourceLocation.class, new ResourceLocation.Serializer())
             .registerTypeAdapter(SoundEffectKeyframes.class, new SoundEffectKeyframesSerializer())
+            .registerTypeAdapter(Boolean.class, new BooleanSerializer())
+            .registerTypeAdapter(boolean.class, new BooleanSerializer())
             .create();
 }

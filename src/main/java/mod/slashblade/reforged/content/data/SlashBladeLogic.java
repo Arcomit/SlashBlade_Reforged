@@ -1,13 +1,23 @@
 package mod.slashblade.reforged.content.data;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
+import mod.slashblade.reforged.SlashbladeMod;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
 
 @Data
+@Accessors(chain = true)
 public class SlashBladeLogic {
+
+    /***
+     * 刀的名称
+     */
+    @SaveField
+    String key;
 
     /***
      * 基础攻击力
@@ -89,6 +99,14 @@ public class SlashBladeLogic {
 
     public boolean canUse() {
         return !isBroken() && !isSealed();
+    }
+
+    public String getDescriptionId() {
+        return  SlashbladeMod.MODID + "." + key + ".name";
+    }
+
+    public Component getDescription() {
+       return Component.translatable(this.getDescriptionId());
     }
 
 }

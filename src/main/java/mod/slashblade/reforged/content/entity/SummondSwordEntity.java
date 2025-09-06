@@ -224,8 +224,8 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
                 double posY = hits.getY() + hitY;
                 double posZ = hits.getZ() + (hitX * Math.sin(Math.toRadians(hits.getYRot())) + hitZ * Math.cos(Math.toRadians(hits.getYRot())));
 
-                moveTo(posX, posY, posZ, hits.getYRot() + hitYaw, getXRot() + hitPitch);
-
+                setPos(posX, posY, posZ);
+                setRot(hits.getYRot() + hitYaw, hits.getXRot() + hitPitch, false);
 
             }
             case HIT_GROUND -> {
