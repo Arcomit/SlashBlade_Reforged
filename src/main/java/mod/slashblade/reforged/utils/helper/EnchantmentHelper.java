@@ -37,7 +37,7 @@ public class EnchantmentHelper {
         // 锋利附魔 - 对所有目标有效
         int sharpnessLevel = item.getEnchantmentLevel(enchantmentRegistry.getOrThrow(Enchantments.SHARPNESS));
         if (sharpnessLevel > 0) {
-            event.addModifiedRatio(SbConfig.COMMON.sharpnessAttackBonus.get() * sharpnessLevel);
+            event.addModifiedRatioAmplifier(SbConfig.COMMON.sharpnessAttackBonus.get() * sharpnessLevel);
         }
 
         // 判定目标是否为生物实体以应用特定附魔
@@ -45,13 +45,13 @@ public class EnchantmentHelper {
             // 亡灵杀手附魔 - 仅对亡灵生物有效
             int smiteLevel = item.getEnchantmentLevel(enchantmentRegistry.getOrThrow(Enchantments.SMITE));
             if (smiteLevel > 0 && livingTarget.getType().is(EntityTypeTags.SENSITIVE_TO_SMITE)) {
-                event.addModifiedRatio(SbConfig.COMMON.smiteAttackBonus.get() * smiteLevel);
+                event.addModifiedRatioAmplifier(SbConfig.COMMON.smiteAttackBonus.get() * smiteLevel);
             }
 
             // 节肢杀手附魔 - 仅对节肢动物有效
             int baneOfArthropodsLevel = item.getEnchantmentLevel(enchantmentRegistry.getOrThrow(Enchantments.BANE_OF_ARTHROPODS));
             if (baneOfArthropodsLevel > 0 && livingTarget.getType().is(EntityTypeTags.SENSITIVE_TO_BANE_OF_ARTHROPODS)) {
-                event.addModifiedRatio(SbConfig.COMMON.baneOfArthropodsAttackBonus.get() * baneOfArthropodsLevel);
+                event.addModifiedRatioAmplifier(SbConfig.COMMON.baneOfArthropodsAttackBonus.get() * baneOfArthropodsLevel);
             }
         }
 
@@ -60,7 +60,7 @@ public class EnchantmentHelper {
 
         int powerLevel = item.getEnchantmentLevel(enchantmentRegistry.getOrThrow(Enchantments.POWER)); // 力量
         if (powerLevel > 0 && event.getAttackTypeList().contains(SbAttackTypes.SUMMOND_SWORD_ATTACK_TYPE.get())) {
-            event.addModifiedRatio(SbConfig.COMMON.powerAttackBonus.get() * powerLevel);
+            event.addModifiedRatioAmplifier(SbConfig.COMMON.powerAttackBonus.get() * powerLevel);
         }
 
 

@@ -13,8 +13,6 @@ import mod.slashblade.reforged.content.init.SbDataComponentTypes;
 import mod.slashblade.reforged.content.init.SbEntityType;
 import mod.slashblade.reforged.content.register.AttackType;
 import mod.slashblade.reforged.utils.constant.ResourceLocationConstants;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -24,19 +22,14 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.NeoForge;
-import org.joml.Vector3d;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -259,19 +252,19 @@ public class AttackHelper {
 
         // TODO 评分表加成
 
-        event.addModifiedRatio(SbConfig.COMMON.refineAttackBonus.get() * slashBladeLogic.getRefine());
+        event.addModifiedRatioAmplifier(SbConfig.COMMON.refineAttackBonus.get() * slashBladeLogic.getRefine());
 
         if (slashBladeLogic.getKillCount() > 1000) {
-            event.addModifiedRatioAmplifier(SbConfig.COMMON.thousandKillAttackBonus.get());
+            event.addMechanismModifiedRatioAmplifier(SbConfig.COMMON.thousandKillAttackBonus.get());
         }
         if (slashBladeLogic.getKillCount() > 10000) {
-            event.addModifiedRatioAmplifier(SbConfig.COMMON.tenThousandKillAttackBonus.get());
+            event.addMechanismModifiedRatioAmplifier(SbConfig.COMMON.tenThousandKillAttackBonus.get());
         }
         if (slashBladeLogic.getRefine() > 1000) {
-            event.addModifiedRatioAmplifier(SbConfig.COMMON.thousandRefineAttackBonus.get());
+            event.addMechanismModifiedRatioAmplifier(SbConfig.COMMON.thousandRefineAttackBonus.get());
         }
         if (slashBladeLogic.getRefine() > 10000) {
-            event.addModifiedRatioAmplifier(SbConfig.COMMON.tenThousandRefineAttackBonus.get());
+            event.addMechanismModifiedRatioAmplifier(SbConfig.COMMON.tenThousandRefineAttackBonus.get());
         }
     }
 
@@ -281,7 +274,7 @@ public class AttackHelper {
             return;
         }
 
-        durabilityLoss(event.getUser(), event.getItem(), event.getSlashBladeLogic(), event.getBasicsModifiedRatio() * SbConfig.COMMON.durabilityLoss.get());
+        durabilityLoss(event.getUser(), event.getItem(), event.getSlashBladeLogic(), event.getModifiedRatio() * SbConfig.COMMON.durabilityLoss.get());
     }
 
 

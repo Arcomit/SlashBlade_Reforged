@@ -6,8 +6,6 @@ import mod.slashblade.reforged.content.register.AttackType;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import org.checkerframework.checker.units.qual.A;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -17,10 +15,6 @@ public class SlashBladeAttackEvent extends SlashBladeEvent {
     LivingEntity attacker;
     Entity target;
 
-    /***
-     * 基础攻击倍率
-     */
-    double basicsModifiedRatio;
 
     /***
      * 当前的攻击倍率
@@ -29,11 +23,14 @@ public class SlashBladeAttackEvent extends SlashBladeEvent {
     double modifiedRatio;
 
     /***
-     * modifiedRatio放大器
+     * 伤害放大器
      */
-    @Setter
     double modifiedRatioAmplifier = 1;
 
+    /***
+     * 机制放大器（第二乘区）
+     */
+    double mechanismModifiedRatioAmplifier = 1;
 
     final List<AttackType> attackTypeList;
 
@@ -41,20 +38,19 @@ public class SlashBladeAttackEvent extends SlashBladeEvent {
         super(item, slashBladeLogic, attacker);
         this.attacker = attacker;
         this.target = target;
-        this.basicsModifiedRatio = modifiedRatio;
         this.modifiedRatio = modifiedRatio;
         this.attackTypeList = attackTypeList;
     }
 
     public double getUltimatelyModifiedRatio() {
-        return modifiedRatio * modifiedRatioAmplifier;
-    }
-
-    public void addModifiedRatio(double amplifier) {
-        modifiedRatio += amplifier;
+        return modifiedRatio * modifiedRatioAmplifier * mechanismModifiedRatioAmplifier;
     }
 
     public void addModifiedRatioAmplifier(double amplifier) {
-        modifiedRatioAmplifier += amplifier;
+        modifiedRatio += amplifier;
+    }
+
+    public void addMechanismModifiedRatioAmplifier(double amplifier) {
+        mechanismModifiedRatioAmplifier += amplifier;
     }
 }
