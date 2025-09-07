@@ -1,5 +1,7 @@
 {
   "itemGroup.slashblade_reforged.example": "拔刀剑",
   "other.test": "总该说些什么...",
-  "slashblade_reforged.anonymity_nameless.name": "无铭「无名」"
+  "slashblade_reforged.anonymity_nameless.name": "无铭「无名」",
+  "slashblade_reforged.sharpness_white.name": "利刀「白鞘」",
+  "slashblade_reforged.slash_blade.name": "大太刀「」"
 }

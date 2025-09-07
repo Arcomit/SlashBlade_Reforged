@@ -1,7 +1,6 @@
-package mod.slashblade.reforged.core.animation.pojo.serialize;
+package mod.slashblade.reforged.content.serialize;
 
 import com.google.gson.*;
-import mod.slashblade.reforged.core.animation.pojo.AnimationKeyframes;
 
 import java.lang.reflect.Type;
 

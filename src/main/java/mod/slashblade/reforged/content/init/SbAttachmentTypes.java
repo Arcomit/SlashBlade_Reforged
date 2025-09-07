@@ -2,6 +2,7 @@ package mod.slashblade.reforged.content.init;
 
 import mod.slashblade.reforged.SlashbladeMod;
 import mod.slashblade.reforged.content.animation.SlashBladeAnimationInstance;
+import mod.slashblade.reforged.content.data.LockTarget;
 import mod.slashblade.reforged.content.data.PlayerInputCapability;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.IEventBus;
@@ -20,8 +21,13 @@ public class SbAttachmentTypes {
 
     public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.ATTACHMENT_TYPES, SlashbladeMod.MODID);
 
+
     public static final Supplier<AttachmentType<SlashBladeAnimationInstance>> ANIMATION_INSTANCE = ATTACHMENT_TYPES.register(
             "animation_instance", () -> AttachmentType.builder(SlashBladeAnimationInstance::new).build()
+    );
+
+    public static final Supplier<AttachmentType<LockTarget>> LOCK_TARGET = ATTACHMENT_TYPES.register(
+            "lock_target", () -> AttachmentType.builder(LockTarget::new).build()
     );
 
     public static final Supplier<AttachmentType<PlayerInputCapability>> PLAYER_INPUT_CAPABILITY = ATTACHMENT_TYPES.register(

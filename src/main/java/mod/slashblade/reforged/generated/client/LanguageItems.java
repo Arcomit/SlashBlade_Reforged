@@ -3,7 +3,7 @@ package mod.slashblade.reforged.generated.client;
 import mod.slashblade.reforged.SlashbladeMod;
 import mod.slashblade.reforged.content.data.SlashBladeLogic;
 import mod.slashblade.reforged.content.init.SbDataComponentTypes;
-import mod.slashblade.reforged.generated.SlashBladeItemStacks;
+import mod.slashblade.reforged.generated.group.SlashBladeItemStacks;
 import net.minecraft.world.item.ItemStack;
 
 public class LanguageItems {
@@ -19,6 +19,14 @@ public class LanguageItems {
     public static final LanguageItem ANONYMITY_NAMELESS = new LanguageItem(getItemDescriptionId(SlashBladeItemStacks.ANONYMITY_NAMELESS.get()))
             .addTranslation(LanguageTypes.ZH_CN, "无铭「无名」")
             .addTranslation(LanguageTypes.EN_US, "Anonymity -Nameless-");
+
+    public static final LanguageItem SHARPNESS_WHITE = new LanguageItem(getItemDescriptionId(SlashBladeItemStacks.SHARPNESS_WHITE.get()))
+            .addTranslation(LanguageTypes.ZH_CN, "利刀「白鞘」")
+            .addTranslation(LanguageTypes.EN_US, "Sharpness White");
+
+    public static final LanguageItem SLASH_BLADE = new LanguageItem(getItemDescriptionId(SlashBladeItemStacks.SLASH_BLADE.get()))
+            .addTranslation(LanguageTypes.ZH_CN, "大太刀「」")
+            .addTranslation(LanguageTypes.EN_US, "SlashBlade");
 
 
     public static String getItemDescriptionId(ItemStack itemStack) {

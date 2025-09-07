@@ -1,5 +1,7 @@
 {
   "itemGroup.slashblade_reforged.example": "SlashBlade",
   "other.test": "I should say something...",
-  "slashblade_reforged.anonymity_nameless.name": "Anonymity -Nameless-"
+  "slashblade_reforged.anonymity_nameless.name": "Anonymity -Nameless-",
+  "slashblade_reforged.sharpness_white.name": "Sharpness White",
+  "slashblade_reforged.slash_blade.name": "SlashBlade"
 }

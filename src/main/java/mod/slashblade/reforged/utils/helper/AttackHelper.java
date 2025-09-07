@@ -230,15 +230,22 @@ public class AttackHelper {
             return;
         }
 
-        slashBladeLogic.setDurable(slashBladeLogic.getDurable() - loss);
 
-        if (slashBladeLogic.getDurable() <= 0) {
-            slashBladeLogic.setDurable(0);
+        SlashBladeLogic.SlashBladeLogicBuilder builder = slashBladeLogic.toBuilder();
+
+        double to = slashBladeLogic.getDurable() - loss;
+
+        if (to <= 0) {
+            to = 0;
+            builder.broken(true);
+
             //TODO 刀损坏
         }
 
-        itemStack.set(SbDataComponentTypes.SLASH_BLADE_LOGIC, slashBladeLogic);
+        builder.durable(to);
 
+
+        itemStack.set(SbDataComponentTypes.SLASH_BLADE_LOGIC, builder.build());
 
     }
 

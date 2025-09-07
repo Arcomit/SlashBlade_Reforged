@@ -2,7 +2,7 @@ package mod.slashblade.reforged.content.init;
 
 
 import mod.slashblade.reforged.SlashbladeMod;
-import mod.slashblade.reforged.content.data.PlayerInputCapability;
+import mod.slashblade.reforged.content.data.capabilitie.ILockTarget;
 import mod.slashblade.reforged.content.data.capabilitie.IPlayerInputCapability;
 import net.minecraft.world.entity.EntityType;
 import net.neoforged.bus.api.IEventBus;
@@ -24,9 +24,17 @@ public class SbCapabilities {
                     IPlayerInputCapability.class
             );
 
+    public static final EntityCapability<ILockTarget, Void> LOCK_TARGET =
+            EntityCapability.createVoid(
+                    SlashbladeMod.prefix("lock_target"),
+                    ILockTarget.class
+            );
+
+
     @SubscribeEvent
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerEntity(PLAYER_INPUT_CAPABILITY, EntityType.PLAYER, (e, c) -> e.getData(SbAttachmentTypes.PLAYER_INPUT_CAPABILITY));
+        event.registerEntity(LOCK_TARGET, EntityType.PLAYER, (e, c) -> e.getData(SbAttachmentTypes.LOCK_TARGET));
     }
 
 
