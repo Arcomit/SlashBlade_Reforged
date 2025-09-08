@@ -1,14 +1,8 @@
 package mod.slashblade.reforged.content.data;
 
 import lombok.*;
-import lombok.experimental.Accessors;
 import mod.slashblade.reforged.SlashbladeMod;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-
-import javax.annotation.Nullable;
 
 @Getter
 @Builder
@@ -55,13 +49,13 @@ public class SlashBladeLogic {
      * 荣耀数
      */
     @SaveField
-    int glory;
+    int proudSoul;
 
     /***
      * 击杀数
      */
     @SaveField
-    int killCount;
+    int kill;
 
     /***
      * 锻造数
@@ -81,7 +75,12 @@ public class SlashBladeLogic {
     @SaveField
     boolean sealed;
 
-
+    /***
+     * 易碎的
+     * 处于该状态下耐久调往将直接消耗物品
+     */
+    @SaveField
+    boolean fragile;
 
     public SlashBladeLogic setMaxDurable(double maxDurable) {
         this.maxDurable = maxDurable;
@@ -100,11 +99,11 @@ public class SlashBladeLogic {
             return false;
         }
 
-        if (getGlory() < model.getGlory()) {
+        if (getProudSoul() < model.getProudSoul()) {
             return false;
         }
 
-        if (getKillCount() < model.getKillCount()) {
+        if (getKill() < model.getKill()) {
             return false;
         }
 
@@ -146,11 +145,12 @@ public class SlashBladeLogic {
                 .attackDistance(this.attackDistance)
                 .maxDurable(this.maxDurable)
                 .durable(this.durable)
-                .glory(this.glory)
-                .killCount(this.killCount)
+                .proudSoul(this.proudSoul)
+                .kill(this.kill)
                 .refine(this.refine)
                 .broken(this.broken)
-                .sealed(this.sealed);
+                .sealed(this.sealed)
+                .fragile(this.fragile);
     }
 
 }

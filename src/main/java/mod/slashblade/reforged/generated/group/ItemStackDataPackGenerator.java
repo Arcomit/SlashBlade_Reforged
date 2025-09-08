@@ -60,7 +60,7 @@ public class ItemStackDataPackGenerator implements DataProvider {
                                         t -> DataProvider.saveStable(cache, ItemStack.CODEC.encodeStart(JsonOps.INSTANCE, t.getB()).getOrThrow(), output.getOutputFolder()
                                                 .resolve("data")
                                                 .resolve(SlashbladeMod.MODID)
-                                                .resolve("group_items")
+                                                .resolve("group_item")
                                                 .resolve(t.getA().getName().toLowerCase() + ".json"))
                                 )
                                 .toArray(CompletableFuture[]::new)

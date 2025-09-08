@@ -1,10 +1,9 @@
-package mod.slashblade.reforged.generated.client;
+package mod.slashblade.reforged.generated.client.group_item;
 
 import lombok.Getter;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 
 public class LanguageItem {

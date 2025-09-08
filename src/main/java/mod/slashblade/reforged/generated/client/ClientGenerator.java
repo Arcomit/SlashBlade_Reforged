@@ -1,6 +1,12 @@
 package mod.slashblade.reforged.generated.client;
 
 import mod.slashblade.reforged.SlashbladeMod;
+import mod.slashblade.reforged.content.init.SbCreativeModeTab;
+import mod.slashblade.reforged.content.init.SbItems;
+import mod.slashblade.reforged.generated.client.group_item.LanguageItem;
+import mod.slashblade.reforged.generated.client.group_item.LanguageItems;
+import mod.slashblade.reforged.generated.client.group_item.LanguageTypes;
+import mod.slashblade.reforged.generated.client.item_model_provider.SlashBladeItemModelProvider;
 import mod.slashblade.reforged.utils.tuple.Tuple2;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -52,6 +58,16 @@ public class ClientGenerator {
                         }
                 )
                 .forEach(l -> event.getGenerator().addProvider(true, l));
+
+        // 注册物品模型生成器
+        event.getGenerator().addProvider(
+                event.includeClient(),
+                new SlashBladeItemModelProvider(
+                        event.getGenerator().getPackOutput(),
+                        SlashbladeMod.MODID,
+                        event.getExistingFileHelper()
+                )
+        );
 
     }
 

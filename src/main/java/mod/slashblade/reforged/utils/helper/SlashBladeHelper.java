@@ -6,13 +6,9 @@ import net.minecraft.core.Holder;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
-import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Map;
-import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -53,9 +49,9 @@ public class SlashBladeHelper {
         }
 
         outLogic = outLogic.toBuilder()
-                .glory(inputLogic.getGlory())
+                .proudSoul(inputLogic.getProudSoul())
                 .refine(inputLogic.getRefine())
-                .killCount(inputLogic.getKillCount())
+                .kill(inputLogic.getKill())
                 .key(targetLogic.getKey())
                 .build(); // TODO 配置
 

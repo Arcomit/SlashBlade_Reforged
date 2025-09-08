@@ -261,10 +261,10 @@ public class AttackHelper {
 
         event.addModifiedRatioAmplifier(SbConfig.COMMON.refineAttackBonus.get() * slashBladeLogic.getRefine());
 
-        if (slashBladeLogic.getKillCount() > 1000) {
+        if (slashBladeLogic.getKill() > 1000) {
             event.addMechanismModifiedRatioAmplifier(SbConfig.COMMON.thousandKillAttackBonus.get());
         }
-        if (slashBladeLogic.getKillCount() > 10000) {
+        if (slashBladeLogic.getKill() > 10000) {
             event.addMechanismModifiedRatioAmplifier(SbConfig.COMMON.tenThousandKillAttackBonus.get());
         }
         if (slashBladeLogic.getRefine() > 1000) {

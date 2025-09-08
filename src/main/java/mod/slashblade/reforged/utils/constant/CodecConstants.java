@@ -11,6 +11,7 @@ import mod.slashblade.reforged.content.recipe.IRecipeInputItem;
 import mod.slashblade.reforged.content.recipe.IRecipeInputItemSerializer;
 import mod.slashblade.reforged.content.recipe.SlashBladeRecipe;
 import mod.slashblade.reforged.core.animation.utils.GsonUtil;
+import mod.slashblade.reforged.generated.group.ItemStackDataPackGenerator;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 

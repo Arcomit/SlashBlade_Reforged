@@ -1,4 +1,4 @@
-package mod.slashblade.reforged.generated.client;
+package mod.slashblade.reforged.generated.client.group_item;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,7 +8,8 @@ import lombok.Getter;
 public enum LanguageTypes {
 
     EN_US("en_us"),
-    ZH_CN("zh_cn");
+    ZH_CN("zh_cn"),
+    JA_JP("ja_jp");
 
     final String locale;
 

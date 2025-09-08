@@ -1,26 +1,21 @@
 package mod.slashblade.reforged.content.item;
 
-import mod.slashblade.reforged.SlashbladeMod;
 import mod.slashblade.reforged.content.data.SlashBladeLogic;
 import mod.slashblade.reforged.content.data.SlashBladeStyle;
-import mod.slashblade.reforged.content.entity.SummondSwordEntity;
-import mod.slashblade.reforged.content.init.SbEntityType;
 import mod.slashblade.reforged.content.init.SbActions;
 import mod.slashblade.reforged.content.init.SbDataComponentTypes;
+import mod.slashblade.reforged.generated.client.group_item.LanguageItems;
 import mod.slashblade.reforged.utils.DefaultResources;
-import net.minecraft.ChatFormatting;
+import mod.slashblade.reforged.utils.constant.ResourceLocationConstants;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
@@ -51,7 +46,18 @@ public class SlashBladeItem extends SwordItem {
 
     }
 
+    @Override
+    public @NotNull ItemAttributeModifiers getDefaultAttributeModifiers(@NotNull ItemStack stack) {
+        SlashBladeLogic slashBladeLogic = stack.get(SbDataComponentTypes.SLASH_BLADE_LOGIC);
 
+        if (slashBladeLogic == null) {
+            return ItemAttributeModifiers.EMPTY;
+        }
+
+        ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.builder();
+        builder.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(ResourceLocationConstants.SLASH_BLADE_ATTACK, slashBladeLogic.getAttack(), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
+        return builder.build();
+    }
 
     @Override
     public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag tooltipFlag) {
@@ -59,9 +65,19 @@ public class SlashBladeItem extends SwordItem {
 
         SlashBladeLogic slashBladeLogic = stack.get(SbDataComponentTypes.SLASH_BLADE_LOGIC);
 
-        if (slashBladeLogic != null) {
-            tooltipComponents.add(Component.translatable("item.slashblade_reforged.slashblade.tooltip.1"));
+        if (slashBladeLogic == null) {
+            return;
         }
+
+        tooltipComponents.add(Component.empty());
+
+        tooltipComponents.add(Component.translatable(LanguageItems.TOOLTIP_GLORY.getKey(), slashBladeLogic.getProudSoul()));
+        tooltipComponents.add(Component.translatable(LanguageItems.TOOLTIP_KILL.getKey(), slashBladeLogic.getKill()));
+        tooltipComponents.add(Component.translatable(LanguageItems.TOOLTIP_REFINE.getKey(), slashBladeLogic.getRefine()));
+
+        tooltipComponents.add(Component.empty());
+
+        tooltipComponents.add(Component.translatable(LanguageItems.TOOLTIP_ATTACK.getKey(), slashBladeLogic.getAttack()));
 
 
     }

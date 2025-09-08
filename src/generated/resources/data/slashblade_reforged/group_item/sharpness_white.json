@@ -1,17 +1,17 @@
 {
   "components": {
     "slashblade_reforged:slash_blade_logic": {
-      "attack": 4,
+      "attack": 3,
       "attackDistance": 1,
       "broken": false,
       "durable": 4096,
-      "glory": 0,
-      "key": "slash_blade",
-      "killCount": 0,
-      "maxDurable": 4096,
+      "fragile": false,
+      "key": "sharpness_white",
+      "kill": 0,
+      "maxDurable": 1024,
+      "proudSoul": 0,
       "refine": 0,
-      "sealed": false,
-      "targetEntityId": 0
+      "sealed": false
     }
   },
   "count": 1,
