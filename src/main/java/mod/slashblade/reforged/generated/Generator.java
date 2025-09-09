@@ -8,8 +8,10 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -22,25 +24,40 @@ import java.util.concurrent.CompletableFuture;
 @EventBusSubscriber(modid = SlashbladeMod.MODID)
 public class Generator {
 
-    @SubscribeEvent
+    protected static HolderLookup.Provider provider;
+
+    public static HolderLookup.Provider grtProvider() {
+        return provider;
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
     public static void onGatherData(GatherDataEvent event) {
+        CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider()
+                .thenApply(p -> {
+                            provider = p;
+                            return p;
+                        }
+                );
+
         event.getGenerator().addProvider(
-                event.includeServer(),
+                event.includeClient(),
                 new ItemStackDataPackGenerator(
                         event.getGenerator().getPackOutput(),
-                        event.getLookupProvider(),
+                        lookupProvider,
                         List.of(ItemStackDataPackGenerator.class)
                 )
         );
         event.getGenerator().addProvider(
-                event.includeServer(),
+                event.includeClient(),
                 new SlashBladeRecipeProvider(
                         event.getGenerator().getPackOutput(),
-                        event.getLookupProvider(),
+                        lookupProvider,
                         List.of(SlashBladeRecipes.class),
                         SlashbladeMod.MODID
                 )
         );
+
+
     }
 
 

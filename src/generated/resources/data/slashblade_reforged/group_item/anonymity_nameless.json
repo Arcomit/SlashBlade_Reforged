@@ -4,14 +4,15 @@
       "attack": 4,
       "attackDistance": 1,
       "broken": false,
-      "durable": 4096,
+      "durable": 512,
       "fragile": false,
       "key": "anonymity_nameless",
       "kill": 0,
-      "maxDurable": 4096,
+      "maxDurable": 512,
       "proudSoul": 0,
       "refine": 0,
-      "sealed": false
+      "sealed": false,
+      "specialRepair": false
     }
   },
   "count": 1,

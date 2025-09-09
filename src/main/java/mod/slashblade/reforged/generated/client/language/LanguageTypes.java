@@ -1,4 +1,4 @@
-package mod.slashblade.reforged.generated.client.group_item;
+package mod.slashblade.reforged.generated.client.language;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

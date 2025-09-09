@@ -1,7 +1,7 @@
 package mod.slashblade.reforged.content.init;
 
 import mod.slashblade.reforged.SlashbladeMod;
-import mod.slashblade.reforged.generated.client.group_item.LanguageItems;
+import mod.slashblade.reforged.generated.client.language.LanguageItems;
 import mod.slashblade.reforged.generated.group.SlashBladeItemStacks;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;

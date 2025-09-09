@@ -1,4 +1,4 @@
-package mod.slashblade.reforged.generated.client.group_item;
+package mod.slashblade.reforged.generated.client.language;
 
 import mod.slashblade.reforged.SlashbladeMod;
 import mod.slashblade.reforged.content.data.SlashBladeLogic;
@@ -51,6 +51,10 @@ public class LanguageItems {
     public static final LanguageItem ANONYMITY_NAMELESS = new LanguageItem(getItemDescriptionId(SlashBladeItemStacks.ANONYMITY_NAMELESS.get()))
             .addTranslation(LanguageTypes.ZH_CN, "无铭「无名」")
             .addTranslation(LanguageTypes.EN_US, "Anonymity -Nameless-");
+
+    public static final LanguageItem ANONYMITY_WOOD = new LanguageItem(getItemDescriptionId(SlashBladeItemStacks.ANONYMITY_WOOD.get()))
+            .addTranslation(LanguageTypes.ZH_CN, "无铭刀「木偶」")
+            .addTranslation(LanguageTypes.EN_US, "Anonymity -Wood-");
 
     public static final LanguageItem SHARPNESS_WHITE = new LanguageItem(getItemDescriptionId(SlashBladeItemStacks.SHARPNESS_WHITE.get()))
             .addTranslation(LanguageTypes.ZH_CN, "利刀「白鞘」")

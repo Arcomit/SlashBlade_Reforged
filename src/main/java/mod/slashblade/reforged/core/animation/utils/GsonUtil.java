@@ -10,11 +10,13 @@ import mod.slashblade.reforged.core.animation.pojo.AnimationKeyframes;
 import mod.slashblade.reforged.core.animation.pojo.SoundEffectKeyframes;
 import mod.slashblade.reforged.core.animation.pojo.exclusion.ServerExclusionStrategy;
 import mod.slashblade.reforged.core.animation.pojo.serialize.*;
+import mod.slashblade.reforged.utils.constant.CodecConstants;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.joml.Vector3f;
 
+import java.awt.*;
 import java.util.Map;
 
 /**
@@ -41,5 +43,6 @@ public class GsonUtil {
             .registerTypeAdapter(boolean.class, new BooleanSerializer())
             .registerTypeAdapter(Ingredient.class, new UseCodecSerializer<>(Ingredient.CODEC))
             .registerTypeAdapter(ItemStack.class, new UseCodecSerializer<>(ItemStack.CODEC))
+            .registerTypeAdapter(Color.class, new UseCodecSerializer<>(CodecConstants.COLOR))
             .create();
 }
