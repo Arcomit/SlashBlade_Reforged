@@ -54,6 +54,10 @@ public interface IRecipeInputItem extends Predicate<ItemStack> {
             this.ingredient = Ingredient.of(tag);
         }
 
+        public IngredientRecipeInputItem(Item item) {
+            this(new ItemStack(item));
+        }
+
         @Override
         public Ingredient toIngredient() {
             return ingredient;

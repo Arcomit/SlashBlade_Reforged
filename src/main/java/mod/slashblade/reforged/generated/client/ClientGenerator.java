@@ -1,13 +1,12 @@
 package mod.slashblade.reforged.generated.client;
 
 import mod.slashblade.reforged.SlashbladeMod;
-import mod.slashblade.reforged.content.init.SbCreativeModeTab;
-import mod.slashblade.reforged.content.init.SbItems;
-import mod.slashblade.reforged.generated.client.group_item.LanguageItem;
-import mod.slashblade.reforged.generated.client.group_item.LanguageItems;
-import mod.slashblade.reforged.generated.client.group_item.LanguageTypes;
+import mod.slashblade.reforged.generated.client.language.LanguageItem;
+import mod.slashblade.reforged.generated.client.language.LanguageItems;
+import mod.slashblade.reforged.generated.client.language.LanguageTypes;
 import mod.slashblade.reforged.generated.client.item_model_provider.SlashBladeItemModelProvider;
 import mod.slashblade.reforged.utils.tuple.Tuple2;
+import net.minecraft.core.HolderLookup;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -18,9 +17,11 @@ import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 
 @EventBusSubscriber(modid = SlashbladeMod.MODID, value = Dist.CLIENT)
 public class ClientGenerator {
+
 
     @SubscribeEvent
     public static void onGatherData(GatherDataEvent event) {

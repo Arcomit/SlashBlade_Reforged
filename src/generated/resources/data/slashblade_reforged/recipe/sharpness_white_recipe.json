@@ -1,0 +1,80 @@
+{
+  "type": "slashblade_reforged:slashblade_recipe",
+  "key": {
+    "#": {
+      "type": "slashblade_reforged:slash_blade",
+      "value": {
+        "components": {
+          "slashblade_reforged:slash_blade_logic": {
+            "attack": 3,
+            "attackDistance": 1,
+            "broken": true,
+            "durable": 512,
+            "fragile": false,
+            "key": "anonymity_wood",
+            "kill": 0,
+            "maxDurable": 512,
+            "proudSoul": 0,
+            "refine": 0,
+            "sealed": false,
+            "specialRepair": false
+          },
+          "slashblade_reforged:slash_blade_style": {
+            "carryType": "NAKED",
+            "color": -13421569,
+            "model": "slashblade_reforged:slashblade/models/blade.obj",
+            "noScabbard": false,
+            "texture": "slashblade_reforged:slashblade/models/wood.png"
+          }
+        },
+        "count": 1,
+        "id": "slashblade_reforged:slash_blade"
+      }
+    },
+    "A": {
+      "type": "slashblade_reforged:ingredient",
+      "value": {
+        "tag": "c:ingots/iron"
+      }
+    },
+    "B": {
+      "type": "slashblade_reforged:ingredient",
+      "value": {
+        "tag": "c:ingots/gold"
+      }
+    }
+  },
+  "mainSlashBladeKey": "#",
+  "pattern": [
+    "  A",
+    " A ",
+    "#B "
+  ],
+  "result": {
+    "components": {
+      "slashblade_reforged:slash_blade_logic": {
+        "attack": 3,
+        "attackDistance": 1,
+        "broken": false,
+        "durable": 1024,
+        "fragile": false,
+        "key": "sharpness_white",
+        "kill": 0,
+        "maxDurable": 1024,
+        "proudSoul": 0,
+        "refine": 0,
+        "sealed": false,
+        "specialRepair": false
+      },
+      "slashblade_reforged:slash_blade_style": {
+        "carryType": "NAKED",
+        "color": -13421569,
+        "model": "slashblade_reforged:slashblade/models/blade.obj",
+        "noScabbard": false,
+        "texture": "slashblade_reforged:slashblade/models/white.png"
+      }
+    },
+    "count": 1,
+    "id": "slashblade_reforged:slash_blade"
+  }
+}

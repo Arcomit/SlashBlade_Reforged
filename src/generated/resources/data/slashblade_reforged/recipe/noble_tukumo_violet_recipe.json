@@ -1,0 +1,115 @@
+{
+  "type": "slashblade_reforged:slashblade_recipe",
+  "key": {
+    "#": {
+      "type": "slashblade_reforged:slash_blade",
+      "value": {
+        "components": {
+          "minecraft:enchantments": {
+            "levels": {
+              "minecraft:fire_aspect": 1
+            }
+          },
+          "slashblade_reforged:slash_blade_logic": {
+            "attack": 4,
+            "attackDistance": 1,
+            "broken": false,
+            "durable": 4096,
+            "fragile": false,
+            "key": "slash_blade",
+            "kill": 0,
+            "maxDurable": 4096,
+            "proudSoul": 0,
+            "refine": 0,
+            "sealed": false,
+            "specialRepair": false
+          }
+        },
+        "count": 1,
+        "id": "slashblade_reforged:slash_blade"
+      }
+    },
+    "D": {
+      "type": "slashblade_reforged:ingredient",
+      "value": {
+        "tag": "c:storage_blocks/diamond"
+      }
+    },
+    "E": {
+      "type": "slashblade_reforged:ingredient",
+      "value": {
+        "tag": "c:storage_blocks/emerald"
+      }
+    },
+    "G": {
+      "type": "slashblade_reforged:ingredient",
+      "value": {
+        "tag": "c:storage_blocks/gold"
+      }
+    },
+    "I": {
+      "type": "slashblade_reforged:ingredient",
+      "value": {
+        "tag": "c:storage_blocks/iron"
+      }
+    },
+    "L": {
+      "type": "slashblade_reforged:ingredient",
+      "value": {
+        "tag": "c:storage_blocks/lapis"
+      }
+    },
+    "R": {
+      "type": "slashblade_reforged:ingredient",
+      "value": {
+        "tag": "c:storage_blocks/redstone"
+      }
+    },
+    "S": {
+      "type": "slashblade_reforged:ingredient",
+      "value": {
+        "item": "slashblade_reforged:proud_soul_sphere"
+      }
+    }
+  },
+  "mainSlashBladeKey": "#",
+  "pattern": [
+    "ESD",
+    "R#L",
+    "ISG"
+  ],
+  "result": {
+    "components": {
+      "minecraft:enchantments": {
+        "levels": {
+          "minecraft:fire_aspect": 1,
+          "minecraft:sharpness": 4,
+          "minecraft:unbreaking": 4
+        }
+      },
+      "slashblade_reforged:slash_blade_logic": {
+        "attack": 5,
+        "attackDistance": 1,
+        "broken": false,
+        "durable": 4096,
+        "fragile": false,
+        "key": "slash_blade",
+        "kill": 0,
+        "maxDurable": 4096,
+        "proudSoul": 0,
+        "refine": 0,
+        "sealed": false,
+        "specialRepair": false
+      },
+      "slashblade_reforged:slash_blade_style": {
+        "carryType": "NAKED",
+        "color": -13421569,
+        "model": "slashblade_reforged:slashblade/models/named/agito.obj",
+        "noScabbard": false,
+        "texture": "slashblade_reforged:slashblade/models/named/a_tukumo.png"
+      }
+    },
+    "count": 1,
+    "id": "slashblade_reforged:slash_blade"
+  }
+}

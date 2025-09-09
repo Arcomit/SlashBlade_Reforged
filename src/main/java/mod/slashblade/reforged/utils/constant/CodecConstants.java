@@ -15,6 +15,7 @@ import mod.slashblade.reforged.generated.group.ItemStackDataPackGenerator;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
+import java.awt.*;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,11 @@ public class CodecConstants {
                     ? DataResult.success(s.charAt(0))
                     : DataResult.error(() -> "Expected single character, got: " + s),
             String::valueOf
+    );
+
+    public static final Codec<Color> COLOR = Codec.INT.comapFlatMap(
+            i -> DataResult.success(new Color(i, true)),
+            Color::getRGB
     );
 
     public static final Codec<SlashBladeLogic> SLASH_BLADE_LOGIC = ofJson(SlashBladeLogic.class);

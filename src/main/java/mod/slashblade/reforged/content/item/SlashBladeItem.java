@@ -4,7 +4,7 @@ import mod.slashblade.reforged.content.data.SlashBladeLogic;
 import mod.slashblade.reforged.content.data.SlashBladeStyle;
 import mod.slashblade.reforged.content.init.SbActions;
 import mod.slashblade.reforged.content.init.SbDataComponentTypes;
-import mod.slashblade.reforged.generated.client.group_item.LanguageItems;
+import mod.slashblade.reforged.generated.client.language.LanguageItems;
 import mod.slashblade.reforged.utils.DefaultResources;
 import mod.slashblade.reforged.utils.constant.ResourceLocationConstants;
 import net.minecraft.network.chat.Component;

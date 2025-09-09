@@ -5,6 +5,9 @@ import lombok.experimental.Accessors;
 import mod.slashblade.reforged.content.entity.JudgementCutEntity;
 import mod.slashblade.reforged.content.entity.SlashEffectEntity;
 import mod.slashblade.reforged.content.entity.SummondSwordEntity;
+import mod.slashblade.reforged.utils.DefaultResources;
+import mod.slashblade.reforged.utils.constant.R;
+import mod.slashblade.reforged.utils.constant.ResourceLocationConstants;
 import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nullable;
@@ -16,6 +19,17 @@ import java.awt.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SlashBladeStyle implements Cloneable {
+
+
+    @SaveField(canBeNull = true)
+    @Nullable
+    @Builder.Default
+    protected ResourceLocation model = R.Slashblade.Models.blade$obj;
+
+    @SaveField(canBeNull = true)
+    @Nullable
+    @Builder.Default
+    protected ResourceLocation texture = R.Slashblade.Models.blade$png;
 
     @SaveField(canBeNull = true)
     @Nullable
@@ -44,7 +58,8 @@ public class SlashBladeStyle implements Cloneable {
     /***
      * 携带模式
      */
-    @SaveField@Builder.Default
+    @SaveField
+    @Builder.Default
     CarryType carryType = CarryType.NAKED;
 
     /***
@@ -53,7 +68,8 @@ public class SlashBladeStyle implements Cloneable {
     @SaveField
     boolean noScabbard;
 
-    @SaveField@Builder.Default
+    @SaveField
+    @Builder.Default
     Color color = new Color(0x3333FF);
 
     public void decorate(SummondSwordEntity summondSwordEntity) {

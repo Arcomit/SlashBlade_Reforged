@@ -50,7 +50,7 @@ public class SlashBladeItemModelProvider extends ItemModelProvider {
 
         return getBuilder(item)
                 //.parent(new ModelFile.UncheckedModelFile(mcLoc("prefab/" + item)))
-                .texture("layer0", SlashbladeMod.prefix("soul"))
+                .texture("layer0", SlashbladeMod.prefix("item/soul"))
                 .guiLight(BlockModel.GuiLight.FRONT)
                 .customLoader(ObjModelBuilder::begin)
                 .modelLocation(SlashbladeMod.prefix("models/prefab/" + item + ".obj"))

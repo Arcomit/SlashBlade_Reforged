@@ -1,3 +1,4 @@
+/*
 package mod.slashblade.reforged.core.obj.acceleratedrendering.mixin;
 
 import com.github.argon4w.acceleratedrendering.core.CoreFeature;
@@ -26,11 +27,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 import java.util.Map;
 
+*/
 /**
  * @Author: Arcomit
  * @CreateTime: 2025-08-07 12:58
  * @Description: TODO:未完成
- */
+ *//*
+
 @ExtensionMethod(VertexConsumerExtension.class)
 @Mixin          (ObjGroup               .class)
 public class ObjGroupMixin implements IAcceleratedRenderer<Void> {
@@ -83,3 +86,4 @@ public class ObjGroupMixin implements IAcceleratedRenderer<Void> {
 
     }
 }
+*/

@@ -9,14 +9,22 @@
             "attack": 3,
             "attackDistance": 1,
             "broken": false,
-            "durable": 4096,
+            "durable": 1024,
             "fragile": false,
             "key": "sharpness_white",
             "kill": 0,
             "maxDurable": 1024,
             "proudSoul": 0,
             "refine": 0,
-            "sealed": false
+            "sealed": false,
+            "specialRepair": false
+          },
+          "slashblade_reforged:slash_blade_style": {
+            "carryType": "NAKED",
+            "color": -13421569,
+            "model": "slashblade_reforged:slashblade/models/blade.obj",
+            "noScabbard": false,
+            "texture": "slashblade_reforged:slashblade/models/white.png"
           }
         },
         "count": 1,
@@ -26,37 +34,37 @@
     "B": {
       "type": "slashblade_reforged:ingredient",
       "value": {
-        "item": "minecraft:blaze_rod"
+        "tag": "c:rods/blaze"
       }
     },
     "C": {
       "type": "slashblade_reforged:ingredient",
       "value": {
-        "item": "minecraft:coal_block"
+        "tag": "c:storage_blocks/coal"
       }
     },
     "G": {
       "type": "slashblade_reforged:ingredient",
       "value": {
-        "item": "minecraft:gold_ingot"
+        "tag": "c:ingots/gold"
       }
     },
     "I": {
       "type": "slashblade_reforged:ingredient",
       "value": {
-        "item": "minecraft:dragon_egg"
+        "item": "slashblade_reforged:proud_soul_sphere"
       }
     },
     "L": {
       "type": "slashblade_reforged:ingredient",
       "value": {
-        "item": "minecraft:lapis_block"
+        "tag": "c:storage_blocks/lapis"
       }
     },
     "S": {
       "type": "slashblade_reforged:ingredient",
       "value": {
-        "item": "minecraft:string"
+        "tag": "c:strings"
       }
     }
   },
@@ -79,7 +87,8 @@
         "maxDurable": 4096,
         "proudSoul": 0,
         "refine": 0,
-        "sealed": false
+        "sealed": false,
+        "specialRepair": false
       }
     },
     "count": 1,

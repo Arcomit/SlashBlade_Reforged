@@ -11,6 +11,7 @@ public class ResourceLocationConstants {
 
     public static final ResourceLocation DEFAULT = SlashbladeMod.prefix("default");
 
+
     public static final ResourceLocation DEFAULT_TEXTURE = SlashbladeMod.prefix(StringConstants.SPECIAL, StringConstants.TEXTURE);
 
     public static final ResourceLocation DEFAULT_SUMMOND_MODEL = SlashbladeMod.prefix(StringConstants.SPECIAL, "summond", StringConstants.MODEL);

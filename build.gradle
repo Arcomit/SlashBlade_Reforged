@@ -29,20 +29,20 @@ neoForge {
         client {
             client()
             systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
-            jvmArgument "-XX:+AllowEnhancedClassRedefinition"
+            //jvmArgument "-XX:+AllowEnhancedClassRedefinition"
         }
 
         server {
             server()
             programArgument '--nogui'
             systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
-            jvmArgument "-XX:+AllowEnhancedClassRedefinition"
+            //jvmArgument "-XX:+AllowEnhancedClassRedefinition"
         }
 
         gameTestServer {
             type = "gameTestServer"
             systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
-            jvmArgument "-XX:+AllowEnhancedClassRedefinition"
+            //jvmArgument "-XX:+AllowEnhancedClassRedefinition"
         }
 
         data {
@@ -107,7 +107,7 @@ dependencies {
     implementation        "curse.maven:nbtedit-reborn-678133:6125444"
 
     // PlayerAnimator
-    implementation        "dev.kosmx.player-anim:player-animation-lib-forge:${player_anim_version}"
+    implementation "dev.kosmx.player-anim:player-animation-lib-forge:${player_anim_version}"
 
     // May爹动画引擎
     mcLib jarJar("com.maydaymemory:mae:1.0.4") {
@@ -117,27 +117,34 @@ dependencies {
     }
 
     // 加速渲染
-    implementation        "curse.maven:accelerated-rendering-1314021:6839175"
+    //implementation "curse.maven:accelerated-rendering-1314021:6839175"
 
     // 光子2特效库（前置）
     implementation        "curse.maven:photon-871522:6911487"
     implementation        "curse.maven:ldlib-626676:6911394"
 
     // 碰撞箱库
-    implementation        "curse.maven:hitbox-api-1152734:5958930"
+    implementation "curse.maven:hitbox-api-1152734:5958930"
 
     // JEI
-    compileOnly           "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
-    compileOnly           "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
-    runtimeOnly           "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
+    compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
+    compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
+    runtimeOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
 
     // 光影
-    implementation        "curse.maven:sodium-394468:6382651"
-    implementation        "curse.maven:irisshaders-455508:6661598"
+    implementation "curse.maven:sodium-394468:6382651"
+    implementation "curse.maven:irisshaders-455508:6661598"
 
     // lombok
-    compileOnly           "org.projectlombok:lombok:1.18.38"
-    annotationProcessor   "org.projectlombok:lombok:1.18.38"
+    compileOnly "org.projectlombok:lombok:1.18.38"
+    annotationProcessor "org.projectlombok:lombok:1.18.38"
+
+    //MmmMmmMmmMmm
+    implementation 'curse.maven:MmmMmmMmmMmm-225738:6826533'
+
+    //Moonlight Lib
+    implementation 'curse.maven:MoonlightLib-499980:6960423'
+
 }
 
 // 用于 neoforge.mods 里替换那一堆 ${xxxx}

@@ -83,6 +83,6 @@
   "loader": "neoforge:obj",
   "model": "slashblade_reforged:models/prefab/proud_soul_sphere.obj",
   "textures": {
-    "layer0": "slashblade_reforged:soul"
+    "layer0": "slashblade_reforged:item/soul"
   }
 }

@@ -7,7 +7,6 @@ import net.minecraft.network.chat.Component;
 @Getter
 @Builder
 @EqualsAndHashCode
-@AllArgsConstructor
 @NoArgsConstructor
 public class SlashBladeLogic {
 
@@ -43,7 +42,7 @@ public class SlashBladeLogic {
      */
     @SaveField
     @Builder.Default
-    double durable = 4096;
+    double durable = -1;
 
     /***
      * 荣耀数
@@ -70,7 +69,8 @@ public class SlashBladeLogic {
     boolean broken;
 
     /***
-     * 你拔不出来(原版有这个属性就搬过来了)
+     * 无法使用
+     * 刀鞘
      */
     @SaveField
     boolean sealed;
@@ -82,6 +82,30 @@ public class SlashBladeLogic {
     @SaveField
     boolean fragile;
 
+    /***
+     * 特殊修复
+     * 该刀需要特殊手段修复，使用铁砧无法修复
+     */
+    @SaveField
+    boolean specialRepair;
+
+    public SlashBladeLogic(String key, float attack, float attackDistance, double maxDurable, double durable, int proudSoul, int kill, int refine, boolean broken, boolean sealed, boolean fragile, boolean specialRepair) {
+        this.key = key;
+        this.attack = attack;
+        this.attackDistance = attackDistance;
+        this.maxDurable = maxDurable;
+        this.durable = durable == -1
+                ? maxDurable
+                : Math.min(durable, maxDurable);
+        this.proudSoul = proudSoul;
+        this.kill = kill;
+        this.refine = refine;
+        this.broken = broken;
+        this.sealed = sealed;
+        this.fragile = fragile;
+        this.specialRepair = specialRepair;
+    }
+
     public SlashBladeLogic setMaxDurable(double maxDurable) {
         this.maxDurable = maxDurable;
         if (this.durable > maxDurable) {
@@ -91,7 +115,16 @@ public class SlashBladeLogic {
     }
 
     public boolean meetConditions(SlashBladeLogic model) {
-        if (!canUse()) {
+
+        if (isBroken() && !model.isBroken()) {
+            return false;
+        }
+
+        if (isSealed() && !model.isSealed()) {
+            return false;
+        }
+
+        if (isSpecialRepair() && !model.isSpecialRepair()) {
             return false;
         }
 

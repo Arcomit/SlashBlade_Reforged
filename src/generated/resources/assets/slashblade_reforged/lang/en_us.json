@@ -1,7 +1,14 @@
 {
+  "item.slashblade_reforged.proud_soul": "Proud Soul",
+  "item.slashblade_reforged.proud_soul_crystal": "Blade Soul Crystal",
+  "item.slashblade_reforged.proud_soul_ingot": "Blade Soul Ingot",
+  "item.slashblade_reforged.proud_soul_sphere": "Blade Soul Sphere",
+  "item.slashblade_reforged.proud_soul_tiny": "Tiny Proud Soul",
+  "item.slashblade_reforged.proud_soul_trapezohedron": "Blade Soul Trapezohedron",
   "itemGroup.slashblade_reforged.example": "SlashBlade",
   "other.test": "I should say something...",
   "slashblade_reforged.anonymity_nameless.name": "Anonymity -Nameless-",
+  "slashblade_reforged.anonymity_wood.name": "Anonymity -Wood-",
   "slashblade_reforged.sharpness_white.name": "Sharpness White",
   "slashblade_reforged.slash_blade.name": "SlashBlade"
 }
