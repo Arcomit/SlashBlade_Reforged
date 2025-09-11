@@ -5,6 +5,7 @@ import mod.slashblade.reforged.content.config.SbConfig;
 import mod.slashblade.reforged.content.data.SlashBladeLogic;
 import mod.slashblade.reforged.content.event.SlashBladeAttackEvent;
 import mod.slashblade.reforged.content.event.SlashBladeDoSlashEvent;
+import mod.slashblade.reforged.content.event.SlashBladeDurabilityLoss;
 import mod.slashblade.reforged.content.init.SbAttackTypes;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -64,7 +65,6 @@ public class EnchantmentHelper {
         }
 
 
-
     }
 
 
@@ -79,5 +79,16 @@ public class EnchantmentHelper {
             event.getSlashEffectEntity().setSize(event.getSlashEffectEntity().getSize() + (float) (SbConfig.COMMON.sweepingEdgeSizeBonus.get() * smiteLevel));
         }
 
+    }
+
+    @SubscribeEvent
+    public static void onSlashBladeDurabilityLoss(SlashBladeDurabilityLoss event) {
+        if (event.getUser() == null) {
+            return;
+        }
+        Level level = event.getUser().level();
+        HolderLookup.RegistryLookup<Enchantment> enchantmentRegistry = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
+        int unbreakingLevel = event.getItem().getEnchantmentLevel(enchantmentRegistry.getOrThrow(Enchantments.UNBREAKING));
+        event.addDurabilityLevel(unbreakingLevel);
     }
 }

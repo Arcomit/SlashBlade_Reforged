@@ -8,6 +8,7 @@ import mod.slashblade.reforged.content.recipe.IRecipeInputItem;
 import mod.slashblade.reforged.content.recipe.SlashBladeRecipe;
 import mod.slashblade.reforged.generated.group.ItemStackBuilder;
 import mod.slashblade.reforged.generated.group.SlashBladeItemStacks;
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
@@ -16,6 +17,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.NeoForge;
@@ -87,7 +89,7 @@ public class SlashBladeRecipes {
                             'E', new IRecipeInputItem.IngredientRecipeInputItem(Tags.Items.EGGS),
                             'I', new IRecipeInputItem.IngredientRecipeInputItem(Tags.Items.INGOTS_IRON),
                             'S', new IRecipeInputItem.IngredientRecipeInputItem(Tags.Items.STRINGS),
-                            'B', new IRecipeInputItem.IngredientRecipeInputItem(Tags.Items.DYED_BLACK),
+                            'B', new IRecipeInputItem.IngredientRecipeInputItem(Tags.Items.DYES_BLACK),
                             'P', new IRecipeInputItem.IngredientRecipeInputItem(new ItemStack(Items.PAPER)),
                             '#', new IRecipeInputItem.SlashBladeRecipeInputItem(SlashBladeItemStacks.ANONYMITY_BAMBOO_LIGHT.get())
                     ),
@@ -234,7 +236,7 @@ public class SlashBladeRecipes {
                             "S  "
                     ),
                     Map.of(
-                            'R', new IRecipeInputItem.IngredientRecipeInputItem(Tags.Items.DYED_RED),
+                            'R', new IRecipeInputItem.IngredientRecipeInputItem(Tags.Items.DYES_RED),
                             'P', new IRecipeInputItem.IngredientRecipeInputItem(SbItems.PROUD_SOUL.get()),
                             'I', new IRecipeInputItem.IngredientRecipeInputItem(SbItems.PROUD_SOUL_INGOT.get()),
                             'S', new IRecipeInputItem.IngredientRecipeInputItem(new ItemStack(Items.IRON_SWORD)),
@@ -263,7 +265,8 @@ public class SlashBladeRecipes {
                                                             slashBladeLogic.toBuilder()
                                                                     .kill(199)
                                                                     .refine(1)
-                                                                    .proudSoul(1000),
+                                                                    .proudSoul(1000)
+                                                                    .build(),
                                                     SlashBladeLogic::new
                                             )
                                             .setEnchantment(
@@ -286,7 +289,7 @@ public class SlashBladeRecipes {
                             .build()
             );
 
-    public static final Supplier<SlashBladeRecipe> CRESCENT_WEISS_FOX_RECIPE = () ->
+    public static final Supplier<SlashBladeRecipe> CRESCENT_WEISS_FOXES_RECIPE = () ->
             new SlashBladeRecipe(
                     List.of(
                             "SPS",
@@ -305,7 +308,8 @@ public class SlashBladeRecipes {
                                                             slashBladeLogic.toBuilder()
                                                                     .kill(199)
                                                                     .refine(1)
-                                                                    .proudSoul(1000),
+                                                                    .proudSoul(1000)
+                                                                    .build(),
                                                     SlashBladeLogic::new
                                             )
                                             .setEnchantment(
@@ -357,7 +361,7 @@ public class SlashBladeRecipes {
                     SlashBladeItemStacks.WOODEN_RODAI.get()
             );
 
-    public static final Supplier<SlashBladeRecipe> STONE_RODAI = () -> new SlashBladeRecipe(
+    public static final Supplier<SlashBladeRecipe> STONE_RODAI_RECIPE = () -> new SlashBladeRecipe(
             List.of(
                     "  T",
                     " # ",
@@ -383,7 +387,7 @@ public class SlashBladeRecipes {
             SlashBladeItemStacks.STONE_RODAI.get()
     );
 
-    public static final Supplier<SlashBladeRecipe> NAMED_STEEL_RODAI = () -> new SlashBladeRecipe(
+    public static final Supplier<SlashBladeRecipe> NAMED_STEEL_RODAI_RECIPE = () -> new SlashBladeRecipe(
             List.of(
                     "  T",
                     " # ",
@@ -410,7 +414,7 @@ public class SlashBladeRecipes {
             SlashBladeItemStacks.NAMED_STEEL_RODAI.get()
     );
 
-    public static final Supplier<SlashBladeRecipe> NAMED_GOLDEN_RODAI = () -> new SlashBladeRecipe(
+    public static final Supplier<SlashBladeRecipe> NAMED_GOLDEN_RODAI_RECIPE = () -> new SlashBladeRecipe(
             List.of(
                     "  T",
                     " # ",
@@ -437,7 +441,7 @@ public class SlashBladeRecipes {
             SlashBladeItemStacks.NAMED_GOLDEN_RODAI.get()
     );
 
-    public static final Supplier<SlashBladeRecipe> NAMED_DIAMOND_RODAI = () -> new SlashBladeRecipe(
+    public static final Supplier<SlashBladeRecipe> NAMED_DIAMOND_RODAI_RECIPE = () -> new SlashBladeRecipe(
             List.of(
                     "  T",
                     " # ",
@@ -464,7 +468,7 @@ public class SlashBladeRecipes {
             SlashBladeItemStacks.NAMED_DIAMOND_RODAI.get()
     );
 
-    public static final Supplier<SlashBladeRecipe> NAMED_NETHERITE_RODAI = () -> new SlashBladeRecipe(
+    public static final Supplier<SlashBladeRecipe> NAMED_NETHERITE_RODAI_RECIPE = () -> new SlashBladeRecipe(
             List.of(
                     "  T",
                     " # ",
@@ -491,7 +495,7 @@ public class SlashBladeRecipes {
             SlashBladeItemStacks.NAMED_NETHERITE_RODAI.get()
     );
 
-    public static final Supplier<SlashBladeRecipe> REPAIR_SABIGATANA = () ->
+    public static final Supplier<SlashBladeRecipe> REPAIR_SABIGATANA_RECIPE = () ->
             new SlashBladeRecipe(
                     List.of(
                             "  I",
@@ -506,7 +510,7 @@ public class SlashBladeRecipes {
                     SlashBladeItemStacks.SABIGATANA.get()
             );
 
-    public static final Supplier<SlashBladeRecipe> STEEL_DOUTANUKI = () -> new SlashBladeRecipe(
+    public static final Supplier<SlashBladeRecipe> STEEL_DOUTANUKI_RECIPE = () -> new SlashBladeRecipe(
             List.of(
                     "  S",
                     " # ",
@@ -531,7 +535,7 @@ public class SlashBladeRecipes {
             SlashBladeItemStacks.STEEL_DOUTANUKI.get()
     );
 
-    public static final Supplier<SlashBladeRecipe> REPAIR_YAMATO = () -> new SlashBladeRecipe(
+    public static final Supplier<SlashBladeRecipe> REPAIR_YAMATO_RECIPE = () -> new SlashBladeRecipe(
             List.of(
                     "SSS",
                     "S#S",
@@ -555,5 +559,64 @@ public class SlashBladeRecipes {
             SlashBladeItemStacks.YAMATO.get()
     );
 
+    public static final Supplier<ShapelessRecipe> PROUD_SOUL_RECIPE = () -> new ShapelessRecipe(
+            SbItems.PROUD_SOUL.get().getDescriptionId(),
+            CraftingBookCategory.MISC,
+            new ItemStack(SbItems.PROUD_SOUL.get()),
+            NonNullList.of(Ingredient.EMPTY, Ingredient.of(SbItems.PROUD_SOUL_TINY.get()), Ingredient.of(SbItems.PROUD_SOUL_TINY.get()))
+    );
 
+    public static final Supplier<ShapelessRecipe> PROUD_SOUL_TINY_RECIPE = () -> new ShapelessRecipe(
+            SbItems.PROUD_SOUL_TINY.get().getDescriptionId(),
+            CraftingBookCategory.MISC,
+            new ItemStack(SbItems.PROUD_SOUL_TINY.get(), 2),
+            NonNullList.of(Ingredient.EMPTY, Ingredient.of(SbItems.PROUD_SOUL.get()))
+    );
+
+    public static final Supplier<ShapedRecipe> PROUD_SOUL_INGOT_RECIPE = () -> new ShapedRecipe(
+            SbItems.PROUD_SOUL_INGOT.get().getDescriptionId(),
+            CraftingBookCategory.MISC,
+            ShapedRecipePattern.of(
+                    Map.of(
+                            'P', Ingredient.of(SbItems.PROUD_SOUL.get()),
+                            'I', Ingredient.of(Items.IRON_INGOT)
+                    ),
+                    List.of(
+                            " P ",
+                            "PIP",
+                            " P "
+                    )
+            ),
+            new ItemStack(SbItems.PROUD_SOUL_INGOT.get())
+    );
+
+    public static final Supplier<SmeltingRecipe> PROUD_SOUL_SPHERE_RECIPE = () -> new SmeltingRecipe(
+            SbItems.PROUD_SOUL_SPHERE.get().getDescriptionId(),
+            CookingBookCategory.MISC,
+            Ingredient.of(SbItems.PROUD_SOUL_INGOT.get()),
+            new ItemStack(SbItems.PROUD_SOUL_SPHERE.get()),
+            3F,
+            10000
+    );
+
+    public static final Supplier<ShapedRecipe> PROUD_SOUL_CRYSTAL_RECIPE = () -> new ShapedRecipe(
+            SbItems.PROUD_SOUL_CRYSTAL.get().getDescriptionId(),
+            CraftingBookCategory.MISC,
+            ShapedRecipePattern.of(
+                    Map.of(
+                            'S', Ingredient.of(SbItems.PROUD_SOUL_SPHERE.get()),
+                            '#', Ingredient.of(Items.NETHER_STAR)
+                    ),
+                    List.of(
+                            "SSS",
+                            "S#S",
+                            "SSS"
+                    )
+            ),
+            new ItemStack(SbItems.PROUD_SOUL_CRYSTAL.get(), 8)
+    );
+
+    /*public static final Supplier<ShapedRecipe> PROUD_SOUL_TRAPEZOHEDRON_RECIPE = () -> new ShapedRecipe(
+
+    );*/
 }

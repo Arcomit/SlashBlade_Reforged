@@ -5,6 +5,7 @@ import com.mojang.serialization.*;
 import com.mojang.serialization.codecs.PrimitiveCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mod.slashblade.reforged.content.data.SlashBladeLogic;
+import mod.slashblade.reforged.content.data.SlashBladeMaterial;
 import mod.slashblade.reforged.content.data.SlashBladeStyle;
 import mod.slashblade.reforged.content.init.SbRegistrys;
 import mod.slashblade.reforged.content.recipe.IRecipeInputItem;
@@ -37,6 +38,8 @@ public class CodecConstants {
 
     public static final Codec<SlashBladeLogic> SLASH_BLADE_LOGIC = ofJson(SlashBladeLogic.class);
     public static final Codec<SlashBladeStyle> SLASH_BLADE_STYLE = ofJson(SlashBladeStyle.class);
+
+    public static final Codec<SlashBladeMaterial> SLASH_BLADE_MATERIAL = ofJson(SlashBladeMaterial.class);
 
     public static final Codec<IRecipeInputItem.IngredientRecipeInputItem> INGREDIENT_RECIPE_INPUT_ITEM = Ingredient.CODEC
             .comapFlatMap(i -> DataResult.success(new IRecipeInputItem.IngredientRecipeInputItem(i)), IRecipeInputItem.IngredientRecipeInputItem::getIngredient);

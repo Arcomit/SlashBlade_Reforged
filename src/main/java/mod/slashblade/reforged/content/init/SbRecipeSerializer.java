@@ -1,6 +1,8 @@
 package mod.slashblade.reforged.content.init;
 
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mod.slashblade.reforged.SlashbladeMod;
 import mod.slashblade.reforged.content.recipe.IRecipeInputItemSerializer;
 import mod.slashblade.reforged.content.recipe.SlashBladeRecipe;
@@ -9,7 +11,11 @@ import mod.slashblade.reforged.utils.constant.CodecConstants;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.jetbrains.annotations.NotNull;

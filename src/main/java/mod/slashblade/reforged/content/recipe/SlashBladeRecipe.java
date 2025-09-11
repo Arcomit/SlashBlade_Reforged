@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.Getter;
 import mod.slashblade.reforged.content.data.SlashBladeLogic;
 import mod.slashblade.reforged.content.init.SbDataComponentTypes;
+import mod.slashblade.reforged.content.init.SbItems;
 import mod.slashblade.reforged.content.init.SbRecipeSerializer;
 import mod.slashblade.reforged.content.init.SbRegistrys;
 import mod.slashblade.reforged.utils.helper.SlashBladeHelper;
@@ -229,6 +230,16 @@ public class SlashBladeRecipe implements CraftingRecipe {
     @Override
     public @NotNull NonNullList<Ingredient> getIngredients() {
         return ingredientNonNullList;
+    }
+
+    @Override
+    public @NotNull ItemStack getToastSymbol() {
+        return new ItemStack(SbItems.SLASH_BLADE);
+    }
+
+    @Override
+    public @NotNull String getGroup() {
+        return slashBladeRecipeData.getResult().getDescriptionId();
     }
 
     @Data

@@ -1,12 +1,10 @@
 package mod.slashblade.reforged.utils.constant;
 
 
+import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
 import mod.slashblade.reforged.SlashbladeMod;
-import mod.slashblade.reforged.content.data.KeyInput;
-import mod.slashblade.reforged.content.data.SaveField;
-import mod.slashblade.reforged.content.data.SlashBladeLogic;
-import mod.slashblade.reforged.content.data.SlashBladeStyle;
+import mod.slashblade.reforged.content.data.*;
 import mod.slashblade.reforged.content.data.network.KeyInputPack;
 import mod.slashblade.reforged.content.entity.SummondSwordEntity;
 import mod.slashblade.reforged.content.init.SbRegistrys;
@@ -57,6 +55,8 @@ public class ByteBufCodecConstants {
     };
     public static final StreamCodec<ByteBuf, SlashBladeLogic> SLASH_BLADE_LOGIC = new DataStreamCodec<>(SlashBladeLogic.class);
     public static final StreamCodec<ByteBuf, SlashBladeStyle> SLASH_BLADE_STYLE = new DataStreamCodec<>(SlashBladeStyle.class);
+
+    public static final StreamCodec<ByteBuf, SlashBladeMaterial> SLASH_BLADE_MATERIAL = new DataStreamCodec<>(SlashBladeMaterial.class);
 
     public static final StreamCodec<ByteBuf, KeyInput> KEY_INPUT = new EnumStreamCodec<>(KeyInput.class);
     public static final StreamCodec<ByteBuf, EnumMap<KeyInput, Boolean>> KEY_INPUT_MAP = new StreamCodec<>() {

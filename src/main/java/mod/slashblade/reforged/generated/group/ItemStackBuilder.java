@@ -1,5 +1,6 @@
 package mod.slashblade.reforged.generated.group;
 
+import com.mojang.datafixers.types.Func;
 import mod.slashblade.reforged.generated.Generator;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
@@ -18,6 +19,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -39,12 +41,12 @@ public class ItemStackBuilder {
         return this;
     }
 
-    public <D> ItemStackBuilder set(DataComponentType<D> dataComponentType, Consumer<D> consumer, Supplier<D> def) {
+    public <D> ItemStackBuilder set(DataComponentType<D> dataComponentType, Function<D, D> consumer, Supplier<D> def) {
         D d = itemStack.get(dataComponentType);
         if (d == null) {
             d = def.get();
         }
-        consumer.accept(d);
+        d = consumer.apply(d);
         this.itemStack.set(dataComponentType, d);
         return this;
     }

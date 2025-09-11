@@ -183,7 +183,8 @@ public class SlashBladeLogic {
                 .refine(this.refine)
                 .broken(this.broken)
                 .sealed(this.sealed)
-                .fragile(this.fragile);
+                .fragile(this.fragile)
+                .specialRepair(this.specialRepair);
     }
 
 }
