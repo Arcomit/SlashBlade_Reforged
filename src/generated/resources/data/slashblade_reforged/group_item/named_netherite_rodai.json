@@ -6,7 +6,7 @@
       "broken": false,
       "durable": 8192,
       "fragile": false,
-      "key": "",
+      "key": "named_netherite_rodai",
       "kill": 0,
       "maxDurable": 8192,
       "proudSoul": 0,

@@ -6,14 +6,14 @@
       "value": {
         "components": {
           "slashblade_reforged:slash_blade_logic": {
-            "attack": 5,
+            "attack": 4,
             "attackDistance": 1,
             "broken": false,
-            "durable": 1024,
+            "durable": 2048,
             "fragile": false,
-            "key": "",
-            "kill": 0,
-            "maxDurable": 1024,
+            "key": "wooden_rodai",
+            "kill": 500,
+            "maxDurable": 2048,
             "proudSoul": 0,
             "refine": 0,
             "sealed": false,
@@ -24,7 +24,7 @@
             "color": -13421569,
             "model": "slashblade_reforged:slashblade/models/blade.obj",
             "noScabbard": false,
-            "texture": "slashblade_reforged:slashblade/models/rodai_golden.png"
+            "texture": "slashblade_reforged:slashblade/models/rodai_wooden.png"
           }
         },
         "count": 1,
@@ -46,7 +46,7 @@
     "W": {
       "type": "slashblade_reforged:ingredient",
       "value": {
-        "item": "minecraft:diamond_sword"
+        "item": "minecraft:stone_sword"
       }
     }
   },
@@ -59,12 +59,12 @@
   "result": {
     "components": {
       "slashblade_reforged:slash_blade_logic": {
-        "attack": 5,
+        "attack": 4,
         "attackDistance": 1,
         "broken": false,
         "durable": 4096,
         "fragile": false,
-        "key": "",
+        "key": "stone_rodai",
         "kill": 0,
         "maxDurable": 4096,
         "proudSoul": 0,
@@ -77,7 +77,7 @@
         "color": -13421569,
         "model": "slashblade_reforged:slashblade/models/blade.obj",
         "noScabbard": false,
-        "texture": "slashblade_reforged:slashblade/models/rodai_diamond.png"
+        "texture": "slashblade_reforged:slashblade/models/rodai_stone.png"
       }
     },
     "count": 1,

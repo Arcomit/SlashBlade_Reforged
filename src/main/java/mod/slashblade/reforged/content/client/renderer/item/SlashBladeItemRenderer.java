@@ -8,7 +8,10 @@ import lombok.experimental.ExtensionMethod;
 import mod.slashblade.reforged.content.animation.SlashBladeAnimationInstance;
 import mod.slashblade.reforged.content.client.camera.CameraAnimationHandler;
 import mod.slashblade.reforged.content.client.renderer.SbRenderTypes;
+import mod.slashblade.reforged.content.data.SlashBladeLogic;
+import mod.slashblade.reforged.content.data.SlashBladeStyle;
 import mod.slashblade.reforged.content.init.SbDataComponentTypes;
+import mod.slashblade.reforged.content.init.SbItems;
 import mod.slashblade.reforged.core.animation.AnimationAsset;
 import mod.slashblade.reforged.core.animation.event.AnimationManager;
 import mod.slashblade.reforged.utils.PoseStackAutoCloser;
@@ -44,21 +47,28 @@ public class SlashBladeItemRenderer implements DynamicItemRenderer {
     // 物品栏渲染
     @Override
     public void renderByItem(
-            ItemStack          stack,
+            ItemStack stack,
             ItemDisplayContext transform,
-            PoseStack          poseStack,
-            MultiBufferSource  bufferSource,
-            int                packedLight,
-            int                packedOverlay
+            PoseStack poseStack,
+            MultiBufferSource bufferSource,
+            int packedLight,
+            int packedOverlay
     ) {
         if (transform.firstPerson() || transform.thirdPerson()) {
             return;
         }
 
-        ObjModel model = ObjModelManager.get(DefaultResources.DEFAULT_MODEL);
+        SlashBladeStyle slashBladeStyle = stack.get(SbDataComponentTypes.SLASH_BLADE_STYLE);
+        if (slashBladeStyle == null) {
+            return;
+        }
+
+        ObjModel model = ObjModelManager.get(slashBladeStyle.getModel());
 
         AnimationAsset animation = AnimationManager.get(DefaultResources.DEFAULT_ANIMATION);
-        if (animation == null) return;
+        if (animation == null) {
+            return;
+        }
         Pose pose = animation.evaluate(0f);
         model.applyPose(pose);
 
@@ -79,7 +89,7 @@ public class SlashBladeItemRenderer implements DynamicItemRenderer {
             WriteVerticesInfo.setLightMap(packedLight);
             WriteVerticesInfo.setOverlayMap(packedOverlay);
 
-            RenderType renderType = SbRenderTypes.getBlend(DefaultResources.DEFAULT_TEXTURE);
+            RenderType renderType = SbRenderTypes.getBlend(slashBladeStyle.getTexture());
             VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
 
             //poseStack.scale(0.01f,0.01f,0.01f);
@@ -96,17 +106,22 @@ public class SlashBladeItemRenderer implements DynamicItemRenderer {
 
     // 第一人称渲染
     public void renderFristPerson(
-            ItemStack         stack,
-            RenderHandEvent   event,
-            PoseStack         poseStack,
+            ItemStack stack,
+            RenderHandEvent event,
+            PoseStack poseStack,
             MultiBufferSource bufferSource,
-            int               packedLight,
-            float             partialTick
+            int packedLight,
+            float partialTick
     ) {
         event.setCanceled(true);
         Minecraft mc = Minecraft.getInstance();
 
-        ObjModel model = ObjModelManager.get(DefaultResources.DEFAULT_MODEL);
+        SlashBladeStyle slashBladeStyle = stack.get(SbDataComponentTypes.SLASH_BLADE_STYLE);
+        if (slashBladeStyle == null) {
+            return;
+        }
+
+        ObjModel model = ObjModelManager.get(slashBladeStyle.getModel());
 
         if (!(mc.getCameraEntity() instanceof LocalPlayer)) return;
         LocalPlayer playerTest = (LocalPlayer) mc.getCameraEntity();
@@ -124,21 +139,21 @@ public class SlashBladeItemRenderer implements DynamicItemRenderer {
                 // 抵消移动视角时的晃动
                 float interpolatedXBobbing = Mth.lerp(partialTick, player.xBobO, player.xBob);
                 float interpolatedYBobbing = Mth.lerp(partialTick, player.yBobO, player.yBob);
-                poseStack.mulPose(Axis.YN.rotationDegrees((player.getViewYRot(partialTick) - interpolatedYBobbing ) * 0.1F));
-                poseStack.mulPose(Axis.XN.rotationDegrees((player.getViewXRot(partialTick) - interpolatedXBobbing ) * 0.1F));
+                poseStack.mulPose(Axis.YN.rotationDegrees((player.getViewYRot(partialTick) - interpolatedYBobbing) * 0.1F));
+                poseStack.mulPose(Axis.XN.rotationDegrees((player.getViewXRot(partialTick) - interpolatedXBobbing) * 0.1F));
 
                 // 抵消走路时的晃动
-                if (mc.options.bobView().get()){
+                if (mc.options.bobView().get()) {
                     float walkDelta = player.walkDist - player.walkDistO;
-                    float phase = -(player.walkDist + walkDelta  * partialTick);
+                    float phase = -(player.walkDist + walkDelta * partialTick);
                     float bobbingAmount = Mth.lerp(partialTick, player.oBob, player.bob);
-                    poseStack.mulPose(Axis.XN.rotationDegrees(Math.abs(Mth.cos(phase * (float)Math.PI - 0.2F) * bobbingAmount) * 5.0F));
-                    poseStack.mulPose(Axis.ZN.rotationDegrees(Mth.sin(phase * (float)Math.PI) * bobbingAmount * 3.0F));
-                    poseStack.translate(-Mth.sin(phase * (float)Math.PI) * bobbingAmount * 0.5F, Math.abs(Mth.cos(phase * (float)Math.PI) * bobbingAmount), 0.0F);
+                    poseStack.mulPose(Axis.XN.rotationDegrees(Math.abs(Mth.cos(phase * (float) Math.PI - 0.2F) * bobbingAmount) * 5.0F));
+                    poseStack.mulPose(Axis.ZN.rotationDegrees(Mth.sin(phase * (float) Math.PI) * bobbingAmount * 3.0F));
+                    poseStack.translate(-Mth.sin(phase * (float) Math.PI) * bobbingAmount * 0.5F, Math.abs(Mth.cos(phase * (float) Math.PI) * bobbingAmount), 0.0F);
                 }
             }
 
-            if (true){
+            if (true) {
                 // 抵消上下移动摄像机视角时的跟随旋转（类似拔刀剑2，重锋的视角）
                 Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
                 Quaternionf inverseRot = new Quaternionf(camera.rotation()).conjugate();
@@ -150,7 +165,7 @@ public class SlashBladeItemRenderer implements DynamicItemRenderer {
                 float roll = 0;
                 Quaternionf.rotationYXZ((float) Math.PI - yaw * (float) (Math.PI / 180.0), -ptich * (float) (Math.PI / 180.0), -roll * (float) (Math.PI / 180.0));
                 poseStack.mulPose(Quaternionf);
-            }else{
+            } else {
                 // 固定视角，渲染跟随摄像机视角移动（类似拔刀剑1的视角）
                 // 抵消摄像机额外旋转
                 float extraY = CameraAnimationHandler.yRotation;
@@ -171,7 +186,7 @@ public class SlashBladeItemRenderer implements DynamicItemRenderer {
             WriteVerticesInfo.setLightMap(packedLight);
             WriteVerticesInfo.setOverlayMap(OverlayTexture.NO_OVERLAY);
 
-            RenderType renderType = SbRenderTypes.getBlend(DefaultResources.DEFAULT_TEXTURE);
+            RenderType renderType = SbRenderTypes.getBlend(slashBladeStyle.getTexture());
             VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
 
             model.writeVerticesOnly(vertexConsumer, "blade");
@@ -187,18 +202,17 @@ public class SlashBladeItemRenderer implements DynamicItemRenderer {
 
     // 第三人称渲染
     public void renderThirdPerson(
-                       @NotNull PoseStack         poseStack,
-                       @NotNull MultiBufferSource bufferSource,
-                       int                        packedLight,
-                       @NotNull LivingEntity      livingEntity,
-                       @NotNull ItemStack         itemStack,
-                       float                      limbSwing,
-                       float                      limbSwingAmount,
-                       float                      partialTick,
-                       float                      ageInTicks,
-                       float                      netHeadYaw,
-                       float                      headPitch)
-    {
+            @NotNull PoseStack poseStack,
+            @NotNull MultiBufferSource bufferSource,
+            int packedLight,
+            @NotNull LivingEntity livingEntity,
+            @NotNull ItemStack itemStack,
+            float limbSwing,
+            float limbSwingAmount,
+            float partialTick,
+            float ageInTicks,
+            float netHeadYaw,
+            float headPitch) {
 //        SlashBladeAnimationGraph graph = itemStack.get(SbDataComponents.BASIC_EXAMPLE);
 //        graph.setTest(20);
 //        graph.setTest2(false);
@@ -207,10 +221,15 @@ public class SlashBladeItemRenderer implements DynamicItemRenderer {
 //        System.out.println(itemStack.get(SbDataComponents.BASIC_EXAMPLE).getTest());
 //        System.out.println(itemStack.get(SbDataComponents.BASIC_EXAMPLE).isTest2());
 
+        SlashBladeStyle slashBladeStyle = itemStack.get(SbDataComponentTypes.SLASH_BLADE_STYLE);
+        if (slashBladeStyle == null) {
+            return;
+        }
+
         ResourceLocation test = itemStack.get(SbDataComponentTypes.DRAW_ACTION);
         System.out.println(test);
 
-        ObjModel model = ObjModelManager.get(DefaultResources.DEFAULT_MODEL);
+        ObjModel model = ObjModelManager.get(slashBladeStyle.getModel());
 
         AnimationAsset animation = AnimationManager.get(DefaultResources.DEFAULT_ANIMATION);
         if (animation == null) return;
@@ -226,7 +245,7 @@ public class SlashBladeItemRenderer implements DynamicItemRenderer {
             WriteVerticesInfo.setLightMap(packedLight);
             WriteVerticesInfo.setOverlayMap(OverlayTexture.NO_OVERLAY);
 
-            RenderType renderType = SbRenderTypes.getBlend(DefaultResources.DEFAULT_TEXTURE);
+            RenderType renderType = SbRenderTypes.getBlend(slashBladeStyle.getTexture());
             VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
 
             //poseStack.scale(0.01f,0.01f,0.01f);

@@ -11,7 +11,7 @@
             "broken": true,
             "durable": 4096,
             "fragile": false,
-            "key": "",
+            "key": "anonymity_bamboo_light",
             "kill": 0,
             "maxDurable": 4096,
             "proudSoul": 0,
@@ -34,7 +34,7 @@
     "B": {
       "type": "slashblade_reforged:ingredient",
       "value": {
-        "tag": "c:dyed/black"
+        "tag": "c:dyes/black"
       }
     },
     "E": {
@@ -76,7 +76,7 @@
         "broken": false,
         "durable": 2048,
         "fragile": false,
-        "key": "",
+        "key": "noted_silver_bamboo_light",
         "kill": 0,
         "maxDurable": 2048,
         "proudSoul": 0,

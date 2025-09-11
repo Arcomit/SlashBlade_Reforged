@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "slashblade_reforged:named_golden_rodai"
+        "recipe": "slashblade_reforged:proud_soul_sphere_recipe"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -15,7 +15,7 @@
   ],
   "rewards": {
     "recipes": [
-      "slashblade_reforged:named_golden_rodai"
+      "slashblade_reforged:proud_soul_sphere_recipe"
     ]
   }
 }

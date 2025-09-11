@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "slashblade_reforged:crescent_weiss_fox_recipe"
+        "recipe": "slashblade_reforged:crescent_weiss_foxes_recipe"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -15,7 +15,7 @@
   ],
   "rewards": {
     "recipes": [
-      "slashblade_reforged:crescent_weiss_fox_recipe"
+      "slashblade_reforged:crescent_weiss_foxes_recipe"
     ]
   }
 }

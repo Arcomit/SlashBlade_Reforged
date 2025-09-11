@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "slashblade_reforged:named_diamond_rodai"
+        "recipe": "slashblade_reforged:named_steel_rodai_recipe"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -15,7 +15,7 @@
   ],
   "rewards": {
     "recipes": [
-      "slashblade_reforged:named_diamond_rodai"
+      "slashblade_reforged:named_steel_rodai_recipe"
     ]
   }
 }

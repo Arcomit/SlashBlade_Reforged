@@ -147,7 +147,7 @@ public class SlashBladeItemStacks {
                     .set(
                             SbDataComponentTypes.SLASH_BLADE_LOGIC.get(),
                             SlashBladeLogic.builder() // TODO SA
-                                    .key(SlashBladeNameConstants.SLASH_BLADE)
+                                    .key(SlashBladeNameConstants.NOBLE_TUKUMO_VIOLET)
                                     .attack(5)
                                     .build()
                     )
@@ -230,8 +230,8 @@ public class SlashBladeItemStacks {
                     .set(
                             SbDataComponentTypes.SLASH_BLADE_STYLE.get(),
                             SlashBladeStyle.builder()
-                                    .texture(R.Slashblade.Models.Named.Sange.sange$obj)
-                                    .model(R.Slashblade.Models.Named.Sange.black$png)
+                                    .texture(R.Slashblade.Models.Named.Sange.black$png)
+                                    .model(R.Slashblade.Models.Named.Sange.sange$obj)
                                     .build()
                     )
                     .build();
@@ -249,8 +249,8 @@ public class SlashBladeItemStacks {
                     .set(
                             SbDataComponentTypes.SLASH_BLADE_STYLE.get(),
                             SlashBladeStyle.builder()
-                                    .texture(R.Slashblade.Models.Named.Sange.sange$obj)
-                                    .model(R.Slashblade.Models.Named.Sange.white$png)
+                                    .texture(R.Slashblade.Models.Named.Sange.white$png)
+                                    .model(R.Slashblade.Models.Named.Sange.sange$obj)
                                     .build()
                     )
                     .build();
@@ -413,7 +413,7 @@ public class SlashBladeItemStacks {
                     .set(
                             SbDataComponentTypes.SLASH_BLADE_STYLE.get(),
                             SlashBladeStyle.builder()
-                                    .texture(R.Slashblade.Models.Named.Muramasa.sabigatana$png)
+                                    .texture(R.Slashblade.Models.Named.Muramasa.doutanuki$png)
                                     .model(R.Slashblade.Models.Named.Muramasa.muramasa$obj)
                                     .build()
                     )
@@ -433,8 +433,8 @@ public class SlashBladeItemStacks {
                     .set(
                             SbDataComponentTypes.SLASH_BLADE_STYLE.get(),
                             SlashBladeStyle.builder()
-                                    .texture(R.Slashblade.Models.Named.Dios.dios$png)
-                                    .model(R.Slashblade.Models.Named.Dios.koseki$png)
+                                    .texture(R.Slashblade.Models.Named.Dios.koseki$png)
+                                    .model(R.Slashblade.Models.Named.Dios.dios$obj)
                                     .build()
                     )
                     .build();
@@ -445,7 +445,7 @@ public class SlashBladeItemStacks {
                     .set(
                             SbDataComponentTypes.SLASH_BLADE_LOGIC.get(),
                             SlashBladeLogic.builder() // TODO SA
-                                    .attack(4f)
+                                    .attack(6f)
                                     .key(SlashBladeNameConstants.YAMATO)
                                     .build()
                     )
@@ -453,7 +453,7 @@ public class SlashBladeItemStacks {
                             SbDataComponentTypes.SLASH_BLADE_STYLE.get(),
                             SlashBladeStyle.builder()
                                     .texture(R.Slashblade.Models.Named.yamato$png)
-                                    .model(R.Slashblade.Models.Named.yamato$png)
+                                    .model(R.Slashblade.Models.Named.yamato$obj)
                                     .build()
                     )
                     .build();

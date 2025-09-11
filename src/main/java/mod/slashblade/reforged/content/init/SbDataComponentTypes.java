@@ -1,8 +1,8 @@
 package mod.slashblade.reforged.content.init;
 
 import mod.slashblade.reforged.SlashbladeMod;
-import mod.slashblade.reforged.content.data.PlayerInputCapability;
 import mod.slashblade.reforged.content.data.SlashBladeLogic;
+import mod.slashblade.reforged.content.data.SlashBladeMaterial;
 import mod.slashblade.reforged.content.data.SlashBladeStyle;
 import mod.slashblade.reforged.utils.constant.ByteBufCodecConstants;
 import mod.slashblade.reforged.utils.constant.CodecConstants;
@@ -141,6 +141,14 @@ public class SbDataComponentTypes {
                     .persistent(CodecConstants.PLAYER_INPUT_CAPABILITY)
                     .build()
     );*/
+
+    public static final Supplier<DataComponentType<SlashBladeMaterial>> SLASH_BLADE_MATERIAL = DATA_COMPONENTS.register(
+            "slash_blade_material",
+            () -> DataComponentType.<SlashBladeMaterial>builder()
+                    .persistent(CodecConstants.SLASH_BLADE_MATERIAL)
+                    .networkSynchronized(ByteBufCodecConstants.SLASH_BLADE_MATERIAL)
+                    .build()
+    );
 
     public static void register(IEventBus bus) {
         DATA_COMPONENTS.register(bus);

@@ -6,7 +6,7 @@
       "broken": false,
       "durable": 1024,
       "fragile": false,
-      "key": "",
+      "key": "named_golden_rodai",
       "kill": 0,
       "maxDurable": 1024,
       "proudSoul": 0,

@@ -1,13 +1,13 @@
 package mod.slashblade.reforged.content.init;
 
 import mod.slashblade.reforged.SlashbladeMod;
+import mod.slashblade.reforged.content.data.SlashBladeMaterial;
 import mod.slashblade.reforged.content.item.ProudSoulItem;
 import mod.slashblade.reforged.content.item.SlashBladeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tiers;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -31,12 +31,12 @@ public class SbItems {
             )
     );
 
-    public static final Supplier<Item> PROUD_SOUL = ITEMS.register("proud_soul", () -> new ProudSoulItem(new Item.Properties()));
-    public static final Supplier<Item> PROUD_SOUL_INGOT = ITEMS.register("proud_soul_ingot", () -> new ProudSoulItem(new Item.Properties()));
-    public static final Supplier<Item> PROUD_SOUL_TINY = ITEMS.register("proud_soul_tiny", () -> new ProudSoulItem(new Item.Properties()));
-    public static final Supplier<Item> PROUD_SOUL_SPHERE = ITEMS.register("proud_soul_sphere", () -> new ProudSoulItem(new Item.Properties()));
-    public static final Supplier<Item> PROUD_SOUL_CRYSTAL = ITEMS.register("proud_soul_crystal", () -> new ProudSoulItem(new Item.Properties()));
-    public static final Supplier<Item> PROUD_SOUL_TRAPEZOHEDRON = ITEMS.register("proud_soul_trapezohedron", () -> new ProudSoulItem(new Item.Properties()));
+    public static final Supplier<Item> PROUD_SOUL = ITEMS.register("proud_soul", () -> new ProudSoulItem(new Item.Properties(), new SlashBladeMaterial(128, 64)));
+    public static final Supplier<Item> PROUD_SOUL_INGOT = ITEMS.register("proud_soul_ingot", () -> new ProudSoulItem(new Item.Properties(), new SlashBladeMaterial(512, 512)));
+    public static final Supplier<Item> PROUD_SOUL_TINY = ITEMS.register("proud_soul_tiny", () -> new ProudSoulItem(new Item.Properties(), new SlashBladeMaterial(32, 16)));
+    public static final Supplier<Item> PROUD_SOUL_SPHERE = ITEMS.register("proud_soul_sphere", () -> new ProudSoulItem(new Item.Properties(), new SlashBladeMaterial(1024, 256)));
+    public static final Supplier<Item> PROUD_SOUL_CRYSTAL = ITEMS.register("proud_soul_crystal", () -> new ProudSoulItem(new Item.Properties(), new SlashBladeMaterial(2048, 1024)));
+    public static final Supplier<Item> PROUD_SOUL_TRAPEZOHEDRON = ITEMS.register("proud_soul_trapezohedron", () -> new ProudSoulItem(new Item.Properties(), new SlashBladeMaterial(2048, 2048)));
 
 
     public static void register(IEventBus bus) {

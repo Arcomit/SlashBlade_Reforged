@@ -6,16 +6,16 @@
       "value": {
         "components": {
           "slashblade_reforged:slash_blade_logic": {
-            "attack": 5,
+            "attack": 4,
             "attackDistance": 1,
             "broken": false,
             "durable": 4096,
             "fragile": false,
-            "key": "",
-            "kill": 0,
+            "key": "stone_rodai",
+            "kill": 1500,
             "maxDurable": 4096,
             "proudSoul": 0,
-            "refine": 0,
+            "refine": 20,
             "sealed": false,
             "specialRepair": false
           },
@@ -24,7 +24,7 @@
             "color": -13421569,
             "model": "slashblade_reforged:slashblade/models/blade.obj",
             "noScabbard": false,
-            "texture": "slashblade_reforged:slashblade/models/rodai_diamond.png"
+            "texture": "slashblade_reforged:slashblade/models/rodai_stone.png"
           }
         },
         "count": 1,
@@ -46,7 +46,7 @@
     "W": {
       "type": "slashblade_reforged:ingredient",
       "value": {
-        "item": "minecraft:netherite_sword"
+        "item": "minecraft:iron_sword"
       }
     }
   },
@@ -59,14 +59,14 @@
   "result": {
     "components": {
       "slashblade_reforged:slash_blade_logic": {
-        "attack": 5,
+        "attack": 4.5,
         "attackDistance": 1,
         "broken": false,
-        "durable": 8192,
+        "durable": 4096,
         "fragile": false,
-        "key": "",
+        "key": "named_steel_rodai",
         "kill": 0,
-        "maxDurable": 8192,
+        "maxDurable": 4096,
         "proudSoul": 0,
         "refine": 0,
         "sealed": false,
@@ -77,7 +77,7 @@
         "color": -13421569,
         "model": "slashblade_reforged:slashblade/models/blade.obj",
         "noScabbard": false,
-        "texture": "slashblade_reforged:slashblade/models/rodai_netherite.png"
+        "texture": "slashblade_reforged:slashblade/models/rodai_iron.png"
       }
     },
     "count": 1,

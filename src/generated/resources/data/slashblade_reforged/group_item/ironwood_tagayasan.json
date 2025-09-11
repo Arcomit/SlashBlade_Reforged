@@ -6,7 +6,7 @@
       "broken": false,
       "durable": 8192,
       "fragile": false,
-      "key": "",
+      "key": "ironwood_tagayasan",
       "kill": 0,
       "maxDurable": 8192,
       "proudSoul": 0,

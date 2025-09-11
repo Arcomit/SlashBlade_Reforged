@@ -6,25 +6,25 @@
       "value": {
         "components": {
           "slashblade_reforged:slash_blade_logic": {
-            "attack": 4.5,
+            "attack": 6,
             "attackDistance": 1,
-            "broken": false,
-            "durable": 4096,
+            "broken": true,
+            "durable": 0,
             "fragile": false,
-            "key": "",
+            "key": "yamato",
             "kill": 0,
             "maxDurable": 4096,
             "proudSoul": 0,
-            "refine": 0,
+            "refine": 100,
             "sealed": false,
-            "specialRepair": false
+            "specialRepair": true
           },
           "slashblade_reforged:slash_blade_style": {
             "carryType": "NAKED",
             "color": -13421569,
-            "model": "slashblade_reforged:slashblade/models/blade.obj",
+            "model": "slashblade_reforged:slashblade/models/named/yamato.obj",
             "noScabbard": false,
-            "texture": "slashblade_reforged:slashblade/models/rodai_iron.png"
+            "texture": "slashblade_reforged:slashblade/models/named/yamato.png"
           }
         },
         "count": 1,
@@ -34,39 +34,27 @@
     "S": {
       "type": "slashblade_reforged:ingredient",
       "value": {
-        "tag": "c:strings"
-      }
-    },
-    "T": {
-      "type": "slashblade_reforged:ingredient",
-      "value": {
-        "item": "slashblade_reforged:proud_soul_trapezohedron"
-      }
-    },
-    "W": {
-      "type": "slashblade_reforged:ingredient",
-      "value": {
-        "item": "minecraft:golden_sword"
+        "item": "slashblade_reforged:proud_soul_sphere"
       }
     }
   },
   "mainSlashBladeKey": "#",
   "pattern": [
-    "  T",
-    " # ",
-    "WS "
+    "SSS",
+    "S#S",
+    "SSS"
   ],
   "result": {
     "components": {
       "slashblade_reforged:slash_blade_logic": {
-        "attack": 5,
+        "attack": 6,
         "attackDistance": 1,
         "broken": false,
-        "durable": 1024,
+        "durable": 4096,
         "fragile": false,
-        "key": "",
+        "key": "yamato",
         "kill": 0,
-        "maxDurable": 1024,
+        "maxDurable": 4096,
         "proudSoul": 0,
         "refine": 0,
         "sealed": false,
@@ -75,9 +63,9 @@
       "slashblade_reforged:slash_blade_style": {
         "carryType": "NAKED",
         "color": -13421569,
-        "model": "slashblade_reforged:slashblade/models/blade.obj",
+        "model": "slashblade_reforged:slashblade/models/named/yamato.obj",
         "noScabbard": false,
-        "texture": "slashblade_reforged:slashblade/models/rodai_golden.png"
+        "texture": "slashblade_reforged:slashblade/models/named/yamato.png"
       }
     },
     "count": 1,

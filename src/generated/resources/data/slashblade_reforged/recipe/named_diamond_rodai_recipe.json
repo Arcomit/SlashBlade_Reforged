@@ -6,55 +6,67 @@
       "value": {
         "components": {
           "slashblade_reforged:slash_blade_logic": {
-            "attack": 3,
+            "attack": 5,
             "attackDistance": 1,
             "broken": false,
-            "durable": 2048,
+            "durable": 1024,
             "fragile": false,
-            "key": "",
-            "kill": 0,
-            "maxDurable": 2048,
+            "key": "named_golden_rodai",
+            "kill": 3000,
+            "maxDurable": 1024,
             "proudSoul": 0,
-            "refine": 0,
+            "refine": 100,
             "sealed": false,
             "specialRepair": false
           },
           "slashblade_reforged:slash_blade_style": {
             "carryType": "NAKED",
             "color": -13421569,
-            "model": "slashblade_reforged:slashblade/models/named/muramasa/muramasa.obj",
+            "model": "slashblade_reforged:slashblade/models/blade.obj",
             "noScabbard": false,
-            "texture": "slashblade_reforged:slashblade/models/named/muramasa/sabigatana.png"
+            "texture": "slashblade_reforged:slashblade/models/rodai_golden.png"
           }
         },
         "count": 1,
         "id": "slashblade_reforged:slash_blade"
       }
     },
-    "I": {
+    "S": {
       "type": "slashblade_reforged:ingredient",
       "value": {
-        "item": "slashblade_reforged:proud_soul_ingot"
+        "tag": "c:strings"
+      }
+    },
+    "T": {
+      "type": "slashblade_reforged:ingredient",
+      "value": {
+        "item": "slashblade_reforged:proud_soul_trapezohedron"
+      }
+    },
+    "W": {
+      "type": "slashblade_reforged:ingredient",
+      "value": {
+        "item": "minecraft:diamond_sword"
       }
     }
   },
   "mainSlashBladeKey": "#",
   "pattern": [
-    "  I",
-    " I ",
-    "#  "
+    "  T",
+    " # ",
+    "WS "
   ],
   "result": {
     "components": {
       "slashblade_reforged:slash_blade_logic": {
-        "attack": 3,
+        "attack": 5,
         "attackDistance": 1,
         "broken": false,
-        "durable": 2048,
+        "durable": 4096,
         "fragile": false,
-        "key": "",
+        "key": "named_diamond_rodai",
         "kill": 0,
-        "maxDurable": 2048,
+        "maxDurable": 4096,
         "proudSoul": 0,
         "refine": 0,
         "sealed": false,
@@ -63,9 +75,9 @@
       "slashblade_reforged:slash_blade_style": {
         "carryType": "NAKED",
         "color": -13421569,
-        "model": "slashblade_reforged:slashblade/models/named/muramasa/muramasa.obj",
+        "model": "slashblade_reforged:slashblade/models/blade.obj",
         "noScabbard": false,
-        "texture": "slashblade_reforged:slashblade/models/named/muramasa/sabigatana.png"
+        "texture": "slashblade_reforged:slashblade/models/rodai_diamond.png"
       }
     },
     "count": 1,

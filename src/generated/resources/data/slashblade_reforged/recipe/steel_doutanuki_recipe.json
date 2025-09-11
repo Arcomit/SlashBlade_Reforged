@@ -5,21 +5,16 @@
       "type": "slashblade_reforged:slash_blade",
       "value": {
         "components": {
-          "minecraft:enchantments": {
-            "levels": {
-              "minecraft:looting": 1
-            }
-          },
           "slashblade_reforged:slash_blade_logic": {
-            "attack": 4,
+            "attack": 3,
             "attackDistance": 1,
             "broken": false,
-            "durable": 4096,
+            "durable": 2048,
             "fragile": false,
-            "key": "",
-            "kill": 0,
-            "maxDurable": 4096,
-            "proudSoul": 0,
+            "key": "sabigatana",
+            "kill": 100,
+            "maxDurable": 2048,
+            "proudSoul": 1000,
             "refine": 0,
             "sealed": false,
             "specialRepair": false
@@ -27,58 +22,37 @@
           "slashblade_reforged:slash_blade_style": {
             "carryType": "NAKED",
             "color": -13421569,
-            "model": "slashblade_reforged:slashblade/models/blade.obj",
+            "model": "slashblade_reforged:slashblade/models/named/muramasa/muramasa.obj",
             "noScabbard": false,
-            "texture": "slashblade_reforged:slashblade/models/ruby.png"
+            "texture": "slashblade_reforged:slashblade/models/named/muramasa/sabigatana.png"
           }
         },
         "count": 1,
         "id": "slashblade_reforged:slash_blade"
       }
     },
-    "P": {
-      "type": "slashblade_reforged:ingredient",
-      "value": {
-        "item": "slashblade_reforged:proud_soul_trapezohedron"
-      }
-    },
     "S": {
       "type": "slashblade_reforged:ingredient",
       "value": {
-        "item": "slashblade_reforged:proud_soul"
-      }
-    },
-    "W": {
-      "type": "slashblade_reforged:ingredient",
-      "value": {
-        "tag": "c:crops/wheat"
+        "item": "slashblade_reforged:proud_soul_sphere"
       }
     }
   },
   "mainSlashBladeKey": "#",
   "pattern": [
-    "SPS",
-    "S#S",
-    "SWS"
+    "  S",
+    " # ",
+    "S  "
   ],
   "result": {
     "components": {
-      "minecraft:enchantments": {
-        "levels": {
-          "minecraft:bane_of_arthropods": 2,
-          "minecraft:fire_aspect": 2,
-          "minecraft:knockback": 2,
-          "minecraft:looting": 3,
-          "minecraft:unbreaking": 3
-        }
-      },
       "slashblade_reforged:slash_blade_logic": {
-        "attack": 5,
+        "attack": 4,
         "attackDistance": 1,
         "broken": false,
         "durable": 4096,
         "fragile": false,
-        "key": "",
+        "key": "steel_doutanuki",
         "kill": 0,
         "maxDurable": 4096,
         "proudSoul": 0,
@@ -89,9 +63,9 @@
       "slashblade_reforged:slash_blade_style": {
         "carryType": "NAKED",
         "color": -13421569,
-        "model": "slashblade_reforged:slashblade/models/named/sange/white.png",
+        "model": "slashblade_reforged:slashblade/models/named/muramasa/muramasa.obj",
         "noScabbard": false,
-        "texture": "slashblade_reforged:slashblade/models/named/sange/sange.obj"
+        "texture": "slashblade_reforged:slashblade/models/named/muramasa/doutanuki.png"
       }
     },
     "count": 1,

@@ -6,16 +6,16 @@
       "value": {
         "components": {
           "slashblade_reforged:slash_blade_logic": {
-            "attack": 4,
+            "attack": 4.5,
             "attackDistance": 1,
             "broken": false,
             "durable": 4096,
             "fragile": false,
-            "key": "",
-            "kill": 0,
+            "key": "named_steel_rodai",
+            "kill": 2000,
             "maxDurable": 4096,
             "proudSoul": 0,
-            "refine": 0,
+            "refine": 50,
             "sealed": false,
             "specialRepair": false
           },
@@ -24,7 +24,7 @@
             "color": -13421569,
             "model": "slashblade_reforged:slashblade/models/blade.obj",
             "noScabbard": false,
-            "texture": "slashblade_reforged:slashblade/models/rodai_stone.png"
+            "texture": "slashblade_reforged:slashblade/models/rodai_iron.png"
           }
         },
         "count": 1,
@@ -46,7 +46,7 @@
     "W": {
       "type": "slashblade_reforged:ingredient",
       "value": {
-        "item": "minecraft:iron_sword"
+        "item": "minecraft:golden_sword"
       }
     }
   },
@@ -59,14 +59,14 @@
   "result": {
     "components": {
       "slashblade_reforged:slash_blade_logic": {
-        "attack": 4.5,
+        "attack": 5,
         "attackDistance": 1,
         "broken": false,
-        "durable": 4096,
+        "durable": 1024,
         "fragile": false,
-        "key": "",
+        "key": "named_golden_rodai",
         "kill": 0,
-        "maxDurable": 4096,
+        "maxDurable": 1024,
         "proudSoul": 0,
         "refine": 0,
         "sealed": false,
@@ -77,7 +77,7 @@
         "color": -13421569,
         "model": "slashblade_reforged:slashblade/models/blade.obj",
         "noScabbard": false,
-        "texture": "slashblade_reforged:slashblade/models/rodai_iron.png"
+        "texture": "slashblade_reforged:slashblade/models/rodai_golden.png"
       }
     },
     "count": 1,

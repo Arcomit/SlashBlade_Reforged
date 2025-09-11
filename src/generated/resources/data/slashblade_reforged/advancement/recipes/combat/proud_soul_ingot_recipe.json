@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "slashblade_reforged:steel_doutanuki"
+        "recipe": "slashblade_reforged:proud_soul_ingot_recipe"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -15,7 +15,7 @@
   ],
   "rewards": {
     "recipes": [
-      "slashblade_reforged:steel_doutanuki"
+      "slashblade_reforged:proud_soul_ingot_recipe"
     ]
   }
 }
