@@ -8,9 +8,9 @@
           "slashblade_reforged:slash_blade_logic": {
             "attack": 3,
             "attackDistance": 1,
-            "broken": true,
+            "broken": false,
             "durable": 4096,
-            "fragile": false,
+            "fragile": true,
             "key": "anonymity_bamboo_light",
             "kill": 0,
             "maxDurable": 4096,

@@ -1,0 +1,50 @@
+{
+  "type": "slashblade_reforged:slashblade_recipe",
+  "key": {
+    "A": {
+      "type": "slashblade_reforged:ingredient",
+      "value": {
+        "tag": "minecraft:logs"
+      }
+    },
+    "S": {
+      "type": "slashblade_reforged:ingredient",
+      "value": {
+        "item": "minecraft:wooden_sword"
+      }
+    }
+  },
+  "mainSlashBladeKey": "~",
+  "pattern": [
+    "  A",
+    " A ",
+    "S  "
+  ],
+  "result": {
+    "components": {
+      "slashblade_reforged:slash_blade_logic": {
+        "attack": 3,
+        "attackDistance": 1,
+        "broken": false,
+        "durable": 512,
+        "fragile": true,
+        "key": "anonymity_wood",
+        "kill": 0,
+        "maxDurable": 512,
+        "proudSoul": 0,
+        "refine": 0,
+        "sealed": false,
+        "specialRepair": false
+      },
+      "slashblade_reforged:slash_blade_style": {
+        "carryType": "NAKED",
+        "color": -13421569,
+        "model": "slashblade_reforged:slashblade/models/blade.obj",
+        "noScabbard": false,
+        "texture": "slashblade_reforged:slashblade/models/wood.png"
+      }
+    },
+    "count": 1,
+    "id": "slashblade_reforged:slash_blade"
+  }
+}

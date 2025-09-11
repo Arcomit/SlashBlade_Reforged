@@ -5,23 +5,27 @@ import mod.slashblade.reforged.content.config.SbConfig;
 import mod.slashblade.reforged.content.data.KeyInput;
 import mod.slashblade.reforged.content.data.SlashBladeLogic;
 import mod.slashblade.reforged.content.data.SlashBladeStyle;
-import mod.slashblade.reforged.content.data.capabilitie.IPlayerInputCapability;
-import mod.slashblade.reforged.content.entity.LightningEntity;
+import mod.slashblade.reforged.content.data.capabilitie.ILockTarget;
+import mod.slashblade.reforged.content.data.capabilitie.IInputCapability;
 import mod.slashblade.reforged.content.entity.SummondSwordEntity;
-import mod.slashblade.reforged.content.event.key.KeyEvent;
 import mod.slashblade.reforged.content.event.key.KeyInputEvent;
+import mod.slashblade.reforged.content.event.key.KeyUpdateEvent;
+import mod.slashblade.reforged.content.init.SbAttachmentTypes;
+import mod.slashblade.reforged.content.init.SbCapabilities;
 import mod.slashblade.reforged.content.init.SbDataComponentTypes;
 import mod.slashblade.reforged.content.init.SbEntityType;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 
-import java.util.Random;
+import java.util.Comparator;
 
 @EventBusSubscriber(modid = SlashbladeMod.MODID)
 public class KeyHelper {
@@ -37,6 +41,10 @@ public class KeyHelper {
         }
 
         LivingEntity livingEntity = keyInputEvent.getLivingEntity();
+
+        if (livingEntity.level().isClientSide()) {
+            return;
+        }
 
         ItemStack mainHandItem = livingEntity.getMainHandItem();
         SlashBladeLogic slashBladeLogic = mainHandItem.get(SbDataComponentTypes.SLASH_BLADE_LOGIC);
@@ -66,7 +74,11 @@ public class KeyHelper {
             return;
         }
 
-        IPlayerInputCapability playerInputCapability = keyInputEvent.getPlayerInputCapability();
+        if (keyInputEvent.getLivingEntity().level().isClientSide()) {
+            return;
+        }
+
+        IInputCapability playerInputCapability = keyInputEvent.getPlayerInputCapability();
 
         if (!playerInputCapability.isDown(KeyInput.SNEAK)) {
             return;
@@ -249,6 +261,10 @@ public class KeyHelper {
 
         LivingEntity livingEntity = keyInputEvent.getLivingEntity();
 
+        if (livingEntity.level().isClientSide()) {
+            return;
+        }
+
         ItemStack mainHandItem = livingEntity.getMainHandItem();
         SlashBladeLogic slashBladeLogic = mainHandItem.get(SbDataComponentTypes.SLASH_BLADE_LOGIC);
         SlashBladeStyle slashBladeStyle = mainHandItem.get(SbDataComponentTypes.SLASH_BLADE_STYLE);
@@ -260,6 +276,61 @@ public class KeyHelper {
         AttackHelper.doSlash(livingEntity, livingEntity.getRandom().nextInt(360), Vec3.ZERO, 0.5, 1, null);
 
     }
+
+
+    @SubscribeEvent
+    protected static void onInputChange(KeyUpdateEvent event) {
+        LivingEntity livingEntity = event.getLivingEntity();
+
+        if (livingEntity.level().isClientSide()) {
+            return;
+        }
+
+        ItemStack itemStack = livingEntity.getMainHandItem();
+
+        SlashBladeLogic slashBladeLogic = itemStack.get(SbDataComponentTypes.SLASH_BLADE_LOGIC);
+        if (slashBladeLogic == null) {
+            return;
+        }
+
+        ILockTarget lockTarget = livingEntity.getCapability(SbCapabilities.LOCK_TARGET);
+
+        if (lockTarget == null) {
+            return;
+        }
+
+        if (!event.getDownMap().get(KeyInput.SNEAK)) {
+            lockTarget.setTargetEntity(null);
+            return;
+        }
+
+
+        Entity targetEntity = lockTarget.getTargetEntity();
+        if (targetEntity != null && !targetEntity.isAlive()) {
+            targetEntity = null;
+        }
+
+        if (targetEntity == null) {
+            HitResult selector = TargetSelectorHelper.selector(livingEntity, 64);
+            if (selector.getType() == HitResult.Type.ENTITY) {
+                EntityHitResult entityHitResult = ((EntityHitResult) selector);
+                targetEntity = entityHitResult.getEntity();
+            }
+        }
+
+        if (targetEntity == null) {
+            targetEntity = EntityHelper.getTargettableEntitiesWithinAABB(livingEntity.level(), livingEntity, new Vec3(livingEntity.getX(), livingEntity.getY(), livingEntity.getZ()), 32)
+                    .stream().
+                    min(Comparator.comparingDouble(e -> e.distanceTo(livingEntity)))
+                    .orElse(null);
+        }
+
+        lockTarget.setTargetEntity(targetEntity);
+
+        livingEntity.syncData(SbAttachmentTypes.LOCK_TARGET);
+    }
+
+
 }
 
 

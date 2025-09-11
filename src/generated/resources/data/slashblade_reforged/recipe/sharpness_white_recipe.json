@@ -9,11 +9,11 @@
             "attack": 3,
             "attackDistance": 1,
             "broken": false,
-            "durable": 1024,
-            "fragile": false,
-            "key": "sharpness_white",
+            "durable": 512,
+            "fragile": true,
+            "key": "anonymity_wood",
             "kill": 0,
-            "maxDurable": 1024,
+            "maxDurable": 512,
             "proudSoul": 0,
             "refine": 0,
             "sealed": false,
@@ -24,7 +24,7 @@
             "color": -13421569,
             "model": "slashblade_reforged:slashblade/models/blade.obj",
             "noScabbard": false,
-            "texture": "slashblade_reforged:slashblade/models/white.png"
+            "texture": "slashblade_reforged:slashblade/models/wood.png"
           }
         },
         "count": 1,
@@ -34,7 +34,13 @@
     "A": {
       "type": "slashblade_reforged:ingredient",
       "value": {
-        "tag": "minecraft:panda_food"
+        "tag": "c:ingots/iron"
+      }
+    },
+    "B": {
+      "type": "slashblade_reforged:ingredient",
+      "value": {
+        "tag": "c:ingots/gold"
       }
     }
   },
@@ -42,7 +48,7 @@
   "pattern": [
     "  A",
     " A ",
-    "#  "
+    "#B "
   ],
   "result": {
     "components": {
@@ -50,11 +56,11 @@
         "attack": 3,
         "attackDistance": 1,
         "broken": false,
-        "durable": 4096,
-        "fragile": true,
-        "key": "anonymity_bamboo_light",
+        "durable": 1024,
+        "fragile": false,
+        "key": "sharpness_white",
         "kill": 0,
-        "maxDurable": 4096,
+        "maxDurable": 1024,
         "proudSoul": 0,
         "refine": 0,
         "sealed": false,
@@ -65,7 +71,7 @@
         "color": -13421569,
         "model": "slashblade_reforged:slashblade/models/blade.obj",
         "noScabbard": false,
-        "texture": "slashblade_reforged:slashblade/models/bamboo.png"
+        "texture": "slashblade_reforged:slashblade/models/white.png"
       }
     },
     "count": 1,

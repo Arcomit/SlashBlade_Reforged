@@ -18,7 +18,7 @@ import javax.annotation.Nullable;
 @Setter
 public class LockTarget implements ILockTarget, INBTSerializable<Tag> {
 
-
+    @SaveField
     @Nullable
     public Entity targetEntity;
 

@@ -3,14 +3,12 @@ package mod.slashblade.reforged.content.init;
 
 import mod.slashblade.reforged.SlashbladeMod;
 import mod.slashblade.reforged.content.data.capabilitie.ILockTarget;
-import mod.slashblade.reforged.content.data.capabilitie.IPlayerInputCapability;
-import mod.slashblade.reforged.content.data.capabilitie.ISlashBladeMaterial;
+import mod.slashblade.reforged.content.data.capabilitie.IInputCapability;
 import net.minecraft.world.entity.EntityType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.capabilities.EntityCapability;
-import net.neoforged.neoforge.capabilities.ItemCapability;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 
 /**
@@ -20,10 +18,10 @@ import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 @EventBusSubscriber(modid = SlashbladeMod.MODID)
 public class SbCapabilities {
 
-    public static final EntityCapability<IPlayerInputCapability, Void> PLAYER_INPUT_CAPABILITY =
+    public static final EntityCapability<IInputCapability, Void> INPUT_CAPABILITY =
             EntityCapability.createVoid(
-                    SlashbladeMod.prefix("player_input_capability"),
-                    IPlayerInputCapability.class
+                    SlashbladeMod.prefix("input_capability"),
+                    IInputCapability.class
             );
 
     public static final EntityCapability<ILockTarget, Void> LOCK_TARGET =
@@ -40,7 +38,7 @@ public class SbCapabilities {
 
     @SubscribeEvent
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
-        event.registerEntity(PLAYER_INPUT_CAPABILITY, EntityType.PLAYER, (e, c) -> e.getData(SbAttachmentTypes.PLAYER_INPUT_CAPABILITY));
+        event.registerEntity(INPUT_CAPABILITY, EntityType.PLAYER, (e, c) -> e.getData(SbAttachmentTypes.INPUT_CAPABILITY));
         event.registerEntity(LOCK_TARGET, EntityType.PLAYER, (e, c) -> e.getData(SbAttachmentTypes.LOCK_TARGET));
 
         /*event.registerItem(SLASH_BLADE_MATERIAL,

@@ -4,11 +4,11 @@
       "attack": 3,
       "attackDistance": 1,
       "broken": false,
-      "durable": 4096,
+      "durable": 512,
       "fragile": true,
-      "key": "anonymity_bamboo_light",
+      "key": "anonymity_wood",
       "kill": 0,
-      "maxDurable": 4096,
+      "maxDurable": 512,
       "proudSoul": 0,
       "refine": 0,
       "sealed": false,
@@ -19,7 +19,7 @@
       "color": -13421569,
       "model": "slashblade_reforged:slashblade/models/blade.obj",
       "noScabbard": false,
-      "texture": "slashblade_reforged:slashblade/models/bamboo.png"
+      "texture": "slashblade_reforged:slashblade/models/wood.png"
     }
   },
   "count": 1,

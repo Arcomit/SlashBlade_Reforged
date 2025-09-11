@@ -1,12 +1,13 @@
 package mod.slashblade.reforged.content.data;
 
-import mod.slashblade.reforged.content.data.capabilitie.IPlayerInputCapability;
+import mod.slashblade.reforged.content.data.capabilitie.IInputCapability;
 import mod.slashblade.reforged.content.data.network.KeyInputPack;
 import mod.slashblade.reforged.content.event.key.KeyInputEvent;
 import mod.slashblade.reforged.content.event.key.KeyUpdateEvent;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.INBTSerializable;
@@ -15,16 +16,16 @@ import org.jetbrains.annotations.UnknownNullability;
 
 import java.util.EnumMap;
 
-public class PlayerInputCapability implements IPlayerInputCapability, INBTSerializable<Tag> {
+public class InputCapability implements IInputCapability, INBTSerializable<Tag> {
 
-    final Player player;
+    final LivingEntity livingEntity;
     final EnumMap<KeyInput, Boolean> downMap;
     final EnumMap<KeyInput, Integer> holdMap;
     final EnumMap<KeyInput, Boolean> holdMemoryMap;
 
 
-    public PlayerInputCapability(Player player) {
-        this.player = player;
+    public InputCapability(LivingEntity livingEntity) {
+        this.livingEntity = livingEntity;
         downMap = new EnumMap<>(KeyInput.class);
         holdMap = new EnumMap<>(KeyInput.class);
         holdMemoryMap = new EnumMap<>(KeyInput.class);
@@ -39,7 +40,7 @@ public class PlayerInputCapability implements IPlayerInputCapability, INBTSerial
     public void acceptNewInput(KeyInputPack keyInputPack) {
         EnumMap<KeyInput, Boolean> oldDown = new EnumMap<>(downMap);
         EnumMap<KeyInput, Boolean> newDown = keyInputPack.getIsDown();
-        NeoForge.EVENT_BUS.post(new KeyUpdateEvent(player, this, newDown));
+        NeoForge.EVENT_BUS.post(new KeyUpdateEvent(livingEntity, this, newDown));
 
         for(KeyInput key : KeyInput.values()) {
             downMap.put(key, newDown.get(key));
@@ -48,20 +49,20 @@ public class PlayerInputCapability implements IPlayerInputCapability, INBTSerial
         for(KeyInput key : KeyInput.values()) {
             if (oldDown.get(key) && !newDown.get(key)) {
                 if (isLongHold(key)) {
-                    NeoForge.EVENT_BUS.post(new KeyInputEvent(player, this, key, KeyInputEvent.KeyType.HOLD_UP));
+                    NeoForge.EVENT_BUS.post(new KeyInputEvent(livingEntity, this, key, KeyInputEvent.KeyType.HOLD_UP));
                 }
-                NeoForge.EVENT_BUS.post(new KeyInputEvent(player, this, key, KeyInputEvent.KeyType.UP));
+                NeoForge.EVENT_BUS.post(new KeyInputEvent(livingEntity, this, key, KeyInputEvent.KeyType.UP));
                 holdMap.put(key, 0);
                 holdMemoryMap.put(key, false);
                 continue;
             }
             if (!oldDown.get(key) && newDown.get(key)) {
-                NeoForge.EVENT_BUS.post(new KeyInputEvent(player, this, key, KeyInputEvent.KeyType.DOWN));
+                NeoForge.EVENT_BUS.post(new KeyInputEvent(livingEntity, this, key, KeyInputEvent.KeyType.DOWN));
                 continue;
             }
             holdMap.put(key, holdMap.get(key) + 1);
             if (isLongHold(key) && !holdMemoryMap.get(key)) {
-                NeoForge.EVENT_BUS.post(new KeyInputEvent(player, this, key, KeyInputEvent.KeyType.HOLD));
+                NeoForge.EVENT_BUS.post(new KeyInputEvent(livingEntity, this, key, KeyInputEvent.KeyType.HOLD));
                 holdMemoryMap.put(key, true);
             }
         }

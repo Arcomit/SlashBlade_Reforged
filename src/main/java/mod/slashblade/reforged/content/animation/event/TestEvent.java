@@ -13,7 +13,7 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
  * @CreateTime: 2025-08-31 15:21
  * @Description: TODO
  */
-@EventBusSubscriber(modid = SlashbladeMod.MODID)
+//@EventBusSubscriber(modid = SlashbladeMod.MODID)
 public class TestEvent {
 /*
 
@@ -33,8 +33,4 @@ public class TestEvent {
     }
 */
 
-    @SubscribeEvent
-    public static void testKeyInputEvent(KeyInputEvent event) {
-        SlashbladeMod.LOGGER.debug("{} is {} from {}", event.getKeyInput(), event.getKeyType(), event.getPlayerInputCapability());
-    }
 }

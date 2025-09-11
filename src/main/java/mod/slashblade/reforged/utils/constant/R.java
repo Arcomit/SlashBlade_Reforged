@@ -189,6 +189,12 @@ public class R {
         public static final ResourceLocation texture = ResourceLocation.fromNamespaceAndPath("slashblade_reforged", "special/texture");
         public static final ResourceLocation texture$png = ResourceLocation.fromNamespaceAndPath("slashblade_reforged", "special/texture.png");
 
+        public static class Lockon {
+            public static final ResourceLocation lockon = ResourceLocation.fromNamespaceAndPath("slashblade_reforged", "special/lockon/lockon");
+            public static final ResourceLocation lockon$obj = ResourceLocation.fromNamespaceAndPath("slashblade_reforged", "special/lockon/lockon.obj");
+            public static final ResourceLocation lockon$png = ResourceLocation.fromNamespaceAndPath("slashblade_reforged", "special/lockon/lockon.png");
+        }
+
         public static class Slash {
             public static final ResourceLocation model = ResourceLocation.fromNamespaceAndPath("slashblade_reforged", "special/slash/model");
             public static final ResourceLocation model$obj = ResourceLocation.fromNamespaceAndPath("slashblade_reforged", "special/slash/model.obj");

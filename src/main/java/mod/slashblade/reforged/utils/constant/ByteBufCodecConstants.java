@@ -4,6 +4,7 @@ package mod.slashblade.reforged.utils.constant;
 import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
 import mod.slashblade.reforged.SlashbladeMod;
+import mod.slashblade.reforged.content.client.util.ClientUtil;
 import mod.slashblade.reforged.content.data.*;
 import mod.slashblade.reforged.content.data.network.KeyInputPack;
 import mod.slashblade.reforged.content.entity.SummondSwordEntity;
@@ -20,6 +21,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.NotNull;
@@ -53,10 +55,27 @@ public class ByteBufCodecConstants {
             buffer.writeInt(value.getRGB());
         }
     };
+    public static final StreamCodec<ByteBuf, Entity> ENTITY_CLIENT_SIDE = new StreamCodec<ByteBuf, Entity>() {
+        @SuppressWarnings("NullableProblems")
+        @Override
+        @Nullable
+        public Entity decode(ByteBuf buffer) {
+            return ClientUtil.getEntityById(buffer.readInt());
+        }
+
+        @Override
+        public void encode(ByteBuf buffer, @Nullable Entity value) {
+            buffer.writeInt(
+                    value == null
+                            ? -1
+                            : value.getId()
+            );
+        }
+    };
     public static final StreamCodec<ByteBuf, SlashBladeLogic> SLASH_BLADE_LOGIC = new DataStreamCodec<>(SlashBladeLogic.class);
     public static final StreamCodec<ByteBuf, SlashBladeStyle> SLASH_BLADE_STYLE = new DataStreamCodec<>(SlashBladeStyle.class);
-
     public static final StreamCodec<ByteBuf, SlashBladeMaterial> SLASH_BLADE_MATERIAL = new DataStreamCodec<>(SlashBladeMaterial.class);
+    public static final StreamCodec<ByteBuf, LockTarget> LOCK_TARGET = new DataStreamCodec<>(LockTarget.class);
 
     public static final StreamCodec<ByteBuf, KeyInput> KEY_INPUT = new EnumStreamCodec<>(KeyInput.class);
     public static final StreamCodec<ByteBuf, EnumMap<KeyInput, Boolean>> KEY_INPUT_MAP = new StreamCodec<>() {
@@ -183,6 +202,8 @@ public class ByteBufCodecConstants {
         // 自定义数据类型
         BASIC_TYPE_CODEC_MAP.put(SlashBladeLogic.class, SLASH_BLADE_LOGIC);
         BASIC_TYPE_CODEC_MAP.put(SlashBladeStyle.class, SLASH_BLADE_STYLE);
+
+        BASIC_TYPE_CODEC_MAP.put(Entity.class, ENTITY_CLIENT_SIDE);
 
     }
 

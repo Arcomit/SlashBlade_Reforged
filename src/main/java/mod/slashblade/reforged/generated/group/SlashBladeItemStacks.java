@@ -40,7 +40,7 @@ public class SlashBladeItemStacks {
                                     .key(SlashBladeNameConstants.ANONYMITY_WOOD)
                                     .attack(3)
                                     .maxDurable(512)
-                                    .broken(true)
+                                    .fragile(true)
                                     .build()
                     )
                     .set(
@@ -59,7 +59,7 @@ public class SlashBladeItemStacks {
                             SlashBladeLogic.builder()
                                     .key(SlashBladeNameConstants.ANONYMITY_BAMBOO_LIGHT)
                                     .attack(3)
-                                    .broken(true)
+                                    .fragile(true)
                                     .build()
                     )
                     .set(
