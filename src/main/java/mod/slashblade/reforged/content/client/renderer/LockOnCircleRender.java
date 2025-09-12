@@ -171,7 +171,6 @@ public class LockOnCircleRender {
     }
 
 
-    @SuppressWarnings("rawtypes")
     @SubscribeEvent
     public static void onInputChange(RenderFrameEvent.Pre event) {
         Player player = Minecraft.getInstance().player;

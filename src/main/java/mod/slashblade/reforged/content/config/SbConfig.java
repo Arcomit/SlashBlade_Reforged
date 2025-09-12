@@ -62,6 +62,7 @@ public class SbConfig {
 
         // Summoned sword configuration
         public final ModConfigSpec.ConfigValue<Double> ordinaryAttack;
+        public final ModConfigSpec.ConfigValue<Double> teleportationAttack;
         public final ModConfigSpec.ConfigValue<Double> blisteringAttack;
         public final ModConfigSpec.ConfigValue<Integer> blisteringAttackNumber;
         public final ModConfigSpec.ConfigValue<Double> heavyRainAttack;
@@ -244,6 +245,10 @@ public class SbConfig {
             ordinaryAttack = builder
                     .comment("Ordinary attack damage")
                     .define("ordinary_attack", 0.15);
+
+            teleportationAttack = builder
+                    .comment("Teleportation attack damage")
+                    .define("teleportation_attack", 0.01);
 
             blisteringAttack = builder
                     .comment("Blistering attack damage")

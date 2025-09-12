@@ -247,7 +247,7 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
         }
     }
 
-    protected void onHitBlock(BlockHitResult blockHitResult) {
+    public void onHitBlock(BlockHitResult blockHitResult) {
         inBlockState = level().getBlockState(blockHitResult.getBlockPos());
         setActionType(ActionType.HIT_GROUND);
         lerpMotion(0, 0, 0);
@@ -262,7 +262,7 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
         attackBlockCallbackPoint.call(a -> a.attackBlock(inBlockState, blockHitResult.getBlockPos()));
     }
 
-    protected void onHitEntity(Entity targetEntity, SummondAttackType summondAttackType) {
+    public void onHitEntity(Entity targetEntity, SummondAttackType summondAttackType) {
         if (pierce != null && pierce.contains(targetEntity.getId())) {
             return;
         }

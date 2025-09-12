@@ -14,33 +14,46 @@ import mod.slashblade.reforged.content.init.SbAttachmentTypes;
 import mod.slashblade.reforged.content.init.SbCapabilities;
 import mod.slashblade.reforged.content.init.SbDataComponentTypes;
 import mod.slashblade.reforged.content.init.SbEntityType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.TicketType;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.Set;
 
 @EventBusSubscriber(modid = SlashbladeMod.MODID)
 public class KeyHelper {
 
     @SubscribeEvent
-    public static void onSummoningSummondSword(KeyInputEvent keyInputEvent) {
-        if (keyInputEvent.getKeyInput() != KeyInput.SUMMONING_SUMMOND_SWORD) {
+    public static void onSummoningSummondSword(KeyInputEvent event) {
+        if (event.getKeyInput() != KeyInput.SUMMONING_SUMMOND_SWORD) {
             return;
         }
 
-        if (keyInputEvent.getKeyType() != KeyInputEvent.KeyType.DOWN) {
+        if (event.getKeyType() != KeyInputEvent.KeyType.DOWN) {
             return;
         }
 
-        LivingEntity livingEntity = keyInputEvent.getLivingEntity();
+        LivingEntity livingEntity = event.getLivingEntity();
 
         if (livingEntity.level().isClientSide()) {
             return;
@@ -65,26 +78,26 @@ public class KeyHelper {
 
 
     @SubscribeEvent
-    public static void onSwordSkills(KeyInputEvent keyInputEvent) {
-        if (keyInputEvent.getKeyInput() != KeyInput.SUMMONING_SUMMOND_SWORD) {
+    public static void onSwordSkills(KeyInputEvent event) {
+        if (event.getKeyInput() != KeyInput.SUMMONING_SUMMOND_SWORD) {
             return;
         }
 
-        if (keyInputEvent.getKeyType() != KeyInputEvent.KeyType.HOLD) {
+        if (event.getKeyType() != KeyInputEvent.KeyType.HOLD) {
             return;
         }
 
-        if (keyInputEvent.getLivingEntity().level().isClientSide()) {
+        if (event.getLivingEntity().level().isClientSide()) {
             return;
         }
 
-        IInputCapability playerInputCapability = keyInputEvent.getPlayerInputCapability();
+        IInputCapability playerInputCapability = event.getPlayerInputCapability();
 
         if (!playerInputCapability.isDown(KeyInput.SNEAK)) {
             return;
         }
 
-        LivingEntity livingEntity = keyInputEvent.getLivingEntity();
+        LivingEntity livingEntity = event.getLivingEntity();
 
         ItemStack mainHandItem = livingEntity.getMainHandItem();
         SlashBladeLogic slashBladeLogic = mainHandItem.get(SbDataComponentTypes.SLASH_BLADE_LOGIC);
@@ -107,7 +120,7 @@ public class KeyHelper {
                     SbConfig.COMMON.heavyRainOffsetY.get(),
                     SbConfig.COMMON.heavyRainOffsetZ.get()
             );
-            RandomSource random = keyInputEvent.getLivingEntity().getRandom();
+            RandomSource random = event.getLivingEntity().getRandom();
 
             int amount = SbConfig.COMMON.heavyRainAttackNumber.get();
 
@@ -241,6 +254,7 @@ public class KeyHelper {
 
     }
 
+
     public static float ofBlisteringOffset(int i, int maxAmount) {
         float maxOffset = 0.5f;
         float minOffset = -0.25f;
@@ -248,6 +262,156 @@ public class KeyHelper {
         return maxOffset - ratio * (maxOffset - minOffset);
     }
 
+    @SubscribeEvent
+    public static void onTeleportation(KeyInputEvent event) {
+
+        if (event.getLivingEntity().level().isClientSide()) {
+            return;
+        }
+
+        if (event.getKeyType() != KeyInputEvent.KeyType.DOWN) {
+            return;
+        }
+
+        LivingEntity livingEntity = event.getLivingEntity();
+
+        ItemStack mainHandItem = livingEntity.getMainHandItem();
+        SlashBladeLogic slashBladeLogic = mainHandItem.get(SbDataComponentTypes.SLASH_BLADE_LOGIC);
+        SlashBladeStyle slashBladeStyle = mainHandItem.get(SbDataComponentTypes.SLASH_BLADE_STYLE);
+
+        if (slashBladeLogic == null || slashBladeStyle == null) {
+            return;
+        }
+
+        livingEntity.playSound(SoundEvents.CHORUS_FRUIT_TELEPORT, 0.2F, 1.45F);
+
+        IInputCapability playerInputCapability = event.getPlayerInputCapability();
+        if (
+                !playerInputCapability.isDown(KeyInput.FORWARD)
+                        || !playerInputCapability.isDown(KeyInput.SNEAK)
+                        || !playerInputCapability.isDown(KeyInput.SPECIAL_OPERATION)
+        ) {
+            return;
+        }
+
+        SummondSwordEntity summondSwordEntity = new SummondSwordEntity(
+                SbEntityType.SUMMOND_SWORD_ENTITY.get(),
+                livingEntity.level(),
+                livingEntity
+        );
+
+        slashBladeStyle.decorate(summondSwordEntity);
+        summondSwordEntity.setDamage(SbConfig.COMMON.teleportationAttack.get());
+        summondSwordEntity.setStartDelay(0);
+
+        summondSwordEntity.attackActionCallbackPoint.register(e -> {
+            if (e instanceof LivingEntity living) {
+                doTeleport(livingEntity, living);
+            }
+        });
+
+        ILockTarget lockTarget = livingEntity.getCapability(SbCapabilities.LOCK_TARGET);
+
+        if (lockTarget != null && lockTarget.getTargetEntity() != null) {
+            Entity targetEntity = lockTarget.getTargetEntity();
+            Vec3 entityPosition = EntityHelper.getEntityPosition(targetEntity);
+            summondSwordEntity.setPos(entityPosition);
+            summondSwordEntity.onHitEntity(targetEntity, SummondSwordEntity.SummondAttackType.HIT);
+        }
+
+        livingEntity.level().addFreshEntity(summondSwordEntity);
+
+    }
+
+    protected static void doTeleport(Entity entityIn, LivingEntity target) {
+        if (!(entityIn.level() instanceof ServerLevel)) return;
+
+        if (entityIn instanceof Player player) {
+            player.playSound(SoundEvents.ENDERMAN_TELEPORT, 0.75F, 1.25F);
+
+            // Note: The old capability system has been removed in 1.21
+            // This part needs to be updated to use the new data component system
+            // Commenting out for now as it references non-existent classes
+            /*
+            player.getMainHandItem().getCapability(ItemSlashBlade.BLADESTATE)
+                    .ifPresent(state -> state.updateComboSeq(player, state.getComboRootAir()));
+            */
+
+            //Untouchable.setUntouchable(player, 10);
+        }
+
+        ServerLevel worldIn = (ServerLevel) entityIn.level();
+
+        Vec3 teleportPos = target.position().add(0, target.getBbHeight() / 2.0, 0).add(entityIn.getLookAngle().scale(-2.0));
+
+        double x = teleportPos.x();
+        double y = teleportPos.y();
+        double z = teleportPos.z();
+        float yaw = entityIn.getYRot();
+        float pitch = entityIn.getXRot();
+
+        // In 1.21, the SPlayerPositionLookPacket.Flags is not used the same way
+        // We use a simpler approach for teleportation
+        BlockPos blockpos = BlockPos.containing(x, y, z);
+        
+        if (entityIn instanceof ServerPlayer serverPlayer) {
+            ChunkPos chunkpos = new ChunkPos(blockpos);
+            worldIn.getChunkSource().addRegionTicket(TicketType.POST_TELEPORT, chunkpos, 1, entityIn.getId());
+            entityIn.stopRiding();
+            
+            if (serverPlayer.isSleeping()) {
+                serverPlayer.stopSleepInBed(true, true);
+            }
+
+            if (worldIn == entityIn.level()) {
+                // For same-dimension teleportation
+                serverPlayer.teleportTo(x, y, z);
+                serverPlayer.setYRot(yaw);
+                serverPlayer.setXRot(pitch);
+            } else {
+                // For cross-dimension teleportation
+                serverPlayer.teleportTo(worldIn, x, y, z, yaw, pitch);
+            }
+
+            entityIn.setYHeadRot(yaw);
+        } else {
+            float f1 = Mth.wrapDegrees(yaw);
+            float f = Mth.wrapDegrees(pitch);
+            f = Mth.clamp(f, -90.0F, 90.0F);
+            if (worldIn == entityIn.level()) {
+                entityIn.setPos(x, y, z);
+                entityIn.setYRot(f1);
+                entityIn.setXRot(f);
+                entityIn.setYHeadRot(f1);
+            } else {
+                entityIn.unRide();
+                Entity entity = entityIn;
+                entityIn = entityIn.getType().create(worldIn);
+                if (entityIn == null) {
+                    return;
+                }
+
+                // Note: copyDataFromOld method may not exist in 1.21
+                // This would need to be handled differently in the new version
+                entityIn.setPos(x, y, z);
+                entityIn.setYRot(f1);
+                entityIn.setXRot(f);
+                entityIn.setYHeadRot(f1);
+                worldIn.addFreshEntity(entityIn);
+            }
+        }
+
+        if (!(entityIn instanceof LivingEntity) || !((LivingEntity) entityIn).isFallFlying()) {
+            entityIn.setDeltaMovement(entityIn.getDeltaMovement().multiply(1.0D, 0.0D, 1.0D));
+            entityIn.setOnGround(false);
+        }
+
+        if (entityIn instanceof PathfinderMob) {
+            ((PathfinderMob) entityIn).getNavigation().stop();
+        }
+
+
+    }
 
     @SubscribeEvent
     public static void onAttackTest(KeyInputEvent keyInputEvent) {
@@ -279,7 +443,7 @@ public class KeyHelper {
 
 
     @SubscribeEvent
-    protected static void onInputChange(KeyUpdateEvent event) {
+    protected static void onLockOn(KeyUpdateEvent event) {
         LivingEntity livingEntity = event.getLivingEntity();
 
         if (livingEntity.level().isClientSide()) {

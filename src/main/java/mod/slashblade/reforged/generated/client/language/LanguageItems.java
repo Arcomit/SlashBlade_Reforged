@@ -171,6 +171,14 @@ public class LanguageItems {
     public static final LanguageItem TOOLTIP_ATTACK = new LanguageItem("slash_blade_item.tooltip.attack")
             .addTranslation(LanguageTypes.ZH_CN, "基础伤害: %s");
 
+    public static final  LanguageItem DURABILITY = new LanguageItem("slash_blade_item.durability")
+            .addTranslation(LanguageTypes.ZH_CN, "耐久: %.1f/%.1f");
+
+    public static final LanguageItem FRAGILE = new LanguageItem("slash_blade_item.tooltip.fragile")
+            .addTranslation(LanguageTypes.ZH_CN, "易碎的");
+
+    public static final LanguageItem SPECIAL_REPAIR = new LanguageItem("slash_blade_item.tooltip.special_repair")
+            .addTranslation(LanguageTypes.ZH_CN, "需要特殊手段修复");
 
     public static String getItemDescriptionId(ItemStack itemStack) {
         SlashBladeLogic slashBladeLogic = itemStack.get(SbDataComponentTypes.SLASH_BLADE_LOGIC);

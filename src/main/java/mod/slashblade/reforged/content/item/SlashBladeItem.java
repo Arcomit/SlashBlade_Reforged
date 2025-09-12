@@ -77,7 +77,18 @@ public class SlashBladeItem extends SwordItem {
 
         tooltipComponents.add(Component.empty());
 
-        tooltipComponents.add(Component.translatable(LanguageItems.TOOLTIP_ATTACK.getKey(), slashBladeLogic.getAttack()));
+        tooltipComponents.add(Component.translatable(LanguageItems.DURABILITY.getKey(), slashBladeLogic.getDurable() / slashBladeLogic.getMaxDurable()));
+
+        tooltipComponents.add(Component.empty());
+
+
+        if (slashBladeLogic.isFragile()) {
+            tooltipComponents.add(Component.translatable(LanguageItems.FRAGILE.getKey()));
+        }
+
+        if (slashBladeLogic.isSpecialRepair()) {
+            tooltipComponents.add(Component.translatable(LanguageItems.SPECIAL_REPAIR.getKey()));
+        }
 
 
     }
@@ -90,25 +101,6 @@ public class SlashBladeItem extends SwordItem {
         }
         return slashBladeLogic.getDescriptionId();
     }
-
-
-    /*@Override
-    public void appendHoverText(@NotNull ItemStack stack, @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag isAdvanced) {
-        super.appendHoverText(stack, tooltipComponents, isAdvanced);
-        
-        // 添加拔刀剑的特殊提示
-        tooltipComponents.add(Component.translatable("item.slashblade_reforged.slashblade.tooltip.1")
-                .withStyle(ChatFormatting.GRAY));
-        tooltipComponents.add(Component.translatable("item.slashblade_reforged.slashblade.tooltip.2")
-                .withStyle(ChatFormatting.GRAY));
-        tooltipComponents.add(Component.translatable("item.slashblade_reforged.slashblade.tooltip.3")
-                .withStyle(ChatFormatting.GRAY));
-        
-        // 添加使用说明
-        tooltipComponents.add(Component.empty());
-        tooltipComponents.add(Component.translatable("item.slashblade_reforged.slashblade.tooltip.usage")
-                .withStyle(ChatFormatting.YELLOW));
-    }*/
 
 
 }
