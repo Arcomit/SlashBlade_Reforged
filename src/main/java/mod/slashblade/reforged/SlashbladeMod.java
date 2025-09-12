@@ -53,6 +53,8 @@ public class SlashbladeMod {
         SbRegisterPayloads.register(modEventBus);
         SbRecipeInputItemSerializer.register(modEventBus);
         SbRecipeSerializer.register(modEventBus);
+        SlashBladeSpecialEffects.register(modEventBus);
+        SlashBladeSpecialAttacks.register(modEventBus);
     }
 
     public static ResourceLocation prefix(String path) {

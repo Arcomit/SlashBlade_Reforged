@@ -158,7 +158,6 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.ZH_CN, "魔剑「阎魔刀」")
             .addTranslation(LanguageTypes.EN_US, "Yamato");
 
-
     public static final LanguageItem TOOLTIP_GLORY = new LanguageItem("slash_blade_item.tooltip.glory")
             .addTranslation(LanguageTypes.ZH_CN, "荣耀: %s");
 
@@ -168,10 +167,19 @@ public class LanguageItems {
     public static final LanguageItem TOOLTIP_REFINE = new LanguageItem("slash_blade_item.tooltip.refine")
             .addTranslation(LanguageTypes.ZH_CN, "锻造: %s");
 
+    public static final LanguageItem SA = new LanguageItem("slash_blade_item.tooltip.sa")
+            .addTranslation(LanguageTypes.ZH_CN, "SA: %s");
+
+    public static final LanguageItem SE = new LanguageItem("slash_blade_item.tooltip.se")
+            .addTranslation(LanguageTypes.ZH_CN, "SE:");
+
+    public static final LanguageItem SE_ITEM = new LanguageItem("slash_blade_item.tooltip.se_item")
+            .addTranslation(LanguageTypes.ZH_CN, "%s    等级:%s/%s");
+
     public static final LanguageItem TOOLTIP_ATTACK = new LanguageItem("slash_blade_item.tooltip.attack")
             .addTranslation(LanguageTypes.ZH_CN, "基础伤害: %s");
 
-    public static final  LanguageItem DURABILITY = new LanguageItem("slash_blade_item.durability")
+    public static final LanguageItem DURABILITY = new LanguageItem("slash_blade_item.durability")
             .addTranslation(LanguageTypes.ZH_CN, "耐久: %.1f/%.1f");
 
     public static final LanguageItem FRAGILE = new LanguageItem("slash_blade_item.tooltip.fragile")

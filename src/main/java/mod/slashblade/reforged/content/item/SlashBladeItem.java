@@ -15,7 +15,9 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
@@ -77,21 +79,52 @@ public class SlashBladeItem extends SwordItem {
 
         tooltipComponents.add(Component.empty());
 
-        tooltipComponents.add(Component.translatable(LanguageItems.DURABILITY.getKey(), slashBladeLogic.getDurable() / slashBladeLogic.getMaxDurable()));
 
-        tooltipComponents.add(Component.empty());
+        boolean hasSaSe = false;
+        if (slashBladeLogic.getSa() != null) {
+            hasSaSe = true;
+            tooltipComponents.add(Component.translatable(LanguageItems.SA.getKey(), Component.translatable(slashBladeLogic.getSa().getDescriptionId())));
+        }
 
+        if (!slashBladeLogic.getSe().isEmpty()) {
+            hasSaSe = true;
+            tooltipComponents.add(Component.translatable(LanguageItems.SE.getKey()));
+            slashBladeLogic.getSe().forEach(
+                    (k, v) -> tooltipComponents.add(
+                            Component.translatable(
+                                    LanguageItems.SE_ITEM.getKey(),
+                                    Component.translatable(k.getDescriptionId()),
+                                    v,
+                                    k.getMaxLevel()
+                            )
+                    )
+            );
+        }
 
+        if (hasSaSe) {
+            tooltipComponents.add(Component.empty());
+        }
+
+        boolean hasState = false;
         if (slashBladeLogic.isFragile()) {
+            hasState = true;
             tooltipComponents.add(Component.translatable(LanguageItems.FRAGILE.getKey()));
         }
 
         if (slashBladeLogic.isSpecialRepair()) {
+            hasState = true;
             tooltipComponents.add(Component.translatable(LanguageItems.SPECIAL_REPAIR.getKey()));
         }
 
+        if (hasState) {
+            tooltipComponents.add(Component.empty());
+        }
+
+        tooltipComponents.add(Component.translatable(LanguageItems.DURABILITY.getKey(), slashBladeLogic.getDurable() / slashBladeLogic.getMaxDurable()));
+        tooltipComponents.add(Component.empty());
 
     }
+
 
     @Override
     public @NotNull String getDescriptionId(@NotNull ItemStack stack) {

@@ -1,8 +1,17 @@
 package mod.slashblade.reforged.content.data;
 
+import io.netty.buffer.ByteBuf;
 import lombok.*;
 import mod.slashblade.reforged.SlashbladeMod;
+import mod.slashblade.reforged.content.register.SpecialAttack;
+import mod.slashblade.reforged.content.register.SpecialEffect;
+import mod.slashblade.reforged.utils.constant.ByteBufCodecConstants;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.StreamCodec;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Getter
 @Builder
@@ -68,6 +77,14 @@ public class SlashBladeLogic {
     @SaveField
     boolean broken;
 
+    @Nullable
+    @SaveField(canBeNull = true)
+    SpecialAttack sa;
+
+    @Builder.Default
+    @SaveField(customCodecMethod = "seStreamCodec")
+    Map<SpecialEffect, Integer> se = new HashMap<>();
+
     /***
      * 无法使用
      * 刀鞘
@@ -89,7 +106,7 @@ public class SlashBladeLogic {
     @SaveField
     boolean specialRepair;
 
-    public SlashBladeLogic(String key, float attack, float attackDistance, double maxDurable, double durable, int proudSoul, int kill, int refine, boolean broken, boolean sealed, boolean fragile, boolean specialRepair) {
+    public SlashBladeLogic(String key, float attack, float attackDistance, double maxDurable, double durable, int proudSoul, int kill, int refine, boolean broken, @Nullable SpecialAttack sa, Map<SpecialEffect, Integer> se, boolean sealed, boolean fragile, boolean specialRepair) {
         this.key = key;
         this.attack = attack;
         this.attackDistance = attackDistance;
@@ -101,6 +118,8 @@ public class SlashBladeLogic {
         this.kill = kill;
         this.refine = refine;
         this.broken = broken;
+        this.sa = sa;
+        this.se = se;
         this.sealed = sealed;
         this.fragile = fragile;
         this.specialRepair = specialRepair;
@@ -181,10 +200,16 @@ public class SlashBladeLogic {
                 .proudSoul(this.proudSoul)
                 .kill(this.kill)
                 .refine(this.refine)
+                .sa(this.sa)
+                .se(new HashMap<>(this.se))
                 .broken(this.broken)
                 .sealed(this.sealed)
                 .fragile(this.fragile)
                 .specialRepair(this.specialRepair);
+    }
+
+    public static StreamCodec<ByteBuf, Map<SpecialEffect, Integer>> seStreamCodec() {
+        return ByteBufCodecConstants.SPECIAL_EFFECT_LEVEL_MAP;
     }
 
 }

@@ -4,6 +4,8 @@ import mod.slashblade.reforged.SlashbladeMod;
 import mod.slashblade.reforged.content.action.Action;
 import mod.slashblade.reforged.content.recipe.IRecipeInputItemSerializer;
 import mod.slashblade.reforged.content.register.AttackType;
+import mod.slashblade.reforged.content.register.SpecialAttack;
+import mod.slashblade.reforged.content.register.SpecialEffect;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -37,6 +39,16 @@ public class SbRegistrys {
             .sync(true)
             .create();
 
+    public static final ResourceKey<Registry<SpecialAttack>> SPECIAL_ATTACK = ResourceKey.createRegistryKey(SlashbladeMod.prefix("special_attack"));
+    public static final Registry<SpecialAttack> SPECIAL_ATTACK_REGISTRY = new RegistryBuilder<>(SPECIAL_ATTACK)
+            .sync(true)
+            .create();
+
+    public static final ResourceKey<Registry<SpecialEffect>> SPECIAL_EFFECT = ResourceKey.createRegistryKey(SlashbladeMod.prefix("special_effect"));
+    public static final Registry<SpecialEffect> SPECIAL_EFFECT_REGISTRY = new RegistryBuilder<>(SPECIAL_EFFECT)
+            .sync(true)
+            .create();
+
 
     // 注册注册表
     @SubscribeEvent
@@ -44,5 +56,7 @@ public class SbRegistrys {
         event.register(ACTION_REGISTRY);
         event.register(ATTACK_TYPE_REGISTRY);
         event.register(RECIPE_INPUT_ITEM_SERIALIZER_REGISTRY);
+        event.register(SPECIAL_ATTACK_REGISTRY);
+        event.register(SPECIAL_EFFECT_REGISTRY);
     }
 }
