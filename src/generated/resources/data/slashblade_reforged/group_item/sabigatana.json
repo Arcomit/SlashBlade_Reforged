@@ -1,0 +1,27 @@
+{
+  "components": {
+    "slashblade_reforged:slash_blade_logic": {
+      "attack": 3,
+      "attackDistance": 1,
+      "broken": false,
+      "durable": 2048,
+      "fragile": false,
+      "key": "sabigatana",
+      "kill": 0,
+      "maxDurable": 2048,
+      "proudSoul": 0,
+      "refine": 0,
+      "sealed": false,
+      "specialRepair": false
+    },
+    "slashblade_reforged:slash_blade_style": {
+      "carryType": "NAKED",
+      "color": -13421569,
+      "model": "slashblade_reforged:slashblade/models/named/muramasa/muramasa.obj",
+      "noScabbard": false,
+      "texture": "slashblade_reforged:slashblade/models/named/muramasa/sabigatana.png"
+    }
+  },
+  "count": 1,
+  "id": "slashblade_reforged:slash_blade"
+}

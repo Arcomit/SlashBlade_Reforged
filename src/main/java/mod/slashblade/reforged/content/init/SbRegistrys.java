@@ -2,8 +2,8 @@ package mod.slashblade.reforged.content.init;
 
 import mod.slashblade.reforged.SlashbladeMod;
 import mod.slashblade.reforged.content.action.Action;
+import mod.slashblade.reforged.content.recipe.IRecipeInputItemSerializer;
 import mod.slashblade.reforged.content.register.AttackType;
-import mod.slashblade.reforged.utils.DefaultResources;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -21,20 +21,28 @@ public class SbRegistrys {
 
     // 动作注册表
     public static final ResourceKey<Registry<Action>> ACTION_REGISTRY_KEY = ResourceKey.createRegistryKey(SlashbladeMod.prefix("action"));
-    public static final Registry<Action>              ACTION_REGISTRY     = new RegistryBuilder<>(ACTION_REGISTRY_KEY)
-            .sync      (true)
+    public static final Registry<Action> ACTION_REGISTRY = new RegistryBuilder<>(ACTION_REGISTRY_KEY)
+            .sync(true)
             .defaultKey(SlashbladeMod.prefix("idle"))
-            .create    ();
+            .create();
 
     public static final ResourceKey<Registry<AttackType>> ATTACK_TYPE_KEY = ResourceKey.createRegistryKey(SlashbladeMod.prefix("attack_type"));
     public static final Registry<AttackType> ATTACK_TYPE_REGISTRY = new RegistryBuilder<>(ATTACK_TYPE_KEY)
             .sync(true)
             .create();
 
+
+    public static final ResourceKey<Registry<IRecipeInputItemSerializer<?>>> RECIPE_INPUT_ITEM_SERIALIZER_KEY = ResourceKey.createRegistryKey(SlashbladeMod.prefix("recipe_input_item_serializer"));
+    public static final Registry<IRecipeInputItemSerializer<?>> RECIPE_INPUT_ITEM_SERIALIZER_REGISTRY = new RegistryBuilder<>(RECIPE_INPUT_ITEM_SERIALIZER_KEY)
+            .sync(true)
+            .create();
+
+
     // 注册注册表
     @SubscribeEvent
     public static void registerRegistries(NewRegistryEvent event) {
         event.register(ACTION_REGISTRY);
         event.register(ATTACK_TYPE_REGISTRY);
+        event.register(RECIPE_INPUT_ITEM_SERIALIZER_REGISTRY);
     }
 }

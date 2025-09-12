@@ -1,0 +1,98 @@
+{
+  "type": "slashblade_reforged:slashblade_recipe",
+  "key": {
+    "#": {
+      "type": "slashblade_reforged:slash_blade",
+      "value": {
+        "components": {
+          "minecraft:enchantments": {
+            "levels": {
+              "minecraft:smite": 1
+            }
+          },
+          "slashblade_reforged:slash_blade_logic": {
+            "attack": 4,
+            "attackDistance": 1,
+            "broken": false,
+            "durable": 4096,
+            "fragile": false,
+            "key": "sharpness_nameless_ruby",
+            "kill": 199,
+            "maxDurable": 4096,
+            "proudSoul": 1000,
+            "refine": 1,
+            "sealed": false,
+            "specialRepair": false
+          },
+          "slashblade_reforged:slash_blade_style": {
+            "carryType": "NAKED",
+            "color": -13421569,
+            "model": "slashblade_reforged:slashblade/models/blade.obj",
+            "noScabbard": false,
+            "texture": "slashblade_reforged:slashblade/models/ruby.png"
+          }
+        },
+        "count": 1,
+        "id": "slashblade_reforged:slash_blade"
+      }
+    },
+    "P": {
+      "type": "slashblade_reforged:ingredient",
+      "value": {
+        "item": "slashblade_reforged:proud_soul_trapezohedron"
+      }
+    },
+    "S": {
+      "type": "slashblade_reforged:ingredient",
+      "value": {
+        "item": "slashblade_reforged:proud_soul"
+      }
+    },
+    "W": {
+      "type": "slashblade_reforged:ingredient",
+      "value": {
+        "tag": "c:crops/wheat"
+      }
+    }
+  },
+  "mainSlashBladeKey": "#",
+  "pattern": [
+    "SPS",
+    "S#S",
+    "SWS"
+  ],
+  "result": {
+    "components": {
+      "minecraft:enchantments": {
+        "levels": {
+          "minecraft:fire_aspect": 2,
+          "minecraft:knockback": 2,
+          "minecraft:smite": 4
+        }
+      },
+      "slashblade_reforged:slash_blade_logic": {
+        "attack": 5,
+        "attackDistance": 1,
+        "broken": false,
+        "durable": 4096,
+        "fragile": false,
+        "key": "crescent_black_foxes",
+        "kill": 0,
+        "maxDurable": 4096,
+        "proudSoul": 0,
+        "refine": 0,
+        "sealed": false,
+        "specialRepair": false
+      },
+      "slashblade_reforged:slash_blade_style": {
+        "carryType": "NAKED",
+        "color": -13421569,
+        "model": "slashblade_reforged:slashblade/models/named/sange/sange.obj",
+        "noScabbard": false,
+        "texture": "slashblade_reforged:slashblade/models/named/sange/black.png"
+      }
+    },
+    "count": 1,
+    "id": "slashblade_reforged:slash_blade"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "item.slashblade_reforged.proud_soul_crystal",
+  "key": {
+    "#": {
+      "item": "minecraft:nether_star"
+    },
+    "S": {
+      "item": "slashblade_reforged:proud_soul_sphere"
+    }
+  },
+  "pattern": [
+    "SSS",
+    "S#S",
+    "SSS"
+  ],
+  "result": {
+    "count": 8,
+    "id": "slashblade_reforged:proud_soul_crystal"
+  }
+}

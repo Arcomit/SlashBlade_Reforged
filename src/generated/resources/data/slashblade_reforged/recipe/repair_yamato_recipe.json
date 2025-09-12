@@ -1,0 +1,74 @@
+{
+  "type": "slashblade_reforged:slashblade_recipe",
+  "key": {
+    "#": {
+      "type": "slashblade_reforged:slash_blade",
+      "value": {
+        "components": {
+          "slashblade_reforged:slash_blade_logic": {
+            "attack": 6,
+            "attackDistance": 1,
+            "broken": true,
+            "durable": 0,
+            "fragile": false,
+            "key": "yamato",
+            "kill": 0,
+            "maxDurable": 4096,
+            "proudSoul": 0,
+            "refine": 100,
+            "sealed": false,
+            "specialRepair": true
+          },
+          "slashblade_reforged:slash_blade_style": {
+            "carryType": "NAKED",
+            "color": -13421569,
+            "model": "slashblade_reforged:slashblade/models/named/yamato.obj",
+            "noScabbard": false,
+            "texture": "slashblade_reforged:slashblade/models/named/yamato.png"
+          }
+        },
+        "count": 1,
+        "id": "slashblade_reforged:slash_blade"
+      }
+    },
+    "S": {
+      "type": "slashblade_reforged:ingredient",
+      "value": {
+        "item": "slashblade_reforged:proud_soul_sphere"
+      }
+    }
+  },
+  "mainSlashBladeKey": "#",
+  "pattern": [
+    "SSS",
+    "S#S",
+    "SSS"
+  ],
+  "result": {
+    "components": {
+      "slashblade_reforged:slash_blade_logic": {
+        "attack": 6,
+        "attackDistance": 1,
+        "broken": false,
+        "durable": 4096,
+        "fragile": false,
+        "key": "yamato",
+        "kill": 0,
+        "maxDurable": 4096,
+        "proudSoul": 0,
+        "refine": 0,
+        "sealed": false,
+        "specialRepair": false
+      },
+      "slashblade_reforged:slash_blade_style": {
+        "carryType": "NAKED",
+        "color": -13421569,
+        "model": "slashblade_reforged:slashblade/models/named/yamato.obj",
+        "noScabbard": false,
+        "texture": "slashblade_reforged:slashblade/models/named/yamato.png"
+      }
+    },
+    "count": 1,
+    "id": "slashblade_reforged:slash_blade"
+  }
+}

@@ -3,7 +3,9 @@ package mod.slashblade.reforged.content.client.init;
 import com.mojang.blaze3d.platform.InputConstants;
 import mod.slashblade.reforged.SlashbladeMod;
 import mod.slashblade.reforged.content.data.KeyInput;
+import mod.slashblade.reforged.content.data.capabilitie.IInputCapability;
 import mod.slashblade.reforged.content.data.network.KeyInputPack;
+import mod.slashblade.reforged.content.init.SbCapabilities;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.neoforged.api.distmarker.Dist;
@@ -50,7 +52,7 @@ public class SbKeys {
             () -> {
                 Map<KeyInput, KeyMapping> bindings = new EnumMap<>(KeyInput.class);
                 Minecraft minecraft = Minecraft.getInstance();
-                
+
                 // 原版移动按键映射
                 bindings.put(KeyInput.FORWARD, minecraft.options.keyUp);           // W - 前进
                 bindings.put(KeyInput.BACK, minecraft.options.keyDown);            // S - 后退
@@ -58,15 +60,15 @@ public class SbKeys {
                 bindings.put(KeyInput.RIGHT, minecraft.options.keyRight);          // D - 右移
                 bindings.put(KeyInput.SNEAK, minecraft.options.keyShift);          // SHIFT - 潜行
                 bindings.put(KeyInput.JUMP, minecraft.options.keyJump);            // SPACE - 跳跃
-                
+
                 // 鼠标按键映射
                 bindings.put(KeyInput.LEFT_CLICK, minecraft.options.keyAttack);    // 左键 - 攻击
                 bindings.put(KeyInput.RIGHT_CLICK, minecraft.options.keyUse);      // 右键 - 使用物品
-                
+
                 // 自定义按键映射
                 bindings.put(KeyInput.SUMMONING_SUMMOND_SWORD, SUMMONING_SUMMOND_SWORD.get());  // 鼠标中键 - 召唤剑
                 bindings.put(KeyInput.SPECIAL_OPERATION, SPECIAL_OPERATION.get());               // V - 特殊操作
-                
+
                 return bindings;
             }
     );
@@ -84,9 +86,16 @@ public class SbKeys {
         if (minecraft.level != null && minecraft.player != null) {
             EnumMap<KeyInput, Boolean> isDown = new EnumMap<>(KeyInput.class);
             KEY_BINDINGS.get().forEach((key, binding) -> isDown.put(key, binding.isDown()));
-            PacketDistributor.sendToServer(new KeyInputPack(isDown));
+            KeyInputPack payload = new KeyInputPack(isDown);
+
+            IInputCapability inputCapability = minecraft.player.getCapability(SbCapabilities.INPUT_CAPABILITY);
+            if (inputCapability != null) {
+                inputCapability.acceptNewInput(payload);
+            }
+
+            PacketDistributor.sendToServer(payload);
         }
     }
-    
+
 
 }

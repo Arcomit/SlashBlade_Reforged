@@ -1,18 +1,13 @@
 package mod.slashblade.reforged.content.init;
 
 import mod.slashblade.reforged.SlashbladeMod;
-import mod.slashblade.reforged.generated.client.LanguageItems;
-import mod.slashblade.reforged.generated.SlashBladeItemStacks;
+import mod.slashblade.reforged.generated.client.language.LanguageItems;
+import mod.slashblade.reforged.generated.group.SlashBladeItemStacks;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.RecipeManager;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.level.Level;
 import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -22,13 +17,10 @@ import com.google.gson.JsonParser;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import java.util.Set;
 import java.util.List;
-import java.util.Comparator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
@@ -42,6 +34,14 @@ public class SbCreativeModeTab {
             .icon(() -> new ItemStack(SbItems.SLASH_BLADE.get()))
             .displayItems(
                     (params, output) -> {
+
+                        output.accept(SbItems.PROUD_SOUL.get());
+                        output.accept(SbItems.PROUD_SOUL_INGOT.get());
+                        output.accept(SbItems.PROUD_SOUL_TINY.get());
+                        output.accept(SbItems.PROUD_SOUL_SPHERE.get());
+                        output.accept(SbItems.PROUD_SOUL_CRYSTAL.get());
+                        output.accept(SbItems.PROUD_SOUL_TRAPEZOHEDRON.get());
+
                         // 从数据包中读取ItemStack数据
                         loadItemStacksFromDataPack(params).forEach(output::accept);
                     }
@@ -60,34 +60,39 @@ public class SbCreativeModeTab {
      */
     private static List<ItemStack> loadItemStacksFromDataPack(CreativeModeTab.ItemDisplayParameters params) {
         List<ItemStack> itemStacks = new ArrayList<>();
-        
+
         try {
             MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
             if (server != null) {
                 ResourceManager resourceManager = server.getResourceManager();
-                
+
                 // 尝试读取所有 group_items 目录下的文件
-                String basePath = "data/" + SlashbladeMod.MODID + "/group_items/";
-                
+                String basePath = "group_item";
+
                 // 获取所有可能的资源位置
-                resourceManager.listResources(basePath, location -> location.getPath().endsWith(".json"))
-                        .forEach((location, resource) -> {
-                            try (BufferedReader reader = resource.openAsReader()) {
-                                String jsonContent = reader.lines().collect(Collectors.joining("\n"));
-                                
-                                // 使用 ItemStack.CODEC 解析 JSON
-                                var jsonElement = JsonParser.parseString(jsonContent);
-                                var result = ItemStack.CODEC.parse(JsonOps.INSTANCE, jsonElement);
-                                
-                                if (result.result().isPresent()) {
-                                    itemStacks.add(result.result().get());
-                                } else {
-                                    SlashbladeMod.LOGGER.warn("无法解析ItemStack从文件: {}", location);
+                resourceManager.listResources(
+                                basePath,
+                                location -> location.getPath().endsWith(".json")
+                        )
+                        .forEach(
+                                (location, resource) -> {
+                                    try (BufferedReader reader = resource.openAsReader()) {
+                                        String jsonContent = reader.lines().collect(Collectors.joining("\n"));
+
+                                        // 使用 ItemStack.CODEC 解析 JSON
+                                        var jsonElement = JsonParser.parseString(jsonContent);
+                                        var result = ItemStack.CODEC.parse(JsonOps.INSTANCE, jsonElement);
+
+                                        if (result.result().isPresent()) {
+                                            itemStacks.add(result.result().get());
+                                        } else {
+                                            SlashbladeMod.LOGGER.warn("无法解析ItemStack从文件: {}", location);
+                                        }
+                                    } catch (IOException e) {
+                                        SlashbladeMod.LOGGER.warn("读取数据包文件失败: {}", location, e);
+                                    }
                                 }
-                            } catch (IOException e) {
-                                SlashbladeMod.LOGGER.warn("读取数据包文件失败: {}", location, e);
-                            }
-                        });
+                        );
             } else {
                 // 如果服务器不可用，回退到直接从SlashBladeItemStacks读取
                 SlashbladeMod.LOGGER.warn("服务器不可用，回退到直接读取SlashBladeItemStacks");
@@ -97,10 +102,10 @@ public class SbCreativeModeTab {
             SlashbladeMod.LOGGER.warn("从数据包加载ItemStack失败，使用回退方案", e);
             return getAllSlashBladeItemStacksFallback();
         }
-        
+
         return itemStacks;
     }
-    
+
     /**
      * 回退方案：直接从SlashBladeItemStacks类读取
      */

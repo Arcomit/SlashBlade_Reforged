@@ -2,16 +2,22 @@ package mod.slashblade.reforged.core.animation.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import mod.slashblade.reforged.content.recipe.IRecipeInputItem;
+import mod.slashblade.reforged.content.serialize.BooleanSerializer;
+import mod.slashblade.reforged.content.serialize.UseCodecSerializer;
 import mod.slashblade.reforged.core.animation.pojo.AnimationKeyframes;
 import mod.slashblade.reforged.core.animation.pojo.SoundEffectKeyframes;
 import mod.slashblade.reforged.core.animation.pojo.exclusion.ServerExclusionStrategy;
-import mod.slashblade.reforged.core.animation.pojo.serialize.AnimationKeyframesSerializer;
-import mod.slashblade.reforged.core.animation.pojo.serialize.BooleanSerializer;
-import mod.slashblade.reforged.core.animation.pojo.serialize.SoundEffectKeyframesSerializer;
-import mod.slashblade.reforged.core.animation.pojo.serialize.Vector3fSerializer;
+import mod.slashblade.reforged.core.animation.pojo.serialize.*;
+import mod.slashblade.reforged.utils.constant.CodecConstants;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import org.joml.Vector3f;
+
+import java.awt.*;
+import java.util.Map;
 
 /**
  * @Author: Arcomit
@@ -35,5 +41,8 @@ public class GsonUtil {
             .registerTypeAdapter(SoundEffectKeyframes.class, new SoundEffectKeyframesSerializer())
             .registerTypeAdapter(Boolean.class, new BooleanSerializer())
             .registerTypeAdapter(boolean.class, new BooleanSerializer())
+            .registerTypeAdapter(Ingredient.class, new UseCodecSerializer<>(Ingredient.CODEC))
+            .registerTypeAdapter(ItemStack.class, new UseCodecSerializer<>(ItemStack.CODEC))
+            .registerTypeAdapter(Color.class, new UseCodecSerializer<>(CodecConstants.COLOR))
             .create();
 }

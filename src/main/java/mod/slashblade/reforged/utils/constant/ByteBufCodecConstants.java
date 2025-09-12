@@ -1,22 +1,29 @@
 package mod.slashblade.reforged.utils.constant;
 
 
+import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
 import mod.slashblade.reforged.SlashbladeMod;
-import mod.slashblade.reforged.content.data.KeyInput;
-import mod.slashblade.reforged.content.data.SaveField;
-import mod.slashblade.reforged.content.data.SlashBladeLogic;
-import mod.slashblade.reforged.content.data.SlashBladeStyle;
+import mod.slashblade.reforged.content.client.util.ClientUtil;
+import mod.slashblade.reforged.content.data.*;
 import mod.slashblade.reforged.content.data.network.KeyInputPack;
 import mod.slashblade.reforged.content.entity.SummondSwordEntity;
+import mod.slashblade.reforged.content.init.SbRegistrys;
+import mod.slashblade.reforged.content.recipe.IRecipeInputItem;
+import mod.slashblade.reforged.content.recipe.IRecipeInputItemSerializer;
+import mod.slashblade.reforged.content.recipe.SlashBladeRecipe;
 import mod.slashblade.reforged.utils.Util;
 import mod.slashblade.reforged.utils.tuple.Tuple2;
 import mod.slashblade.reforged.utils.tuple.Tuple3;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
@@ -48,11 +55,30 @@ public class ByteBufCodecConstants {
             buffer.writeInt(value.getRGB());
         }
     };
+    public static final StreamCodec<ByteBuf, Entity> ENTITY_CLIENT_SIDE = new StreamCodec<ByteBuf, Entity>() {
+        @SuppressWarnings("NullableProblems")
+        @Override
+        @Nullable
+        public Entity decode(ByteBuf buffer) {
+            return ClientUtil.getEntityById(buffer.readInt());
+        }
+
+        @Override
+        public void encode(ByteBuf buffer, @Nullable Entity value) {
+            buffer.writeInt(
+                    value == null
+                            ? -1
+                            : value.getId()
+            );
+        }
+    };
     public static final StreamCodec<ByteBuf, SlashBladeLogic> SLASH_BLADE_LOGIC = new DataStreamCodec<>(SlashBladeLogic.class);
     public static final StreamCodec<ByteBuf, SlashBladeStyle> SLASH_BLADE_STYLE = new DataStreamCodec<>(SlashBladeStyle.class);
+    public static final StreamCodec<ByteBuf, SlashBladeMaterial> SLASH_BLADE_MATERIAL = new DataStreamCodec<>(SlashBladeMaterial.class);
+    public static final StreamCodec<ByteBuf, LockTarget> LOCK_TARGET = new DataStreamCodec<>(LockTarget.class);
 
     public static final StreamCodec<ByteBuf, KeyInput> KEY_INPUT = new EnumStreamCodec<>(KeyInput.class);
-    public static final StreamCodec<ByteBuf, EnumMap<KeyInput, Boolean>> KEY_INPUT_MAP = new StreamCodec<ByteBuf, EnumMap<KeyInput, Boolean>>() {
+    public static final StreamCodec<ByteBuf, EnumMap<KeyInput, Boolean>> KEY_INPUT_MAP = new StreamCodec<>() {
         @Override
         public @NotNull EnumMap<KeyInput, Boolean> decode(@NotNull ByteBuf buffer) {
             EnumMap<KeyInput, Boolean> isDown = new EnumMap<>(KeyInput.class);
@@ -80,6 +106,64 @@ public class ByteBufCodecConstants {
             KEY_INPUT_MAP.encode(buffer, value.getIsDown());
         }
     };
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, IRecipeInputItem.IngredientRecipeInputItem> INGREDIENT_RECIPE_INPUT_ITEM = Ingredient.CONTENTS_STREAM_CODEC
+            .map(IRecipeInputItem.IngredientRecipeInputItem::new, IRecipeInputItem.IngredientRecipeInputItem::getIngredient);
+    public static final StreamCodec<RegistryFriendlyByteBuf, IRecipeInputItem.SlashBladeRecipeInputItem> SLASH_BLADE_RECIPE_INPUT_ITEM = ItemStack.STREAM_CODEC
+            .map(IRecipeInputItem.SlashBladeRecipeInputItem::new, IRecipeInputItem.SlashBladeRecipeInputItem::getItemStack);
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, IRecipeInputItem> RECIPE_INPUT_ITEM = new StreamCodec<>() {
+        @Override
+        public @NotNull IRecipeInputItem decode(@NotNull RegistryFriendlyByteBuf buffer) {
+            boolean isNull = buffer.readBoolean();
+            if (isNull) {
+                return IRecipeInputItem.EMPTY;
+            }
+            ResourceLocation key = buffer.readResourceLocation();
+            IRecipeInputItemSerializer<?> iRecipeInputItemSerializer = SbRegistrys.RECIPE_INPUT_ITEM_SERIALIZER_REGISTRY.get(key);
+            if (iRecipeInputItemSerializer == null) {
+                return IRecipeInputItem.EMPTY;
+            }
+            return iRecipeInputItemSerializer.streamCodec().decode(buffer);
+        }
+
+        @Override
+        public void encode(@NotNull RegistryFriendlyByteBuf buffer, @NotNull IRecipeInputItem value) {
+            ResourceLocation key = SbRegistrys.RECIPE_INPUT_ITEM_SERIALIZER_REGISTRY.getKey(value.getSerializer());
+            if (key == null) {
+                buffer.writeBoolean(true);
+                return;
+            }
+            buffer.writeBoolean(false);
+            buffer.writeResourceLocation(key);
+            value.getSerializer().streamCodec().encode(buffer, Util.forcedConversion(value));
+        }
+    };
+    public static final StreamCodec<RegistryFriendlyByteBuf, SlashBladeRecipe.SlashBladeRecipeData> SLASH_BLADE_RECIPE_DATA = StreamCodec.composite(
+            // pattern: List<String>
+            ByteBufCodecs.STRING_UTF8.apply(ByteBufCodecs.list()),
+            SlashBladeRecipe.SlashBladeRecipeData::getPattern,
+
+            // key: Map<Character, IRecipeInputItem>
+            ByteBufCodecs.map(
+                    java.util.HashMap::new,
+                    // Character codec: 将 char 转换为 int 进行传输
+                    ByteBufCodecs.VAR_INT.map(i -> (char) i.intValue(), c -> (int) c),
+                    RECIPE_INPUT_ITEM
+            ),
+            SlashBladeRecipe.SlashBladeRecipeData::getKey,
+
+            // mainSlashBladeKey: char
+            ByteBufCodecs.VAR_INT.map(i -> (char) i.intValue(), c -> (int) c),
+            SlashBladeRecipe.SlashBladeRecipeData::getMainSlashBladeKey,
+
+            // result: ItemStack
+            ItemStack.STREAM_CODEC,
+            SlashBladeRecipe.SlashBladeRecipeData::getResult,
+
+            SlashBladeRecipe.SlashBladeRecipeData::new
+    );
+    public static final StreamCodec<RegistryFriendlyByteBuf, SlashBladeRecipe> SLASH_BLADE_RECIPE = SLASH_BLADE_RECIPE_DATA.map(SlashBladeRecipe::new, SlashBladeRecipe::getSlashBladeRecipeData);
 
     static {
         // 基本数值类型
@@ -118,6 +202,8 @@ public class ByteBufCodecConstants {
         // 自定义数据类型
         BASIC_TYPE_CODEC_MAP.put(SlashBladeLogic.class, SLASH_BLADE_LOGIC);
         BASIC_TYPE_CODEC_MAP.put(SlashBladeStyle.class, SLASH_BLADE_STYLE);
+
+        BASIC_TYPE_CODEC_MAP.put(Entity.class, ENTITY_CLIENT_SIDE);
 
     }
 

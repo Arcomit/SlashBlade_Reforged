@@ -1,16 +1,10 @@
 package mod.slashblade.reforged.content.init;
 
 import mod.slashblade.reforged.SlashbladeMod;
-import mod.slashblade.reforged.content.data.SlashBladeLogic;
-import mod.slashblade.reforged.content.data.capabilitie.IPlayerInputCapability;
+import mod.slashblade.reforged.content.data.capabilitie.IInputCapability;
 import mod.slashblade.reforged.content.data.network.KeyInputPack;
-import mod.slashblade.reforged.content.entity.LightningEntity;
-import mod.slashblade.reforged.content.entity.SummondSwordEntity;
 import mod.slashblade.reforged.utils.constant.ByteBufCodecConstants;
-import mod.slashblade.reforged.utils.helper.SwordsmanHelper;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -94,7 +88,7 @@ public class SbRegisterPayloads {
                         (payload, context) -> context.enqueueWork(
                                         () -> {
                                             Player player = context.player();
-                                            IPlayerInputCapability capability = player.getCapability(SbCapabilities.PLAYER_INPUT_CAPABILITY);
+                                            IInputCapability capability = player.getCapability(SbCapabilities.INPUT_CAPABILITY);
                                             if (capability == null) {
                                                 SlashbladeMod.LOGGER.warn("player {} does not have the PlayerInputCapability", player.getDisplayName().getString());
                                                 return;

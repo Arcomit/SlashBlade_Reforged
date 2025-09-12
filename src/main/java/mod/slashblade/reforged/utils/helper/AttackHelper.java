@@ -230,15 +230,22 @@ public class AttackHelper {
             return;
         }
 
-        slashBladeLogic.setDurable(slashBladeLogic.getDurable() - loss);
 
-        if (slashBladeLogic.getDurable() <= 0) {
-            slashBladeLogic.setDurable(0);
+        SlashBladeLogic.SlashBladeLogicBuilder builder = slashBladeLogic.toBuilder();
+
+        double to = slashBladeLogic.getDurable() - loss;
+
+        if (to <= 0) {
+            to = 0;
+            builder.broken(true);
+
             //TODO 刀损坏
         }
 
-        itemStack.set(SbDataComponentTypes.SLASH_BLADE_LOGIC, slashBladeLogic);
+        builder.durable(to);
 
+
+        itemStack.set(SbDataComponentTypes.SLASH_BLADE_LOGIC, builder.build());
 
     }
 
@@ -254,10 +261,10 @@ public class AttackHelper {
 
         event.addModifiedRatioAmplifier(SbConfig.COMMON.refineAttackBonus.get() * slashBladeLogic.getRefine());
 
-        if (slashBladeLogic.getKillCount() > 1000) {
+        if (slashBladeLogic.getKill() > 1000) {
             event.addMechanismModifiedRatioAmplifier(SbConfig.COMMON.thousandKillAttackBonus.get());
         }
-        if (slashBladeLogic.getKillCount() > 10000) {
+        if (slashBladeLogic.getKill() > 10000) {
             event.addMechanismModifiedRatioAmplifier(SbConfig.COMMON.tenThousandKillAttackBonus.get());
         }
         if (slashBladeLogic.getRefine() > 1000) {

@@ -1,3 +1,4 @@
+/*
 package mod.slashblade.reforged.core.obj.acceleratedrendering.mixin;
 
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.renderers.IAcceleratedRenderer;
@@ -6,11 +7,13 @@ import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
 
+*/
 /**
  * @Author: Arcomit
  * @CreateTime: 2025-08-07 09:14
  * @Description: TODO:未完成
- */
+ *//*
+
 @Mixin(Object.class)
 public class ObjFaceMixin implements IAcceleratedRenderer<Void> {
 
@@ -19,3 +22,4 @@ public class ObjFaceMixin implements IAcceleratedRenderer<Void> {
 
     }
 }
+*/

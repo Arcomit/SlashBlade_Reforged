@@ -11,6 +11,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RenderFrameEvent;
+import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
@@ -32,7 +33,7 @@ public class AnimationTickHandler {
     public static void onServerTick(EntityTickEvent.Pre event) {
         if (event.getEntity() instanceof LivingEntity livingEntity){
             if (!livingEntity.level().isClientSide && !(livingEntity instanceof Player)){
-                System.out.println("傻逼neoforge");
+                //System.out.println("傻逼neoforge");
             }
         }
     }

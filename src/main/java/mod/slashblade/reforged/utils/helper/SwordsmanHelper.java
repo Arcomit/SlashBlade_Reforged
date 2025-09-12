@@ -1,6 +1,8 @@
 package mod.slashblade.reforged.utils.helper;
 
 import mod.slashblade.reforged.content.data.SlashBladeLogic;
+import mod.slashblade.reforged.content.data.capabilitie.ILockTarget;
+import mod.slashblade.reforged.content.init.SbCapabilities;
 import mod.slashblade.reforged.content.init.SbDataComponentTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -30,10 +32,16 @@ public class SwordsmanHelper {
             return Vec3.ZERO;
         }
 
-        Entity targetEntity = slashBladeLogic.getTargetEntity(livingEntity.level());
+        ILockTarget capability = livingEntity.getCapability(SbCapabilities.LOCK_TARGET);
 
-        if (targetEntity != null) {
-            return EntityHelper.getEntityPosition(targetEntity);
+        if (capability != null ) {
+
+            Entity targetEntity =capability.getTargetEntity();
+
+            if (targetEntity != null) {
+                return EntityHelper.getEntityPosition(targetEntity);
+            }
+
         }
 
         HitResult selector = TargetSelectorHelper.selector(livingEntity, 64);

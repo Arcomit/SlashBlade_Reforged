@@ -2,18 +2,20 @@ package mod.slashblade.reforged.content.event.key;
 
 import lombok.Getter;
 import mod.slashblade.reforged.content.data.KeyInput;
-import mod.slashblade.reforged.content.data.capabilitie.IPlayerInputCapability;
-import mod.slashblade.reforged.content.event.SlashBladeDurabilityLoss;
+import mod.slashblade.reforged.content.data.capabilitie.IInputCapability;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 
+/***
+ * @author til
+ * @Description 按键状态更改时触发，双端触发
+ */
 @Getter
 public class KeyInputEvent extends KeyEvent {
 
     final KeyInput keyInput;
     final KeyType keyType;
 
-    public KeyInputEvent(LivingEntity livingEntity, IPlayerInputCapability playerInputCapability, KeyInput keyInput, KeyType keyType) {
+    public KeyInputEvent(LivingEntity livingEntity, IInputCapability playerInputCapability, KeyInput keyInput, KeyType keyType) {
         super(livingEntity, playerInputCapability);
         this.keyInput = keyInput;
         this.keyType = keyType;

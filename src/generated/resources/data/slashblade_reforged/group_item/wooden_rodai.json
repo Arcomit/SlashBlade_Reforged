@@ -1,0 +1,27 @@
+{
+  "components": {
+    "slashblade_reforged:slash_blade_logic": {
+      "attack": 4,
+      "attackDistance": 1,
+      "broken": false,
+      "durable": 2048,
+      "fragile": false,
+      "key": "wooden_rodai",
+      "kill": 0,
+      "maxDurable": 2048,
+      "proudSoul": 0,
+      "refine": 0,
+      "sealed": false,
+      "specialRepair": false
+    },
+    "slashblade_reforged:slash_blade_style": {
+      "carryType": "NAKED",
+      "color": -13421569,
+      "model": "slashblade_reforged:slashblade/models/blade.obj",
+      "noScabbard": false,
+      "texture": "slashblade_reforged:slashblade/models/rodai_wooden.png"
+    }
+  },
+  "count": 1,
+  "id": "slashblade_reforged:slash_blade"
+}

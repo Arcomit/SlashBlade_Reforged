@@ -51,6 +51,8 @@ public class SlashbladeMod {
         SbEntityDataSerializers.register(modEventBus);
         SbEntityType.register(modEventBus);
         SbRegisterPayloads.register(modEventBus);
+        SbRecipeInputItemSerializer.register(modEventBus);
+        SbRecipeSerializer.register(modEventBus);
     }
 
     public static ResourceLocation prefix(String path) {
