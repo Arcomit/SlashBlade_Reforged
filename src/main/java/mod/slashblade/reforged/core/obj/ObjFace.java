@@ -32,9 +32,9 @@ public class ObjFace {
     public  void writeVertices(VertexConsumer vertexConsumer){
         if (WriteVerticesInfo.getPoseStack() != null){
 
-
             transform  = WriteVerticesInfo.getPoseStack().last().pose();
             normal     = WriteVerticesInfo.getPoseStack().last().normal();
+
         }
         if ((vertexUvs != null) && (vertexUvs.length > 0)) {
             for (int i = 0; i < vertexUvs.length; ++i) {

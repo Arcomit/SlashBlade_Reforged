@@ -20,12 +20,12 @@ public class TestEvent {
         float walkDelta = player.walkDist - player.walkDistO;
         if (walkDelta > 0.05F) {
             if (player.isSprinting()){
-                System.out.println("Sprinting");
+                //System.out.println("Sprinting");
                 return;
             }
-            System.out.println("Walking");
+            //System.out.println("Walking");
         }else {
-            System.out.println("Standing");
+            //System.out.println("Standing");
         }
     }
 }
