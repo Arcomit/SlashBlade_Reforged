@@ -185,6 +185,13 @@ public class LockOnCircleRender {
             return;
         }
 
+        ItemStack stack = player.getMainHandItem();
+
+        SlashBladeLogic slashBladeLogic = stack.get(SbDataComponentTypes.SLASH_BLADE_LOGIC);
+        if (slashBladeLogic == null) {
+            return;
+        }
+
         Entity targetEntity = lockTarget.getTargetEntity();
 
         if (targetEntity == null) {
@@ -216,15 +223,15 @@ public class LockOnCircleRender {
         float prevYaw = player.yRotO;
         float prevPitch = player.xRotO;
 
-        player.lookAt(EntityAnchorArgument.Anchor.EYES, targetEntity.position().add(0,targetEntity.getEyeHeight() / 2.0,0));
+        player.lookAt(EntityAnchorArgument.Anchor.EYES, targetEntity.position().add(0, targetEntity.getEyeHeight() / 2.0, 0));
 
         float step = 0.125f * partialTicks;
 
-        step *= Math.min(1.0f ,Math.abs(Mth.wrapDegrees(oldYaw - player.yHeadRot) * 0.5f));
+        step *= Math.min(1.0f, Math.abs(Mth.wrapDegrees(oldYaw - player.yHeadRot) * 0.5f));
 
-        player.setXRot(Mth.rotLerp(step,oldPitch ,player.getXRot()));
-        player.setYRot(Mth.rotLerp(step, oldYaw , player.getYRot()));
-        player.setYHeadRot(Mth.rotLerp(step, oldYawHead , player.getYHeadRot()));
+        player.setXRot(Mth.rotLerp(step, oldPitch, player.getXRot()));
+        player.setYRot(Mth.rotLerp(step, oldYaw, player.getYRot()));
+        player.setYHeadRot(Mth.rotLerp(step, oldYawHead, player.getYHeadRot()));
 
         player.yBodyRot = oldYawOffset;
 

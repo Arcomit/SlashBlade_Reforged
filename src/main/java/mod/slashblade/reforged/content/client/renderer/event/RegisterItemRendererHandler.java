@@ -10,6 +10,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @Author: Arcomit
@@ -18,14 +19,16 @@ import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsE
  */
 @EventBusSubscriber(value = Dist.CLIENT, modid = SlashbladeMod.MODID)
 public class RegisterItemRendererHandler {
-    private static final SlashBladeItemRenderer SLASH_BLADE_ITEM_RENDERER = new SlashBladeItemRenderer();
+    private static  SlashBladeItemRenderer SLASH_BLADE_ITEM_RENDERER;
 
     @SubscribeEvent
     public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
+        // 会引起数据生成器的异常，做延迟初始化
+        SLASH_BLADE_ITEM_RENDERER = new SlashBladeItemRenderer();
         event.registerItem(
                 new IClientItemExtensions() {
                     @Override
-                    public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+                    public @NotNull BlockEntityWithoutLevelRenderer getCustomRenderer() {
                         return SLASH_BLADE_ITEM_RENDERER;
                     }
                 },

@@ -15,6 +15,7 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import org.jetbrains.annotations.NotNull;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -120,7 +121,9 @@ public class SlashBladeItem extends SwordItem {
             tooltipComponents.add(Component.empty());
         }
 
-        tooltipComponents.add(Component.translatable(LanguageItems.DURABILITY.getKey(), slashBladeLogic.getDurable() / slashBladeLogic.getMaxDurable()));
+        DecimalFormat df = new DecimalFormat("#.#");
+
+        tooltipComponents.add(Component.translatable(LanguageItems.DURABILITY.getKey(), df.format(slashBladeLogic.getDurable()), df.format(slashBladeLogic.getMaxDurable())));
         tooltipComponents.add(Component.empty());
 
     }

@@ -153,6 +153,11 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.ZH_CN, "枯石大刀")
             .addTranslation(LanguageTypes.EN_US, "Koseki");
 
+    // 枯石大刀 (Koseki)
+    public static final LanguageItem SANGE = new LanguageItem(getItemDescriptionId(SlashBladeItemStacks.SANGE.get()))
+            .addTranslation(LanguageTypes.ZH_CN, "散华")
+            .addTranslation(LanguageTypes.EN_US, "Sange");
+
     // 魔剑「阎魔刀」 (Yamato)
     public static final LanguageItem YAMATO = new LanguageItem(getItemDescriptionId(SlashBladeItemStacks.YAMATO.get()))
             .addTranslation(LanguageTypes.ZH_CN, "魔剑「阎魔刀」")
@@ -180,7 +185,7 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.ZH_CN, "基础伤害: %s");
 
     public static final LanguageItem DURABILITY = new LanguageItem("slash_blade_item.durability")
-            .addTranslation(LanguageTypes.ZH_CN, "耐久: %.1f/%.1f");
+            .addTranslation(LanguageTypes.ZH_CN, "耐久: %s/%s");
 
     public static final LanguageItem FRAGILE = new LanguageItem("slash_blade_item.tooltip.fragile")
             .addTranslation(LanguageTypes.ZH_CN, "易碎的");

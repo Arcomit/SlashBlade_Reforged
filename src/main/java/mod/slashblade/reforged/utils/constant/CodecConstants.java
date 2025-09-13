@@ -8,6 +8,7 @@ import mod.slashblade.reforged.content.data.SlashBladeLogic;
 import mod.slashblade.reforged.content.data.SlashBladeMaterial;
 import mod.slashblade.reforged.content.data.SlashBladeStyle;
 import mod.slashblade.reforged.content.init.SbRegistrys;
+import mod.slashblade.reforged.content.loot.LootItemStack;
 import mod.slashblade.reforged.content.recipe.IRecipeInputItem;
 import mod.slashblade.reforged.content.recipe.IRecipeInputItemSerializer;
 import mod.slashblade.reforged.content.recipe.SlashBladeRecipe;
@@ -59,7 +60,7 @@ public class CodecConstants {
                     .apply(instance, SlashBladeRecipe.SlashBladeRecipeData::new)
     );
     public static final MapCodec<SlashBladeRecipe> SLASH_BLADE_RECIPE = conversionMapCodec(SLASH_BLADE_RECIPE_DATA, SlashBladeRecipe::new, SlashBladeRecipe::getSlashBladeRecipeData);
-
+    public static final MapCodec<LootItemStack> LOOT_ITEM_STACK = LootItemStack.CODEC;
 
     public static <D> Codec<D> ofJson(Type type) {
         return new PrimitiveCodec<D>() {

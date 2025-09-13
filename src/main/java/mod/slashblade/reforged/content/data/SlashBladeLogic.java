@@ -19,6 +19,8 @@ import java.util.Map;
 @NoArgsConstructor
 public class SlashBladeLogic {
 
+    public static final SlashBladeLogic DEF = SlashBladeLogic.builder().build();
+
     /***
      * 刀的名称
      */

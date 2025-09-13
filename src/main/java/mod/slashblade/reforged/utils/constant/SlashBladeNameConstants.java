@@ -22,6 +22,7 @@ public class SlashBladeNameConstants {
     public static final String STEEL_DOUTANUKI = "steel_doutanuki";
     public static final String KOSEKI = "koseki";
     public static final String YAMATO = "yamato";
+    public static final String SANGE = "sange";
     public static final String SHARPNESS_WHITE = "sharpness_white";
     public static final String SLASH_BLADE = "slash_blade";
     public static final String NOBLE_TUKUMO_VIOLET = "noble_tukumo_violet";
