@@ -16,16 +16,18 @@ import mod.slashblade.reforged.core.animation.AnimationAsset;
 import mod.slashblade.reforged.core.animation.event.AnimationManager;
 import mod.slashblade.reforged.utils.PoseStackAutoCloser;
 import mod.slashblade.reforged.utils.extension.ItemDisplayContextExtension;
-import mod.slashblade.reforged.core.itemrenderer.DynamicItemRenderer;
 import mod.slashblade.reforged.core.obj.ObjModel;
 import mod.slashblade.reforged.core.obj.event.ObjModelManager;
 import mod.slashblade.reforged.utils.DefaultResources;
 import mod.slashblade.reforged.utils.WriteVerticesInfo;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -42,17 +44,21 @@ import org.joml.Quaternionf;
  * @Description: 拔刀剑物品的渲染（不含第三人称）
  */
 @ExtensionMethod(ItemDisplayContextExtension.class)
-public class SlashBladeItemRenderer implements DynamicItemRenderer {
+public class SlashBladeItemRenderer extends BlockEntityWithoutLevelRenderer {
+
+    public SlashBladeItemRenderer() {
+        super(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
+    }
 
     // 物品栏渲染
     @Override
     public void renderByItem(
-            ItemStack stack,
-            ItemDisplayContext transform,
-            PoseStack poseStack,
-            MultiBufferSource bufferSource,
-            int packedLight,
-            int packedOverlay
+            @NotNull ItemStack          stack,
+            ItemDisplayContext          transform,
+            @NotNull PoseStack          poseStack,
+            @NotNull MultiBufferSource  bufferSource,
+            int                         packedLight,
+            int                         packedOverlay
     ) {
         if (transform.firstPerson() || transform.thirdPerson()) {
             return;
@@ -153,7 +159,7 @@ public class SlashBladeItemRenderer implements DynamicItemRenderer {
                 }
             }
 
-            if (true) {
+            if (false){
                 // 抵消上下移动摄像机视角时的跟随旋转（类似拔刀剑2，重锋的视角）
                 Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
                 Quaternionf inverseRot = new Quaternionf(camera.rotation()).conjugate();
@@ -181,6 +187,7 @@ public class SlashBladeItemRenderer implements DynamicItemRenderer {
 
             // 摄像机是无法移动的，但我们反方向移动物品可以达到相对摄像机移动的效果
             poseStack.translate(-CameraAnimationHandler.posX, -CameraAnimationHandler.posY, -CameraAnimationHandler.posZ);
+            //poseStack.translate(-0, -1.5, -1.125);
 
             WriteVerticesInfo.setPoseStack(poseStack);
             WriteVerticesInfo.setLightMap(packedLight);
@@ -192,6 +199,7 @@ public class SlashBladeItemRenderer implements DynamicItemRenderer {
             model.writeVerticesOnly(vertexConsumer, "blade");
             model.writeVerticesOnly(vertexConsumer, "sheath");
 
+            WriteVerticesInfo.resetColor();
             WriteVerticesInfo.resetPoseStack();
             WriteVerticesInfo.resetLightMap();
             WriteVerticesInfo.resetOverlayMap();

@@ -1,13 +1,13 @@
 package mod.slashblade.reforged.content.action;
 
+import com.maydaymemory.mae.basic.ArrayClipChannel;
 import com.maydaymemory.mae.basic.Keyframe;
-import com.maydaymemory.mae.control.montage.AnimationMontage;
-import com.maydaymemory.mae.control.montage.AnimationMontageSection;
-import com.maydaymemory.mae.control.montage.AnimationMontageTrack;
-import com.maydaymemory.mae.control.montage.AnimationSegment;
+import com.maydaymemory.mae.control.montage.*;
 import lombok.Getter;
 import mod.slashblade.reforged.content.animation.SlashBladeAnimationContext;
 import mod.slashblade.reforged.core.animation.event.AnimationManager;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -125,6 +125,15 @@ public class Action {
             firstPersonMontage.setTracks(List.of(drawTrack));
             firstPersonMontage.setSections(commonMontageSections);
         }
+
+        ArrayList<Keyframe<IAnimationNotify<SlashBladeAnimationContext>>> drawNotifies = new ArrayList<>();
+        drawNotifies.add(new AnimationNotifyKeyframe<>(0.6f, ctx -> {
+            Level level = ctx.livingEntity.level();
+            if (level.isClientSide()) {
+                System.out.println("Man!");
+            }
+        })); // raising gun 为 false 就可以开枪换弹了
+        actionMontage.setNotifyChannels(List.of(new ArrayClipChannel<>(drawNotifies)));
 
         isInit = true;
     }

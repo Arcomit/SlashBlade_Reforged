@@ -39,14 +39,18 @@ public class Standing implements IAnimationState<SlashBladeAnimationContext> {
 
     @Override
     public void onEnter(SlashBladeAnimationContext context, IAnimationState<SlashBladeAnimationContext> fromState) {
+        //context.animationMontageRunner.setSpeed(0.05F);
+    }
+
+    @Override
+    public void onExit(SlashBladeAnimationContext context, IAnimationTransition<SlashBladeAnimationContext> triggeredTransition) {
 
     }
 
     @Override
-    public void onExit(SlashBladeAnimationContext context, IAnimationTransition<SlashBladeAnimationContext> triggeredTransition) {}
+    public void onUpdate(SlashBladeAnimationContext context) {
 
-    @Override
-    public void onUpdate(SlashBladeAnimationContext context) {}
+    }
 
     @Override
     public Pose evaluatePose(SlashBladeAnimationContext context) {
@@ -72,6 +76,50 @@ public class Standing implements IAnimationState<SlashBladeAnimationContext> {
         @Override
         public float duration() {
             return 0.3f;
+        }
+
+        @Override
+        public TransferOutStrategy transferOutStrategy() {
+            return TransferOutStrategy.TO_STATE;
+        }
+
+        @Override
+        public boolean canTrigger(SlashBladeAnimationContext context) {
+            float walkDelta = context.livingEntity.walkDist - context.livingEntity.walkDistO;
+            if (walkDelta <= 0.05F) {
+                return true;
+            }
+            return false;
+        }
+
+        @Override
+        public void afterTrigger(SlashBladeAnimationContext context) {
+            Action action = SbActions.TEST.get();
+            context.animationMontageRunner = new AnimationMontageRunner<>(action.getActionMontage(), context, new ZYXBoneTransformFactory(), ArrayPoseBuilder::new, new NotCountingPausedNanoTimeSupplier());
+            context.animationMontageRunner.start("action");
+        }
+
+        @Override
+        public Pose getInterpolatedPose(SlashBladeAnimationContext context, Pose fromPose, Pose toPose, float alpha) {
+            return SlashBladeAnimationContext.BLENDER.blend(fromPose, toPose, alpha);
+        }
+    }
+
+    public static class Transition2 implements IAnimationTransition<SlashBladeAnimationContext> {
+
+        @Override
+        public IAnimationState<SlashBladeAnimationContext> targetState() {
+            return Standing.INSTANCE;
+        }
+
+        @Override
+        public IBlendCurve curve() {
+            return new EasingBlendCurve(Easing.LINEAR);
+        }
+
+        @Override
+        public float duration() {
+            return 0f;
         }
 
         @Override

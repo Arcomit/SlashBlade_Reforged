@@ -24,16 +24,24 @@ public class SbActions {
     public static final DeferredHolder<Action, Action> WALKING_ACTION = ACTIONS.register(
             "walking",
             () -> new Action()
-                    .animation("default_walk_universal", 0.0f, 1.0f)
-                    .fristPersonAnimation("default_walk_universal", 0.0f, 1.0f)
+                    .animation("Default_Walk_FristPerson", 0.0f, 0.25f)
+                    .fristPersonAnimation("Default_Walk_FristPerson", 0.0f, 0.25f)
                     .isLoop(true)
     );
 
     public static final DeferredHolder<Action, Action> SPRINTING_ACTION = ACTIONS.register(
             "sprinting",
             () -> new Action()
-                    .animation("default_sprint_universal", 0.0f, 0.5f)
-                    .fristPersonAnimation("default_sprint_universal", 0.0f, 0.5f)
+                    .animation("Default_Sprint_FristPerson", 0.0f, 0.25f)
+                    .fristPersonAnimation("Default_Sprint_FristPerson", 0.0f, 0.25f)
+                    .isLoop(true)
+    );
+
+    public static final DeferredHolder<Action, Action> TEST = ACTIONS.register(
+            "test",
+            () -> new Action()
+                    .animation("Combo_A4_FristPerson", 0.0f, 3.58f)
+                    .fristPersonAnimation("Combo_A4_FristPerson", 0.0f, 3.58f)
                     .isLoop(true)
     );
 
