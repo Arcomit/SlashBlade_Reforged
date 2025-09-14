@@ -1,23 +1,13 @@
 package mod.slashblade.reforged.content.init;
 
 import mod.slashblade.reforged.SlashbladeMod;
-import mod.slashblade.reforged.content.entity.DriveEntity;
-import mod.slashblade.reforged.content.entity.JudgementCutEntity;
-import mod.slashblade.reforged.content.entity.LightningEntity;
-import mod.slashblade.reforged.content.entity.SlashEffectEntity;
-import mod.slashblade.reforged.content.entity.SummondSwordEntity;
-import mod.slashblade.reforged.utils.Util;
-import net.minecraft.core.registries.BuiltInRegistries;
+import mod.slashblade.reforged.content.entity.*;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import org.checkerframework.checker.guieffect.qual.UIType;
 
 import java.util.function.Supplier;
 
@@ -45,9 +35,9 @@ public class SbEntityType {
                             (e, l) -> new DriveEntity(e, l, null),
                             MobCategory.MISC
                     )
-                    .sized(1.0f, 1.0f)
+                    .sized(0.5f, 0.5f)
                     .setShouldReceiveVelocityUpdates(true)
-                    .setUpdateInterval(1)
+                    .setUpdateInterval(20)
                     .fireImmune()
                     .noSave()
                     .build("drive_entity")
@@ -59,9 +49,9 @@ public class SbEntityType {
                             (e, l) -> new LightningEntity(e, l, null),
                             MobCategory.MISC
                     )
-                    .sized(0.1f, 0.1f)
+                    .sized(0.5f, 0.5f)
                     .setShouldReceiveVelocityUpdates(false)
-                    .setUpdateInterval(1)
+                    .setUpdateInterval(20)
                     .fireImmune()
                     .noSave()
                     .build("lightning_entity")
@@ -73,9 +63,9 @@ public class SbEntityType {
                             (e, l) -> new SlashEffectEntity(e, l, null),
                             MobCategory.MISC
                     )
-                    .sized(1.0f, 1.0f)
+                    .sized(0.5f, 0.5f)
                     .setShouldReceiveVelocityUpdates(false)
-                    .setUpdateInterval(1)
+                    .setUpdateInterval(20)
                     .fireImmune()
                     .noSave()
                     .build("slash_effect_entity")
@@ -87,14 +77,25 @@ public class SbEntityType {
                             (e, l) -> new JudgementCutEntity(e, l, null),
                             MobCategory.MISC
                     )
-                    .sized(1.0f, 1.0f)
+                    .sized(0.5f, 0.5f)
                     .setShouldReceiveVelocityUpdates(false)
-                    .setUpdateInterval(1)
+                    .setUpdateInterval(20)
                     .fireImmune()
                     .noSave()
                     .build("judgement_cut_entity")
     );
 
+    public static final Supplier<EntityType<BladeStandEntity>> BLADE_STAND_ENTITY = ENTITY_TYPE_REGISTER.register(
+            "blade_stand_entity",
+            () -> EntityType.Builder.<BladeStandEntity>of(
+                            (e, l) -> new BladeStandEntity(e, l, null),
+                            MobCategory.MISC
+                    )
+                    .sized(0.5f, 0.5f)
+                    .setUpdateInterval(20)
+                    .fireImmune()
+                    .build("blade_stand_entity")
+    );
 
     public static void register(IEventBus bus) {
         ENTITY_TYPE_REGISTER.register(bus);

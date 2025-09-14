@@ -5,16 +5,16 @@ import mod.slashblade.reforged.content.config.SbConfig;
 import mod.slashblade.reforged.content.data.SlashBladeLogic;
 import mod.slashblade.reforged.content.data.SlashBladeStyle;
 import mod.slashblade.reforged.content.entity.SlashEffectEntity;
-import mod.slashblade.reforged.content.event.AreaAttackEvent;
-import mod.slashblade.reforged.content.event.AttackEvent;
-import mod.slashblade.reforged.content.event.SlashEvent;
-import mod.slashblade.reforged.content.event.DurabilityLossEvent;
+import mod.slashblade.reforged.content.event.*;
 import mod.slashblade.reforged.content.init.SbAttackTypes;
 import mod.slashblade.reforged.content.init.SbDataComponentTypes;
 import mod.slashblade.reforged.content.init.SbEntityType;
 import mod.slashblade.reforged.content.register.AttackType;
 import mod.slashblade.reforged.utils.constant.ResourceLocationConstants;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.player.Player;
@@ -32,6 +32,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
 /**
@@ -235,6 +236,8 @@ public class AttackHelper {
             return;
         }
 
+        AtomicBoolean lost = new AtomicBoolean(false);
+
         double finalLoss = loss;
         itemStack.update(
                 SbDataComponentTypes.SLASH_BLADE_LOGIC,
@@ -247,7 +250,14 @@ public class AttackHelper {
                         to = 0;
                         builder.broken(true);
 
-                        //TODO 刀损坏
+                        //user.level().broadcastEntityEvent(user, entityEventForEquipmentBreak(EquipmentSlot.MAINHAND));
+                        user.level().playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ITEM_BREAK, SoundSource.MASTER, 1, 1);
+                        NeoForge.EVENT_BUS.post(new BrokenEvent(itemStack, slashBladeLogic, user, builder));
+
+                        if (s.isFragile()) {
+                            lost.set(true);
+                        }
+
                     }
 
                     builder.durable(to);
@@ -256,6 +266,23 @@ public class AttackHelper {
                 }
         );
 
+
+        if (lost.get()) {
+            user.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+        }
+
+    }
+
+    public static byte entityEventForEquipmentBreak(EquipmentSlot slot) {
+        return switch (slot) {
+            case MAINHAND -> 47;
+            case OFFHAND -> 48;
+            case HEAD -> 49;
+            case CHEST -> 50;
+            case FEET -> 52;
+            case LEGS -> 51;
+            case BODY -> 65;
+        };
     }
 
     /***

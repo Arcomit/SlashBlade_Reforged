@@ -53,12 +53,12 @@ public class SlashBladeItemRenderer extends BlockEntityWithoutLevelRenderer {
     // 物品栏渲染
     @Override
     public void renderByItem(
-            @NotNull ItemStack          stack,
-            ItemDisplayContext          transform,
-            @NotNull PoseStack          poseStack,
-            @NotNull MultiBufferSource  bufferSource,
-            int                         packedLight,
-            int                         packedOverlay
+            @NotNull ItemStack stack,
+            ItemDisplayContext transform,
+            @NotNull PoseStack poseStack,
+            @NotNull MultiBufferSource bufferSource,
+            int packedLight,
+            int packedOverlay
     ) {
         if (transform.firstPerson() || transform.thirdPerson()) {
             return;
@@ -159,7 +159,7 @@ public class SlashBladeItemRenderer extends BlockEntityWithoutLevelRenderer {
                 }
             }
 
-            if (false){
+            if (false) {
                 // 抵消上下移动摄像机视角时的跟随旋转（类似拔刀剑2，重锋的视角）
                 Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
                 Quaternionf inverseRot = new Quaternionf(camera.rotation()).conjugate();
@@ -235,12 +235,15 @@ public class SlashBladeItemRenderer extends BlockEntityWithoutLevelRenderer {
         }
 
         ResourceLocation test = itemStack.get(SbDataComponentTypes.DRAW_ACTION);
-        System.out.println(test);
+        //System.out.println(test);
 
         ObjModel model = ObjModelManager.get(slashBladeStyle.getModel());
 
         AnimationAsset animation = AnimationManager.get(DefaultResources.DEFAULT_ANIMATION);
-        if (animation == null) return;
+        if (animation == null) {
+            return;
+        }
+
         Pose pose = animation.evaluate(0f);
         model.applyPose(pose);
 

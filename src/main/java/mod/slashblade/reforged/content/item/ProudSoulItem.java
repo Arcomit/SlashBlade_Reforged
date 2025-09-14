@@ -1,7 +1,6 @@
 package mod.slashblade.reforged.content.item;
 
 import mod.slashblade.reforged.content.data.SlashBladeMaterial;
-import mod.slashblade.reforged.content.data.capabilitie.ISlashBladeMaterial;
 import mod.slashblade.reforged.content.init.SbDataComponentTypes;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;

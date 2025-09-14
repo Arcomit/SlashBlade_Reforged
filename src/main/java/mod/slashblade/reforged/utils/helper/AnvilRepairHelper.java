@@ -4,16 +4,12 @@ package mod.slashblade.reforged.utils.helper;
 import mod.slashblade.reforged.SlashbladeMod;
 import mod.slashblade.reforged.content.data.SlashBladeLogic;
 import mod.slashblade.reforged.content.data.SlashBladeMaterial;
-import mod.slashblade.reforged.content.data.capabilitie.ISlashBladeMaterial;
-import mod.slashblade.reforged.content.init.SbCapabilities;
 import mod.slashblade.reforged.content.init.SbDataComponentTypes;
-import mod.slashblade.reforged.content.init.SbItems;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.AnvilUpdateEvent;
-import net.neoforged.neoforge.event.ItemStackedOnOtherEvent;
 
 @EventBusSubscriber(modid = SlashbladeMod.MODID)
 public class AnvilRepairHelper {
@@ -54,7 +50,13 @@ public class AnvilRepairHelper {
 
         builder.refine(slashBladeLogic.getRefine() + cost);
         builder.proudSoul(slashBladeLogic.getProudSoul() + cost * slashBladeMaterial.getAddProudSoul());
+
+        double durable = slashBladeLogic.getDurable() + cost * slashBladeMaterial.getRepairDamageValue();
         builder.durable(Math.min(slashBladeLogic.getMaxDurable(), slashBladeLogic.getDurable() + cost * slashBladeMaterial.getRepairDamageValue()));
+
+        if (slashBladeLogic.isBroken() && durable >= slashBladeLogic.getMaxDurable()) {
+            builder.broken(false);
+        }
 
         result.set(SbDataComponentTypes.SLASH_BLADE_LOGIC, builder.build());
         event.setMaterialCost(cost);

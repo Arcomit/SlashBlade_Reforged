@@ -25,7 +25,6 @@ public class SlashBladeItemStacks {
                             SbDataComponentTypes.SLASH_BLADE_LOGIC.get(),
                             SlashBladeLogic.builder()
                                     .key(SlashBladeNameConstants.ANONYMITY_NAMELESS)
-                                    .maxDurable(512)
                                     .attack(4)
                                     .build()
                     )
@@ -59,6 +58,7 @@ public class SlashBladeItemStacks {
                             SlashBladeLogic.builder()
                                     .key(SlashBladeNameConstants.ANONYMITY_BAMBOO_LIGHT)
                                     .attack(3)
+                                    .maxDurable(512)
                                     .fragile(true)
                                     .build()
                     )

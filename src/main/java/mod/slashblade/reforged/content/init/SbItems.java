@@ -2,6 +2,7 @@ package mod.slashblade.reforged.content.init;
 
 import mod.slashblade.reforged.SlashbladeMod;
 import mod.slashblade.reforged.content.data.SlashBladeMaterial;
+import mod.slashblade.reforged.content.item.BladeStandItem;
 import mod.slashblade.reforged.content.item.ProudSoulItem;
 import mod.slashblade.reforged.content.item.SlashBladeItem;
 import net.minecraft.world.item.Item;
@@ -38,6 +39,13 @@ public class SbItems {
     public static final Supplier<Item> PROUD_SOUL_CRYSTAL = ITEMS.register("proud_soul_crystal", () -> new ProudSoulItem(new Item.Properties(), new SlashBladeMaterial(2048, 1024)));
     public static final Supplier<Item> PROUD_SOUL_TRAPEZOHEDRON = ITEMS.register("proud_soul_trapezohedron", () -> new ProudSoulItem(new Item.Properties(), new SlashBladeMaterial(2048, 2048)));
 
+
+    public static final Supplier<BladeStandItem> BLADESTAND_1 = ITEMS.register("bladestand_1", () -> new BladeStandItem(new Item.Properties(), false));
+    public static final Supplier<BladeStandItem> BLADESTAND_2 = ITEMS.register("bladestand_2", () -> new BladeStandItem(new Item.Properties(), false));
+    public static final Supplier<BladeStandItem> BLADESTAND_V = ITEMS.register("bladestand_v", () -> new BladeStandItem(new Item.Properties(), false));
+    public static final Supplier<BladeStandItem> BLADESTAND_S = ITEMS.register("bladestand_s", () -> new BladeStandItem(new Item.Properties(), false));
+    public static final Supplier<BladeStandItem> BLADESTAND_1W = ITEMS.register("bladestand_1w", () -> new BladeStandItem(new Item.Properties(), true));
+    public static final Supplier<BladeStandItem> BLADESTAND_2W = ITEMS.register("bladestand_2w", () -> new BladeStandItem(new Item.Properties(), true));
 
     public static void register(IEventBus bus) {
         ITEMS.register(bus);
