@@ -16,6 +16,7 @@
             "maxDurable": 512,
             "proudSoul": 0,
             "refine": 0,
+            "se": {},
             "sealed": false,
             "specialRepair": false
           },
@@ -63,6 +64,7 @@
         "maxDurable": 1024,
         "proudSoul": 0,
         "refine": 0,
+        "se": {},
         "sealed": false,
         "specialRepair": false
       },

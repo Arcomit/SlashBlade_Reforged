@@ -1,7 +1,6 @@
 package mod.slashblade.reforged.utils.constant;
 
 
-import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
 import mod.slashblade.reforged.SlashbladeMod;
 import mod.slashblade.reforged.content.client.util.ClientUtil;
@@ -12,9 +11,13 @@ import mod.slashblade.reforged.content.init.SbRegistrys;
 import mod.slashblade.reforged.content.recipe.IRecipeInputItem;
 import mod.slashblade.reforged.content.recipe.IRecipeInputItemSerializer;
 import mod.slashblade.reforged.content.recipe.SlashBladeRecipe;
+import mod.slashblade.reforged.content.register.SpecialAttack;
+import mod.slashblade.reforged.content.register.SpecialEffect;
 import mod.slashblade.reforged.utils.Util;
 import mod.slashblade.reforged.utils.tuple.Tuple2;
 import mod.slashblade.reforged.utils.tuple.Tuple3;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -164,6 +167,9 @@ public class ByteBufCodecConstants {
             SlashBladeRecipe.SlashBladeRecipeData::new
     );
     public static final StreamCodec<RegistryFriendlyByteBuf, SlashBladeRecipe> SLASH_BLADE_RECIPE = SLASH_BLADE_RECIPE_DATA.map(SlashBladeRecipe::new, SlashBladeRecipe::getSlashBladeRecipeData);
+    public static final RegistryStreamCodec<SpecialAttack> SPECIAL_ATTACK = new RegistryStreamCodec<>(SbRegistrys.SPECIAL_ATTACK_REGISTRY);
+    public static final RegistryStreamCodec<SpecialEffect> SPECIAL_EFFECT = new RegistryStreamCodec<>(SbRegistrys.SPECIAL_EFFECT_REGISTRY);
+    public static final StreamCodec<ByteBuf, Map<SpecialEffect, Integer>> SPECIAL_EFFECT_LEVEL_MAP = ByteBufCodecs.map(HashMap::new, SPECIAL_EFFECT, ByteBufCodecs.INT);
 
     static {
         // 基本数值类型
@@ -204,6 +210,9 @@ public class ByteBufCodecConstants {
         BASIC_TYPE_CODEC_MAP.put(SlashBladeStyle.class, SLASH_BLADE_STYLE);
 
         BASIC_TYPE_CODEC_MAP.put(Entity.class, ENTITY_CLIENT_SIDE);
+
+        BASIC_TYPE_CODEC_MAP.put(SpecialAttack.class, SPECIAL_ATTACK);
+        BASIC_TYPE_CODEC_MAP.put(SpecialEffect.class, SPECIAL_EFFECT);
 
     }
 
@@ -372,4 +381,25 @@ public class ByteBufCodecConstants {
         }
     }
 
+    public static class RegistryStreamCodec<R> implements StreamCodec<ByteBuf, R> {
+
+        final Registry<R> registry;
+
+        public RegistryStreamCodec(Registry<R> registry) {
+            this.registry = registry;
+        }
+
+        @SuppressWarnings("NullableProblems")
+        @Nullable
+        @Override
+        public R decode(@NotNull ByteBuf buffer) {
+            Optional<Holder.Reference<R>> holder = registry.getHolder(buffer.readInt());
+            return holder.map(Holder.Reference::value).orElse(null);
+        }
+
+        @Override
+        public void encode(ByteBuf buffer, @NotNull R value) {
+            buffer.writeInt(registry.getId(value));
+        }
+    }
 }

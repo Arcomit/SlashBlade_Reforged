@@ -5,9 +5,10 @@ import mod.slashblade.reforged.content.config.SbConfig;
 import mod.slashblade.reforged.content.data.SlashBladeLogic;
 import mod.slashblade.reforged.content.data.SlashBladeStyle;
 import mod.slashblade.reforged.content.entity.SlashEffectEntity;
-import mod.slashblade.reforged.content.event.SlashBladeAttackEvent;
-import mod.slashblade.reforged.content.event.SlashBladeDoSlashEvent;
-import mod.slashblade.reforged.content.event.SlashBladeDurabilityLoss;
+import mod.slashblade.reforged.content.event.AreaAttackEvent;
+import mod.slashblade.reforged.content.event.AttackEvent;
+import mod.slashblade.reforged.content.event.SlashEvent;
+import mod.slashblade.reforged.content.event.DurabilityLossEvent;
 import mod.slashblade.reforged.content.init.SbAttackTypes;
 import mod.slashblade.reforged.content.init.SbDataComponentTypes;
 import mod.slashblade.reforged.content.init.SbEntityType;
@@ -90,7 +91,7 @@ public class AttackHelper {
             advanceOperation.accept(jc);
         }
 
-        NeoForge.EVENT_BUS.post(new SlashBladeDoSlashEvent(mainHandItem, slashBladeLogic, attacker, jc));
+        NeoForge.EVENT_BUS.post(new SlashEvent(mainHandItem, slashBladeLogic, attacker, jc));
 
         attacker.level().addFreshEntity(jc);
     }
@@ -126,11 +127,15 @@ public class AttackHelper {
         }
 
 
-        return EntityHelper.getTargettableEntitiesWithinAABB(attacker.level(), attacker, pos, range).stream()
+        List<Entity> list = EntityHelper.getTargettableEntitiesWithinAABB(attacker.level(), attacker, pos, range).stream()
                 .filter(e -> !exclude.contains(e))
                 .peek(beforeHit)
                 .peek(e -> doAttack(attacker, e, modifiedRatio, bypassesCooldown, attackTypeList))
                 .toList();
+        if (!list.isEmpty()) {
+            NeoForge.EVENT_BUS.post(new AreaAttackEvent(mainHandItem, slashBladeLogic, attacker, modifiedRatio, list, attackTypeList));
+        }
+        return list;
 
     }
 
@@ -154,8 +159,8 @@ public class AttackHelper {
             return;
         }
 
-        SlashBladeAttackEvent slashBladeAttackEvent = new SlashBladeAttackEvent(mainHandItem, slashBladeLogic, attacker, target, modifiedRatio, attackTypeList);
-        NeoForge.EVENT_BUS.post(slashBladeAttackEvent);
+        AttackEvent attackEvent = new AttackEvent(mainHandItem, slashBladeLogic, attacker, target, modifiedRatio, attackTypeList);
+        NeoForge.EVENT_BUS.post(attackEvent);
 
         if (bypassesCooldown) {
             target.invulnerableTime = 0;
@@ -163,7 +168,7 @@ public class AttackHelper {
 
         AttributeModifier am = new AttributeModifier(
                 ResourceLocationConstants.SLASH_BLADE_ATTACK_MULTIPLIED_TOTAL,
-                (slashBladeAttackEvent.getUltimatelyModifiedRatio()) - 1,
+                (attackEvent.getUltimatelyModifiedRatio()) - 1,
                 AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
         );
 
@@ -216,36 +221,40 @@ public class AttackHelper {
         if (loss <= 0) {
             return;
         }
-        SlashBladeDurabilityLoss slashBladeDurabilityLoss = new SlashBladeDurabilityLoss(itemStack, slashBladeLogic, user, loss);
-        NeoForge.EVENT_BUS.post(slashBladeDurabilityLoss);
+        DurabilityLossEvent slashBladeDurabilityLossEvent = new DurabilityLossEvent(itemStack, slashBladeLogic, user, loss);
+        NeoForge.EVENT_BUS.post(slashBladeDurabilityLossEvent);
 
-        double durabilityReductionRate = Math.max(slashBladeDurabilityLoss.getDurabilityLevel() * SbConfig.COMMON.durabilityReductionRate.get(), 0);
+        double durabilityReductionRate = Math.max(slashBladeDurabilityLossEvent.getDurabilityLevel() * SbConfig.COMMON.durabilityReductionRate.get(), 0);
 
         // -Sigmoid函数
         double modifiedRatio = 1 / (durabilityReductionRate + Math.pow(Math.E, -durabilityReductionRate));
 
-        loss = slashBladeDurabilityLoss.getBasicLoss() * modifiedRatio;
+        loss = slashBladeDurabilityLossEvent.getBasicLoss() * modifiedRatio;
 
         if (loss <= 0) {
             return;
         }
 
+        double finalLoss = loss;
+        itemStack.update(
+                SbDataComponentTypes.SLASH_BLADE_LOGIC,
+                SlashBladeLogic.DEF,
+                s -> {
+                    SlashBladeLogic.SlashBladeLogicBuilder builder = s.toBuilder();
+                    double to = s.getDurable() - finalLoss;
 
-        SlashBladeLogic.SlashBladeLogicBuilder builder = slashBladeLogic.toBuilder();
+                    if (to <= 0) {
+                        to = 0;
+                        builder.broken(true);
 
-        double to = slashBladeLogic.getDurable() - loss;
+                        //TODO 刀损坏
+                    }
 
-        if (to <= 0) {
-            to = 0;
-            builder.broken(true);
+                    builder.durable(to);
 
-            //TODO 刀损坏
-        }
-
-        builder.durable(to);
-
-
-        itemStack.set(SbDataComponentTypes.SLASH_BLADE_LOGIC, builder.build());
+                    return builder.build();
+                }
+        );
 
     }
 
@@ -253,7 +262,7 @@ public class AttackHelper {
      * 默认倍率添加
      */
     @SubscribeEvent
-    public static void onSlashBladeAttackEvent(SlashBladeAttackEvent event) {
+    public static void onSlashBladeAttackEvent(AttackEvent event) {
 
         SlashBladeLogic slashBladeLogic = event.getSlashBladeLogic();
 
@@ -276,12 +285,12 @@ public class AttackHelper {
     }
 
     @SubscribeEvent
-    public static void durabilitySettlement(SlashBladeAttackEvent event) {
+    public static void durabilitySettlement(AreaAttackEvent event) {
         if (!event.getAttackTypeList().contains(SbAttackTypes.SLASH_BLADE_ATTACK_TYPE.get())) {
             return;
         }
 
-        durabilityLoss(event.getUser(), event.getItem(), event.getSlashBladeLogic(), event.getModifiedRatio() * SbConfig.COMMON.durabilityLoss.get());
+        durabilityLoss(event.getUser(), event.getItem(), event.getSlashBladeLogic(), event.getModifiedRatio() * SbConfig.COMMON.durabilityLoss.get() * event.getTarget().size());
     }
 
 

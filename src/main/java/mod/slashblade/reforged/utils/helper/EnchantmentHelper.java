@@ -3,9 +3,9 @@ package mod.slashblade.reforged.utils.helper;
 import mod.slashblade.reforged.SlashbladeMod;
 import mod.slashblade.reforged.content.config.SbConfig;
 import mod.slashblade.reforged.content.data.SlashBladeLogic;
-import mod.slashblade.reforged.content.event.SlashBladeAttackEvent;
-import mod.slashblade.reforged.content.event.SlashBladeDoSlashEvent;
-import mod.slashblade.reforged.content.event.SlashBladeDurabilityLoss;
+import mod.slashblade.reforged.content.event.AttackEvent;
+import mod.slashblade.reforged.content.event.SlashEvent;
+import mod.slashblade.reforged.content.event.DurabilityLossEvent;
 import mod.slashblade.reforged.content.init.SbAttackTypes;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -18,13 +18,12 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 
 @EventBusSubscriber(modid = SlashbladeMod.MODID)
 public class EnchantmentHelper {
 
     @SubscribeEvent
-    public static void onEvent(SlashBladeAttackEvent event) {
+    public static void onEvent(AttackEvent event) {
 
         LivingEntity attacker = event.getAttacker();
         Entity target = event.getTarget();
@@ -69,7 +68,7 @@ public class EnchantmentHelper {
 
 
     @SubscribeEvent
-    public static void sweepingEdgeBonus(SlashBladeDoSlashEvent event) {
+    public static void sweepingEdgeBonus(SlashEvent event) {
 
         Level level = event.getAttacker().level();
         HolderLookup.RegistryLookup<Enchantment> enchantmentRegistry = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
@@ -82,7 +81,7 @@ public class EnchantmentHelper {
     }
 
     @SubscribeEvent
-    public static void onSlashBladeDurabilityLoss(SlashBladeDurabilityLoss event) {
+    public static void onSlashBladeDurabilityLoss(DurabilityLossEvent event) {
         if (event.getUser() == null) {
             return;
         }

@@ -439,6 +439,38 @@ public class SlashBladeItemStacks {
                     )
                     .build();
 
+    //散华 (Sange)
+    public static final Supplier<ItemStack> SANGE = () ->
+            new ItemStackBuilder(SbItems.SLASH_BLADE.get())
+                    .set(
+                            SbDataComponentTypes.SLASH_BLADE_LOGIC.get(),
+                            SlashBladeLogic.builder() // TODO SA
+                                    .attack(5f)
+                                    .key(SlashBladeNameConstants.SANGE)
+                                    .build()
+                    )
+                    .set(
+                            SbDataComponentTypes.SLASH_BLADE_STYLE.get(),
+                            SlashBladeStyle.builder()
+                                    .texture(R.Slashblade.Models.Named.Sange.sange$png)
+                                    .model(R.Slashblade.Models.Named.Sange.sange$obj)
+                                    .build()
+                    )
+                    .build();
+
+    public static final Supplier<ItemStack> SANGE_BROKEN = () ->
+            new ItemStackBuilder(SANGE.get())
+                    .set(
+                            SbDataComponentTypes.SLASH_BLADE_LOGIC.get(),
+                            s -> s.toBuilder()
+                                    .durable(0)
+                                    .broken(true)
+                                    .specialRepair(true)
+                                    .build(),
+                            SlashBladeLogic::new
+                    )
+                    .build();
+
     //魔剑「阎魔刀」 (Yamato)
     public static final Supplier<ItemStack> YAMATO = () ->
             new ItemStackBuilder(SbItems.SLASH_BLADE.get())
@@ -458,7 +490,6 @@ public class SlashBladeItemStacks {
                     )
                     .build();
 
-    // TODO 末影龙掉落
     public static final Supplier<ItemStack> YAMATO_BROKEN = () ->
             new ItemStackBuilder(YAMATO.get())
                     .set(

@@ -535,6 +535,30 @@ public class SlashBladeRecipes {
             SlashBladeItemStacks.STEEL_DOUTANUKI.get()
     );
 
+    public static final Supplier<SlashBladeRecipe> SANGE_RECIPE = () -> new SlashBladeRecipe(
+            List.of(
+                    "SSS",
+                    "S#S",
+                    "SSS"
+            ),
+            Map.of(
+                    'S', new IRecipeInputItem.IngredientRecipeInputItem(SbItems.PROUD_SOUL_CRYSTAL.get()),
+                    '#', new IRecipeInputItem.SlashBladeRecipeInputItem(
+                            new ItemStackBuilder(SlashBladeItemStacks.SANGE_BROKEN.get())
+                                    .set(
+                                            SbDataComponentTypes.SLASH_BLADE_LOGIC.get(),
+                                            slashBladeLogic -> slashBladeLogic.toBuilder()
+                                                    .refine(100)
+                                                    .build(),
+                                            SlashBladeLogic::new
+                                    )
+                                    .build()
+                    )
+            ),
+            '#',
+            SlashBladeItemStacks.SANGE.get()
+    );
+
     public static final Supplier<SlashBladeRecipe> REPAIR_YAMATO_RECIPE = () -> new SlashBladeRecipe(
             List.of(
                     "SSS",

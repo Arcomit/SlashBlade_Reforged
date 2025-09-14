@@ -3,8 +3,12 @@ package mod.slashblade.reforged.core.animation.utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import mod.slashblade.reforged.content.init.SbRegistrys;
 import mod.slashblade.reforged.content.recipe.IRecipeInputItem;
+import mod.slashblade.reforged.content.register.SpecialAttack;
+import mod.slashblade.reforged.content.register.SpecialEffect;
 import mod.slashblade.reforged.content.serialize.BooleanSerializer;
+import mod.slashblade.reforged.content.serialize.RegistrySerializer;
 import mod.slashblade.reforged.content.serialize.UseCodecSerializer;
 import mod.slashblade.reforged.core.animation.pojo.AnimationKeyframes;
 import mod.slashblade.reforged.core.animation.pojo.SoundEffectKeyframes;
@@ -44,5 +48,7 @@ public class GsonUtil {
             .registerTypeAdapter(Ingredient.class, new UseCodecSerializer<>(Ingredient.CODEC))
             .registerTypeAdapter(ItemStack.class, new UseCodecSerializer<>(ItemStack.CODEC))
             .registerTypeAdapter(Color.class, new UseCodecSerializer<>(CodecConstants.COLOR))
+            .registerTypeAdapter(SpecialAttack.class, new RegistrySerializer<>(SbRegistrys.SPECIAL_ATTACK_REGISTRY))
+            .registerTypeAdapter(SpecialEffect.class, new RegistrySerializer<>(SbRegistrys.SPECIAL_ATTACK_REGISTRY))
             .create();
 }

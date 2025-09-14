@@ -2,6 +2,7 @@ package mod.slashblade.reforged.generated;
 
 import mod.slashblade.reforged.SlashbladeMod;
 import mod.slashblade.reforged.generated.group.ItemStackDataPackGenerator;
+import mod.slashblade.reforged.generated.loot.SlashBladeLootTableProvider;
 import mod.slashblade.reforged.generated.recipe.SlashBladeRecipeProvider;
 import mod.slashblade.reforged.generated.recipe.SlashBladeRecipes;
 import net.minecraft.core.HolderLookup;
@@ -57,6 +58,14 @@ public class Generator {
                 )
         );
 
+        // 注册战利品表生成器
+        event.getGenerator().addProvider(
+                event.includeServer(),
+                new SlashBladeLootTableProvider(
+                        event.getGenerator().getPackOutput(),
+                        lookupProvider
+                )
+        );
 
     }
 

@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 
 @Getter
-public class SlashBladeAttackEvent extends SlashBladeEvent {
+public class AttackEvent extends SlashBladeEvent {
 
     LivingEntity attacker;
     Entity target;
@@ -34,7 +34,7 @@ public class SlashBladeAttackEvent extends SlashBladeEvent {
 
     final List<AttackType> attackTypeList;
 
-    public SlashBladeAttackEvent(ItemStack item, SlashBladeLogic slashBladeLogic, LivingEntity attacker, Entity target, double modifiedRatio, List<AttackType> attackTypeList) {
+    public AttackEvent(ItemStack item, SlashBladeLogic slashBladeLogic, LivingEntity attacker, Entity target, double modifiedRatio, List<AttackType> attackTypeList) {
         super(item, slashBladeLogic, attacker);
         this.attacker = attacker;
         this.target = target;
@@ -47,7 +47,7 @@ public class SlashBladeAttackEvent extends SlashBladeEvent {
     }
 
     public void addModifiedRatioAmplifier(double amplifier) {
-        modifiedRatio += amplifier;
+        modifiedRatioAmplifier += amplifier;
     }
 
     public void addMechanismModifiedRatioAmplifier(double amplifier) {

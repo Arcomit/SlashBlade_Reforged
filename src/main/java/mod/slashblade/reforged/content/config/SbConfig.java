@@ -50,8 +50,8 @@ public class SbConfig {
         public final ModConfigSpec.ConfigValue<Double> soulDropChance;
         public final ModConfigSpec.ConfigValue<Double> tinySoulDropChance;
         public final ModConfigSpec.ConfigValue<Double> enchantmentSoulDropChance;
-        public final ModConfigSpec.ConfigValue<Double> enchantmentSoulSuccessRate;
-        public final ModConfigSpec.ConfigValue<Double> entityDropChance;
+        public final ModConfigSpec.ConfigValue<Integer> proudSoulRewardMax;
+        public final ModConfigSpec.ConfigValue<Integer> proudSoulRewardMin;
 
         // Slash effect configuration
         public final ModConfigSpec.ConfigValue<Boolean> useBlockParticle;
@@ -62,6 +62,7 @@ public class SbConfig {
 
         // Summoned sword configuration
         public final ModConfigSpec.ConfigValue<Double> ordinaryAttack;
+        public final ModConfigSpec.ConfigValue<Double> teleportationAttack;
         public final ModConfigSpec.ConfigValue<Double> blisteringAttack;
         public final ModConfigSpec.ConfigValue<Integer> blisteringAttackNumber;
         public final ModConfigSpec.ConfigValue<Double> heavyRainAttack;
@@ -87,7 +88,6 @@ public class SbConfig {
         public final ModConfigSpec.ConfigValue<Double> baneOfArthropodsAttackBonus;
         public final ModConfigSpec.ConfigValue<Double> powerAttackBonus;
         public final ModConfigSpec.ConfigValue<Double> sweepingEdgeSizeBonus;
-
 
 
         Common(ModConfigSpec.Builder builder) {
@@ -157,7 +157,7 @@ public class SbConfig {
 
             durabilityLoss = builder
                     .comment("Durability loss per slash attack")
-                    .define("durability_loss", 1.0);
+                    .define("durability_loss", 10.0);
 
             durabilityReductionRate = builder
                     .comment("Define the effect of durability enchantment and durability reduction")
@@ -203,13 +203,13 @@ public class SbConfig {
                     .comment("Enchantment soul drop chance")
                     .define("enchantment_soul_drop_chance", 0.05);
 
-            enchantmentSoulSuccessRate = builder
-                    .comment("Enchantment soul success rate")
-                    .define("enchantment_soul_success_rate", 0.25);
+            proudSoulRewardMax = builder
+                    .comment("Kill entity proud max soul reward")
+                    .define("proud_soul_r1eward", 12);
 
-            entityDropChance = builder
-                    .comment("Entity drop chance")
-                    .define("entity_drop_chance", 0.01);
+            proudSoulRewardMin = builder
+                    .comment("Kill entity proud min soul reward")
+                    .define("proud_soul_reward_min", 6);
 
             builder.pop();
 
@@ -244,6 +244,10 @@ public class SbConfig {
             ordinaryAttack = builder
                     .comment("Ordinary attack damage")
                     .define("ordinary_attack", 0.15);
+
+            teleportationAttack = builder
+                    .comment("Teleportation attack damage")
+                    .define("teleportation_attack", 0.01);
 
             blisteringAttack = builder
                     .comment("Blistering attack damage")

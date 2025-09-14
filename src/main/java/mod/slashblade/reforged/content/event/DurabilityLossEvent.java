@@ -9,11 +9,11 @@ import org.jetbrains.annotations.Nullable;
 
 @Getter
 @Setter
-public class SlashBladeDurabilityLoss extends SlashBladeEvent {
+public class DurabilityLossEvent extends SlashBladeEvent {
     double basicLoss;
     double durabilityLevel;
 
-    public SlashBladeDurabilityLoss(ItemStack item, SlashBladeLogic slashBladeLogic, @Nullable LivingEntity user, double basicLoss) {
+    public DurabilityLossEvent(ItemStack item, SlashBladeLogic slashBladeLogic, @Nullable LivingEntity user, double basicLoss) {
         super(item, slashBladeLogic, user);
         this.basicLoss = basicLoss;
     }

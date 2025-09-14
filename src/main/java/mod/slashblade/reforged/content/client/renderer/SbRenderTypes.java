@@ -20,6 +20,8 @@ public class SbRenderTypes{
 
     private static final Map<ResourceLocation, RenderType> SLASH_BLADE_BLEND_CACHE = new WeakHashMap<>();
 
+    private static final Map<ResourceLocation, RenderType> SLASH_BLADE_TRANSPARENCY_CACHE = new WeakHashMap<>();
+
     public static RenderType getBlend(ResourceLocation texture) {
         return SLASH_BLADE_BLEND_CACHE.computeIfAbsent(texture, tex -> {
             RenderType.CompositeState state = RenderType.CompositeState.builder()
@@ -34,6 +36,27 @@ public class SbRenderTypes{
 
             return RenderType.create(
                     "slashblade_blend",
+                    DefaultVertexFormat.NEW_ENTITY,
+                    VertexFormat.Mode  .TRIANGLES,
+                    256, true, false, state
+            );
+        });
+    }
+
+    public static RenderType getTransparency(ResourceLocation texture) {
+        return SLASH_BLADE_TRANSPARENCY_CACHE.computeIfAbsent(texture, tex -> {
+            RenderType.CompositeState state = RenderType.CompositeState.builder()
+                    .setShaderState      (RENDERTYPE_ITEM_ENTITY_TRANSLUCENT_CULL_SHADER)
+                    .setOutputState      (ITEM_ENTITY_TARGET)
+                    .setTextureState     (new TextureStateShard(tex, false, true))
+                    .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+                    .setLightmapState    (LIGHTMAP)
+                    .setOverlayState     (OVERLAY)
+                    .setWriteMaskState   (COLOR_WRITE)
+                    .createCompositeState(true);
+
+            return RenderType.create(
+                    "slashblade_transparency",
                     DefaultVertexFormat.NEW_ENTITY,
                     VertexFormat.Mode  .TRIANGLES,
                     256, true, false, state

@@ -15,7 +15,10 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import org.jetbrains.annotations.NotNull;
 
+import java.text.DecimalFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
@@ -77,10 +80,54 @@ public class SlashBladeItem extends SwordItem {
 
         tooltipComponents.add(Component.empty());
 
-        tooltipComponents.add(Component.translatable(LanguageItems.TOOLTIP_ATTACK.getKey(), slashBladeLogic.getAttack()));
 
+        boolean hasSaSe = false;
+        if (slashBladeLogic.getSa() != null) {
+            hasSaSe = true;
+            tooltipComponents.add(Component.translatable(LanguageItems.SA.getKey(), Component.translatable(slashBladeLogic.getSa().getDescriptionId())));
+        }
+
+        if (!slashBladeLogic.getSe().isEmpty()) {
+            hasSaSe = true;
+            tooltipComponents.add(Component.translatable(LanguageItems.SE.getKey()));
+            slashBladeLogic.getSe().forEach(
+                    (k, v) -> tooltipComponents.add(
+                            Component.translatable(
+                                    LanguageItems.SE_ITEM.getKey(),
+                                    Component.translatable(k.getDescriptionId()),
+                                    v,
+                                    k.getMaxLevel()
+                            )
+                    )
+            );
+        }
+
+        if (hasSaSe) {
+            tooltipComponents.add(Component.empty());
+        }
+
+        boolean hasState = false;
+        if (slashBladeLogic.isFragile()) {
+            hasState = true;
+            tooltipComponents.add(Component.translatable(LanguageItems.FRAGILE.getKey()));
+        }
+
+        if (slashBladeLogic.isSpecialRepair()) {
+            hasState = true;
+            tooltipComponents.add(Component.translatable(LanguageItems.SPECIAL_REPAIR.getKey()));
+        }
+
+        if (hasState) {
+            tooltipComponents.add(Component.empty());
+        }
+
+        DecimalFormat df = new DecimalFormat("#.#");
+
+        tooltipComponents.add(Component.translatable(LanguageItems.DURABILITY.getKey(), df.format(slashBladeLogic.getDurable()), df.format(slashBladeLogic.getMaxDurable())));
+        tooltipComponents.add(Component.empty());
 
     }
+
 
     @Override
     public @NotNull String getDescriptionId(@NotNull ItemStack stack) {
@@ -90,25 +137,6 @@ public class SlashBladeItem extends SwordItem {
         }
         return slashBladeLogic.getDescriptionId();
     }
-
-
-    /*@Override
-    public void appendHoverText(@NotNull ItemStack stack, @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag isAdvanced) {
-        super.appendHoverText(stack, tooltipComponents, isAdvanced);
-        
-        // 添加拔刀剑的特殊提示
-        tooltipComponents.add(Component.translatable("item.slashblade_reforged.slashblade.tooltip.1")
-                .withStyle(ChatFormatting.GRAY));
-        tooltipComponents.add(Component.translatable("item.slashblade_reforged.slashblade.tooltip.2")
-                .withStyle(ChatFormatting.GRAY));
-        tooltipComponents.add(Component.translatable("item.slashblade_reforged.slashblade.tooltip.3")
-                .withStyle(ChatFormatting.GRAY));
-        
-        // 添加使用说明
-        tooltipComponents.add(Component.empty());
-        tooltipComponents.add(Component.translatable("item.slashblade_reforged.slashblade.tooltip.usage")
-                .withStyle(ChatFormatting.YELLOW));
-    }*/
 
 
 }

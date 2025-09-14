@@ -60,6 +60,8 @@ public class CameraAnimationHandler {
         xRotation = -(float) Math.toDegrees(rotationAngles.x);
         yRotation = -(float) Math.toDegrees(rotationAngles.y);
         zRotation =  (float) Math.toDegrees(rotationAngles.z);
+
+        System.out.println(xRotation + " " + yRotation + " " + zRotation);
     }
 
     public static void resetCameraRotation(){

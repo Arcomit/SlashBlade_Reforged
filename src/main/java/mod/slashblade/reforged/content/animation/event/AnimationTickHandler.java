@@ -33,7 +33,8 @@ public class AnimationTickHandler {
     public static void onServerTick(EntityTickEvent.Pre event) {
         if (event.getEntity() instanceof LivingEntity livingEntity){
             if (!livingEntity.level().isClientSide && !(livingEntity instanceof Player)){
-                //System.out.println("傻逼neoforge");
+                SlashBladeAnimationInstance instance = SlashBladeAnimationInstance.get(livingEntity);
+                instance.tick();
             }
         }
     }

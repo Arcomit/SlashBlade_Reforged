@@ -100,7 +100,7 @@ public class AnimationManager implements PreparableReloadListener {
 
                 for (AnimationAsset animation : animations) {
 
-                    cache.put(animation.getName(), animation);
+                    cache.put(animation.getName().toLowerCase(), animation);
                     System.out.println("Loaded animation: " + animation.getName());
 
                 }
@@ -128,7 +128,7 @@ public class AnimationManager implements PreparableReloadListener {
             while (animationsCache == null) {
                 PREPARED.await(); // 等待 animationsCache 准备好
             }
-            return animationsCache.computeIfAbsent(animationName,
+            return animationsCache.computeIfAbsent(animationName.toLowerCase(),
                     aniName -> animationsCache.get(DefaultResources.DEFAULT_ANIMATION)
             );
         } catch (InterruptedException e) {

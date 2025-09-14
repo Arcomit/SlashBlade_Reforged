@@ -153,11 +153,15 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.ZH_CN, "枯石大刀")
             .addTranslation(LanguageTypes.EN_US, "Koseki");
 
+    // 枯石大刀 (Koseki)
+    public static final LanguageItem SANGE = new LanguageItem(getItemDescriptionId(SlashBladeItemStacks.SANGE.get()))
+            .addTranslation(LanguageTypes.ZH_CN, "散华")
+            .addTranslation(LanguageTypes.EN_US, "Sange");
+
     // 魔剑「阎魔刀」 (Yamato)
     public static final LanguageItem YAMATO = new LanguageItem(getItemDescriptionId(SlashBladeItemStacks.YAMATO.get()))
             .addTranslation(LanguageTypes.ZH_CN, "魔剑「阎魔刀」")
             .addTranslation(LanguageTypes.EN_US, "Yamato");
-
 
     public static final LanguageItem TOOLTIP_GLORY = new LanguageItem("slash_blade_item.tooltip.glory")
             .addTranslation(LanguageTypes.ZH_CN, "荣耀: %s");
@@ -168,9 +172,26 @@ public class LanguageItems {
     public static final LanguageItem TOOLTIP_REFINE = new LanguageItem("slash_blade_item.tooltip.refine")
             .addTranslation(LanguageTypes.ZH_CN, "锻造: %s");
 
+    public static final LanguageItem SA = new LanguageItem("slash_blade_item.tooltip.sa")
+            .addTranslation(LanguageTypes.ZH_CN, "SA: %s");
+
+    public static final LanguageItem SE = new LanguageItem("slash_blade_item.tooltip.se")
+            .addTranslation(LanguageTypes.ZH_CN, "SE:");
+
+    public static final LanguageItem SE_ITEM = new LanguageItem("slash_blade_item.tooltip.se_item")
+            .addTranslation(LanguageTypes.ZH_CN, "%s    等级:%s/%s");
+
     public static final LanguageItem TOOLTIP_ATTACK = new LanguageItem("slash_blade_item.tooltip.attack")
             .addTranslation(LanguageTypes.ZH_CN, "基础伤害: %s");
 
+    public static final LanguageItem DURABILITY = new LanguageItem("slash_blade_item.durability")
+            .addTranslation(LanguageTypes.ZH_CN, "耐久: %s/%s");
+
+    public static final LanguageItem FRAGILE = new LanguageItem("slash_blade_item.tooltip.fragile")
+            .addTranslation(LanguageTypes.ZH_CN, "易碎的");
+
+    public static final LanguageItem SPECIAL_REPAIR = new LanguageItem("slash_blade_item.tooltip.special_repair")
+            .addTranslation(LanguageTypes.ZH_CN, "需要特殊手段修复");
 
     public static String getItemDescriptionId(ItemStack itemStack) {
         SlashBladeLogic slashBladeLogic = itemStack.get(SbDataComponentTypes.SLASH_BLADE_LOGIC);
