@@ -279,17 +279,6 @@ public class AttackHelper {
 
     }
 
-    public static byte entityEventForEquipmentBreak(EquipmentSlot slot) {
-        return switch (slot) {
-            case MAINHAND -> 47;
-            case OFFHAND -> 48;
-            case HEAD -> 49;
-            case CHEST -> 50;
-            case FEET -> 52;
-            case LEGS -> 51;
-            case BODY -> 65;
-        };
-    }
 
     /***
      * 默认倍率添加
