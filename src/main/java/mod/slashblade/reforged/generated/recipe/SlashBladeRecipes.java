@@ -499,11 +499,12 @@ public class SlashBladeRecipes {
             new SlashBladeRecipe(
                     List.of(
                             "  I",
-                            " I ",
-                            "#  "
+                            " # ",
+                            "Q  "
                     ),
                     Map.of(
                             'I', new IRecipeInputItem.IngredientRecipeInputItem(SbItems.PROUD_SOUL_INGOT.get()),
+                            'Q', new IRecipeInputItem.SlashBladeRecipeInputItem(SlashBladeItemStacks.SCABBARD.get()),
                             '#', new IRecipeInputItem.SlashBladeRecipeInputItem(SlashBladeItemStacks.SABIGATANA_BROKEN.get())
                     ),
                     '#',
@@ -643,4 +644,46 @@ public class SlashBladeRecipes {
     /*public static final Supplier<ShapedRecipe> PROUD_SOUL_TRAPEZOHEDRON_RECIPE = () -> new ShapedRecipe(
 
     );*/
+
+    public static final Supplier<ShapelessRecipe> BLADESTAND_1_RECIPE = () -> new ShapelessRecipe(
+            SbItems.BLADESTAND_1.get().getDescriptionId(),
+            CraftingBookCategory.MISC,
+            new ItemStack(SbItems.BLADESTAND_1.get()),
+            NonNullList.of(Ingredient.EMPTY, Ingredient.of(ItemTags.WOODEN_FENCES), Ingredient.of(SbItems.PROUD_SOUL.get()))
+    );
+
+    public static final Supplier<ShapelessRecipe> BLADESTAND_2_RECIPE = () -> new ShapelessRecipe(
+            SbItems.BLADESTAND_2.get().getDescriptionId(),
+            CraftingBookCategory.MISC,
+            new ItemStack(SbItems.BLADESTAND_2.get()),
+            NonNullList.of(Ingredient.EMPTY, Ingredient.of(ItemTags.WOODEN_FENCES), Ingredient.of(SbItems.PROUD_SOUL_INGOT.get()))
+    );
+
+    public static final Supplier<ShapelessRecipe> BLADESTAND_V_RECIPE = () -> new ShapelessRecipe(
+            SbItems.BLADESTAND_V.get().getDescriptionId(),
+            CraftingBookCategory.MISC,
+            new ItemStack(SbItems.BLADESTAND_V.get()),
+            NonNullList.of(Ingredient.EMPTY, Ingredient.of(ItemTags.WOODEN_FENCES), Ingredient.of(SbItems.PROUD_SOUL_TINY.get()))
+    );
+
+    public static final Supplier<ShapelessRecipe> BLADESTAND_S_RECIPE = () -> new ShapelessRecipe(
+            SbItems.BLADESTAND_S.get().getDescriptionId(),
+            CraftingBookCategory.MISC,
+            new ItemStack(SbItems.BLADESTAND_S.get()),
+            NonNullList.of(Ingredient.EMPTY, Ingredient.of(ItemTags.WOODEN_FENCES), Ingredient.of(SbItems.PROUD_SOUL_SPHERE.get()))
+    );
+
+    public static final Supplier<ShapelessRecipe> BLADESTAND_1W_RECIPE = () -> new ShapelessRecipe(
+            SbItems.BLADESTAND_1W.get().getDescriptionId(),
+            CraftingBookCategory.MISC,
+            new ItemStack(SbItems.BLADESTAND_1W.get()),
+            NonNullList.of(Ingredient.EMPTY, Ingredient.of(ItemTags.WOODEN_FENCES), Ingredient.of(SbItems.PROUD_SOUL_CRYSTAL.get()))
+    );
+
+    public static final Supplier<ShapelessRecipe> BLADESTAND_2W_RECIPE = () -> new ShapelessRecipe(
+            SbItems.BLADESTAND_2W.get().getDescriptionId(),
+            CraftingBookCategory.MISC,
+            new ItemStack(SbItems.BLADESTAND_2W.get()),
+            NonNullList.of(Ingredient.EMPTY, Ingredient.of(ItemTags.WOODEN_FENCES), Ingredient.of(SbItems.PROUD_SOUL_TRAPEZOHEDRON.get()))
+    );
 }

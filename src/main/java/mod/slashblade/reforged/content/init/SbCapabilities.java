@@ -30,28 +30,11 @@ public class SbCapabilities {
                     ILockTarget.class
             );
 
-    /*public static final ItemCapability<ISlashBladeMaterial, Void> SLASH_BLADE_MATERIAL =
-            ItemCapability.createVoid(
-                    SlashbladeMod.prefix("slash_blade_material"),
-                    ISlashBladeMaterial.class
-            );*/
 
     @SubscribeEvent
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerEntity(INPUT_CAPABILITY, EntityType.PLAYER, (e, c) -> e.getData(SbAttachmentTypes.INPUT_CAPABILITY));
         event.registerEntity(LOCK_TARGET, EntityType.PLAYER, (e, c) -> e.getData(SbAttachmentTypes.LOCK_TARGET));
-
-        /*event.registerItem(SLASH_BLADE_MATERIAL,
-                (i, c) -> i.getItem() instanceof ISlashBladeMaterial
-                        ? (ISlashBladeMaterial) i.getItem()
-                        : null,
-                SbItems.PROUD_SOUL.get(),
-                SbItems.PROUD_SOUL_INGOT.get(),
-                SbItems.PROUD_SOUL_TINY.get(),
-                SbItems.PROUD_SOUL_SPHERE.get(),
-                SbItems.PROUD_SOUL_CRYSTAL.get(),
-                SbItems.PROUD_SOUL_TRAPEZOHEDRON.get()
-        );*/
     }
 
 

@@ -44,6 +44,13 @@ public class SbCreativeModeTab {
 
                         // 从数据包中读取ItemStack数据
                         loadItemStacksFromDataPack(params).forEach(output::accept);
+
+                        output.accept(SbItems.BLADESTAND_1.get());
+                        output.accept(SbItems.BLADESTAND_2.get());
+                        output.accept(SbItems.BLADESTAND_V.get());
+                        output.accept(SbItems.BLADESTAND_S.get());
+                        output.accept(SbItems.BLADESTAND_1W.get());
+                        output.accept(SbItems.BLADESTAND_2W.get());
                     }
             )
             .build()

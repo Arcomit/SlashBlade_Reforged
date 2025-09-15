@@ -1,6 +1,7 @@
 package mod.slashblade.reforged.content.client.init;
 
 import mod.slashblade.reforged.SlashbladeMod;
+import mod.slashblade.reforged.content.client.renderer.entity.BladeStandEntityRenderer;
 import mod.slashblade.reforged.content.client.renderer.entity.EntityNameRenderer;
 import mod.slashblade.reforged.content.client.renderer.entity.LightningEntityRenderer;
 import mod.slashblade.reforged.content.client.renderer.entity.SummondSwordEntityRenderer;
@@ -28,6 +29,7 @@ public class SbEntityRenderer {
         event.registerEntityRenderer(SbEntityType.SLASH_EFFECT_ENTITY.get(), EntityNameRenderer::new); //TODO
         event.registerEntityRenderer(SbEntityType.JUDGEMENT_CUT_ENTITY.get(), EntityNameRenderer::new); //TODO
         event.registerEntityRenderer(SbEntityType.LIGHTNING_ENTITY.get(), LightningEntityRenderer::new);
+        event.registerEntityRenderer(SbEntityType.BLADE_STAND_ENTITY.get(), BladeStandEntityRenderer::new);
     }
 
 }

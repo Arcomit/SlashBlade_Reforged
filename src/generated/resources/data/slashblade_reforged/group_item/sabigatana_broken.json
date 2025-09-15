@@ -18,9 +18,9 @@
     "slashblade_reforged:slash_blade_style": {
       "carryType": "NAKED",
       "color": -13421569,
-      "model": "slashblade_reforged:slashblade/models/named/muramasa/muramasa.obj",
-      "noScabbard": false,
-      "texture": "slashblade_reforged:slashblade/models/named/muramasa/sabigatana.png"
+      "model": "slashblade_reforged:slashblade/models/blade.obj",
+      "noScabbard": true,
+      "texture": "slashblade_reforged:slashblade/models/blade.png"
     }
   },
   "count": 1,

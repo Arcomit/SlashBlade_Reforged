@@ -24,7 +24,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("UnusedMixin")
-@Detainted
+@Deprecated
 @Mixin(PatchedDataComponentMap.class)
 public abstract class PatchedDataComponentMapAccessor {
 

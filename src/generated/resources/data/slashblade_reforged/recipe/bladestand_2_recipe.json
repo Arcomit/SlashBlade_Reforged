@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "item.slashblade_reforged.bladestand_2",
+  "ingredients": [
+    {
+      "tag": "minecraft:wooden_fences"
+    },
+    {
+      "item": "slashblade_reforged:proud_soul_ingot"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "slashblade_reforged:bladestand_2"
+  }
+}

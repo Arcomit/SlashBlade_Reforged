@@ -4,6 +4,7 @@ import mod.slashblade.reforged.SlashbladeMod;
 import mod.slashblade.reforged.content.client.renderer.item.SlashBladeItemRenderer;
 import mod.slashblade.reforged.content.init.SbItems;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -19,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
  */
 @EventBusSubscriber(value = Dist.CLIENT, modid = SlashbladeMod.MODID)
 public class RegisterItemRendererHandler {
-    private static  SlashBladeItemRenderer SLASH_BLADE_ITEM_RENDERER;
+    private static SlashBladeItemRenderer SLASH_BLADE_ITEM_RENDERER;
 
     @SubscribeEvent
     public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
@@ -30,6 +31,16 @@ public class RegisterItemRendererHandler {
                     @Override
                     public @NotNull BlockEntityWithoutLevelRenderer getCustomRenderer() {
                         return SLASH_BLADE_ITEM_RENDERER;
+                    }
+
+                    @Override
+                    public boolean shouldSpreadAsEntity(@NotNull ItemStack stack) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean shouldBobAsEntity(@NotNull ItemStack stack) {
+                        return false;
                     }
                 },
                 SbItems.SLASH_BLADE

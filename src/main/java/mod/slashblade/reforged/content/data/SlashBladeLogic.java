@@ -88,7 +88,7 @@ public class SlashBladeLogic {
     Map<SpecialEffect, Integer> se = new HashMap<>();
 
     /***
-     * 无法使用
+     * 封印 无法使用
      * 刀鞘
      */
     @SaveField

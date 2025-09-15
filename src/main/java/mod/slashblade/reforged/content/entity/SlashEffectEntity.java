@@ -78,9 +78,9 @@ public class SlashEffectEntity extends ContinuousDamageEntity {
 
             if (!isMute()) {
                 if (isThump()) {
-                    this.playSound(tapLightly, 0.80F, 0.625F + 0.1f * this.getRandom().nextFloat());
-                } else {
                     this.playSound(heavyStrike, 0.5F, 0.4F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+                } else {
+                    this.playSound(tapLightly, 0.80F, 0.625F + 0.1f * this.getRandom().nextFloat());
                 }
             }
 
