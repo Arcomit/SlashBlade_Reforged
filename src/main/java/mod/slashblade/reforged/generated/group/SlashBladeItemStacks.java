@@ -398,6 +398,13 @@ public class SlashBladeItemStacks {
                                     .build(),
                             SlashBladeLogic::new
                     )
+                    .set(
+                            SbDataComponentTypes.SLASH_BLADE_STYLE.get(),
+                            s -> s.toBuilder()
+                                    .noScabbard(true)
+                                    .build(),
+                            SlashBladeStyle::new
+                    )
                     .build();
 
     //刚剑「胴田贯」 (Steel -Doutanuki-)

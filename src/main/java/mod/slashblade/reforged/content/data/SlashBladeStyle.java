@@ -18,7 +18,7 @@ import java.awt.*;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class SlashBladeStyle implements Cloneable {
+public class SlashBladeStyle {
 
 
     @SaveField(canBeNull = true)
@@ -102,23 +102,11 @@ public class SlashBladeStyle implements Cloneable {
         }
     }
 
-    @Override
-    public SlashBladeStyle clone() {
-        try {
-            SlashBladeStyle cloned = (SlashBladeStyle) super.clone();
-            // 深拷贝 Color 对象
-            if (this.color != null) {
-                cloned.color = new Color(this.color.getRGB());
-            }
-            return cloned;
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError("Cloning not supported", e);
-        }
-    }
-
 
     public SlashBladeStyle.SlashBladeStyleBuilder toBuilder() {
         return new SlashBladeStyleBuilder()
+                .texture(this.texture)
+                .model(this.model)
                 .summondSwordModel(this.summondSwordModel)
                 .summondSwordTexture(this.summondSwordTexture)
                 .slashEffectModel(this.slashEffectModel)

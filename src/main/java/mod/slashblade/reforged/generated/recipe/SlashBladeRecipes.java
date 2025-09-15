@@ -499,11 +499,12 @@ public class SlashBladeRecipes {
             new SlashBladeRecipe(
                     List.of(
                             "  I",
-                            " I ",
-                            "#  "
+                            " # ",
+                            "Q  "
                     ),
                     Map.of(
                             'I', new IRecipeInputItem.IngredientRecipeInputItem(SbItems.PROUD_SOUL_INGOT.get()),
+                            'Q', new IRecipeInputItem.SlashBladeRecipeInputItem(SlashBladeItemStacks.SCABBARD.get()),
                             '#', new IRecipeInputItem.SlashBladeRecipeInputItem(SlashBladeItemStacks.SABIGATANA_BROKEN.get())
                     ),
                     '#',

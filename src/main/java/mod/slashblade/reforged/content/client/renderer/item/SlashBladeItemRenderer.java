@@ -11,10 +11,12 @@ import mod.slashblade.reforged.content.client.renderer.SbRenderTypes;
 import mod.slashblade.reforged.content.data.SlashBladeLogic;
 import mod.slashblade.reforged.content.data.SlashBladeStyle;
 import mod.slashblade.reforged.content.init.SbDataComponentTypes;
+import mod.slashblade.reforged.content.init.SbEntityDataSerializers;
 import mod.slashblade.reforged.content.init.SbItems;
 import mod.slashblade.reforged.core.animation.AnimationAsset;
 import mod.slashblade.reforged.core.animation.event.AnimationManager;
 import mod.slashblade.reforged.utils.PoseStackAutoCloser;
+import mod.slashblade.reforged.utils.constant.SlashBladeGroupNames;
 import mod.slashblade.reforged.utils.extension.ItemDisplayContextExtension;
 import mod.slashblade.reforged.core.obj.ObjModel;
 import mod.slashblade.reforged.core.obj.event.ObjModelManager;
@@ -64,8 +66,9 @@ public class SlashBladeItemRenderer extends BlockEntityWithoutLevelRenderer {
             return;
         }
 
+        SlashBladeLogic slashBladeLogic = stack.get(SbDataComponentTypes.SLASH_BLADE_LOGIC);
         SlashBladeStyle slashBladeStyle = stack.get(SbDataComponentTypes.SLASH_BLADE_STYLE);
-        if (slashBladeStyle == null) {
+        if (slashBladeStyle == null || slashBladeLogic == null) {
             return;
         }
 
@@ -98,9 +101,11 @@ public class SlashBladeItemRenderer extends BlockEntityWithoutLevelRenderer {
             RenderType renderType = SbRenderTypes.getBlend(slashBladeStyle.getTexture());
             VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
 
-            //poseStack.scale(0.01f,0.01f,0.01f);
-
-            model.writeVerticesOnly(vertexConsumer, "item_blade");
+            if (slashBladeLogic.isBroken()) {
+                model.writeVerticesOnly(vertexConsumer, SlashBladeGroupNames.item_damaged);
+            } else {
+                model.writeVerticesOnly(vertexConsumer, SlashBladeGroupNames.item_blade);
+            }
 
             WriteVerticesInfo.resetPoseStack();
             WriteVerticesInfo.resetLightMap();
@@ -122,8 +127,9 @@ public class SlashBladeItemRenderer extends BlockEntityWithoutLevelRenderer {
         event.setCanceled(true);
         Minecraft mc = Minecraft.getInstance();
 
+        SlashBladeLogic slashBladeLogic = stack.get(SbDataComponentTypes.SLASH_BLADE_LOGIC);
         SlashBladeStyle slashBladeStyle = stack.get(SbDataComponentTypes.SLASH_BLADE_STYLE);
-        if (slashBladeStyle == null) {
+        if (slashBladeStyle == null || slashBladeLogic == null) {
             return;
         }
 
@@ -196,8 +202,15 @@ public class SlashBladeItemRenderer extends BlockEntityWithoutLevelRenderer {
             RenderType renderType = SbRenderTypes.getBlend(slashBladeStyle.getTexture());
             VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
 
-            model.writeVerticesOnly(vertexConsumer, "blade");
-            model.writeVerticesOnly(vertexConsumer, "sheath");
+            if (slashBladeLogic.isBroken()) {
+                model.writeVerticesOnly(vertexConsumer, SlashBladeGroupNames.blade_damaged);
+            } else {
+                model.writeVerticesOnly(vertexConsumer, SlashBladeGroupNames.blade);
+            }
+
+            if (!slashBladeStyle.isNoScabbard()) {
+                model.writeVerticesOnly(vertexConsumer, SlashBladeGroupNames.sheath);
+            }
 
             WriteVerticesInfo.resetColor();
             WriteVerticesInfo.resetPoseStack();
@@ -229,10 +242,12 @@ public class SlashBladeItemRenderer extends BlockEntityWithoutLevelRenderer {
 //        System.out.println(itemStack.get(SbDataComponents.BASIC_EXAMPLE).getTest());
 //        System.out.println(itemStack.get(SbDataComponents.BASIC_EXAMPLE).isTest2());
 
+        SlashBladeLogic slashBladeLogic = itemStack.get(SbDataComponentTypes.SLASH_BLADE_LOGIC);
         SlashBladeStyle slashBladeStyle = itemStack.get(SbDataComponentTypes.SLASH_BLADE_STYLE);
-        if (slashBladeStyle == null) {
+        if (slashBladeStyle == null || slashBladeLogic == null) {
             return;
         }
+
 
         ResourceLocation test = itemStack.get(SbDataComponentTypes.DRAW_ACTION);
         //System.out.println(test);
@@ -261,9 +276,16 @@ public class SlashBladeItemRenderer extends BlockEntityWithoutLevelRenderer {
 
             //poseStack.scale(0.01f,0.01f,0.01f);
 
-            model.writeVerticesOnly(vertexConsumer, "blade");
-            model.writeVerticesOnly(vertexConsumer, "sheath");
+            // TODO 重复代码消除
+            if (slashBladeLogic.isBroken()) {
+                model.writeVerticesOnly(vertexConsumer, SlashBladeGroupNames.blade_damaged);
+            } else {
+                model.writeVerticesOnly(vertexConsumer, SlashBladeGroupNames.blade);
+            }
 
+            if (!slashBladeStyle.isNoScabbard()) {
+                model.writeVerticesOnly(vertexConsumer, SlashBladeGroupNames.sheath);
+            }
 
             WriteVerticesInfo.resetPoseStack();
             WriteVerticesInfo.resetLightMap();

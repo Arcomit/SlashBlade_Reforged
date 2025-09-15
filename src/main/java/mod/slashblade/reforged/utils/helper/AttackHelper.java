@@ -98,7 +98,7 @@ public class AttackHelper {
     }
 
     /***
-     * 访问攻击
+     * 范围攻击
      */
     public static List<Entity> areaAttack(
             LivingEntity attacker,
@@ -222,6 +222,12 @@ public class AttackHelper {
         if (loss <= 0) {
             return;
         }
+
+        // 创造模式不消耗耐久
+        if (user instanceof Player player && player.getAbilities().instabuild) {
+            return;
+        }
+
         DurabilityLossEvent slashBladeDurabilityLossEvent = new DurabilityLossEvent(itemStack, slashBladeLogic, user, loss);
         NeoForge.EVENT_BUS.post(slashBladeDurabilityLossEvent);
 

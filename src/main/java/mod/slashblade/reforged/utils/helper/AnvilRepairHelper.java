@@ -14,7 +14,6 @@ import net.neoforged.neoforge.event.AnvilUpdateEvent;
 @EventBusSubscriber(modid = SlashbladeMod.MODID)
 public class AnvilRepairHelper {
 
-
     @SubscribeEvent
     public static void onAnvilUpdateEvent(AnvilUpdateEvent event) {
 
@@ -54,7 +53,7 @@ public class AnvilRepairHelper {
         double durable = slashBladeLogic.getDurable() + cost * slashBladeMaterial.getRepairDamageValue();
         builder.durable(Math.min(slashBladeLogic.getMaxDurable(), slashBladeLogic.getDurable() + cost * slashBladeMaterial.getRepairDamageValue()));
 
-        if (slashBladeLogic.isBroken() && durable >= slashBladeLogic.getMaxDurable()) {
+        if (!slashBladeLogic.isSpecialRepair() && slashBladeLogic.isBroken() && durable >= slashBladeLogic.getMaxDurable()) {
             builder.broken(false);
         }
 

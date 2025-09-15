@@ -23,9 +23,9 @@
           "slashblade_reforged:slash_blade_style": {
             "carryType": "NAKED",
             "color": -13421569,
-            "model": "slashblade_reforged:slashblade/models/named/muramasa/muramasa.obj",
-            "noScabbard": false,
-            "texture": "slashblade_reforged:slashblade/models/named/muramasa/sabigatana.png"
+            "model": "slashblade_reforged:slashblade/models/blade.obj",
+            "noScabbard": true,
+            "texture": "slashblade_reforged:slashblade/models/blade.png"
           }
         },
         "count": 1,
@@ -37,13 +37,44 @@
       "value": {
         "item": "slashblade_reforged:proud_soul_ingot"
       }
+    },
+    "Q": {
+      "type": "slashblade_reforged:slash_blade",
+      "value": {
+        "components": {
+          "slashblade_reforged:slash_blade_logic": {
+            "attack": 3,
+            "attackDistance": 1,
+            "broken": false,
+            "durable": 4096,
+            "fragile": false,
+            "key": "scabbard",
+            "kill": 0,
+            "maxDurable": 4096,
+            "proudSoul": 0,
+            "refine": 0,
+            "se": {},
+            "sealed": true,
+            "specialRepair": false
+          },
+          "slashblade_reforged:slash_blade_style": {
+            "carryType": "NAKED",
+            "color": -13421569,
+            "model": "slashblade_reforged:slashblade/models/blade.obj",
+            "noScabbard": false,
+            "texture": "slashblade_reforged:slashblade/models/scabbard.png"
+          }
+        },
+        "count": 1,
+        "id": "slashblade_reforged:slash_blade"
+      }
     }
   },
   "mainSlashBladeKey": "#",
   "pattern": [
     "  I",
-    " I ",
-    "#  "
+    " # ",
+    "Q  "
   ],
   "result": {
     "components": {
