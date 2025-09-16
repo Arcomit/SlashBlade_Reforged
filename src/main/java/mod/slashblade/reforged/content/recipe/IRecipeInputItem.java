@@ -12,6 +12,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -74,7 +75,6 @@ public interface IRecipeInputItem extends Predicate<ItemStack> {
         }
     }
 
-
     class SlashBladeRecipeInputItem implements IRecipeInputItem {
 
         @Getter
@@ -110,4 +110,34 @@ public interface IRecipeInputItem extends Predicate<ItemStack> {
         }
     }
 
+    class EnchantmentItemRecipeInputItem implements IRecipeInputItem {
+
+        @Getter
+        IRecipeInputItem base;
+        @Getter
+        ItemEnchantments enchantments;
+
+        public EnchantmentItemRecipeInputItem(IRecipeInputItem base, ItemEnchantments enchantments) {
+            this.base = base;
+            this.enchantments = enchantments;
+        }
+
+        @Override
+        public Ingredient toIngredient() {
+            return base.toIngredient();
+        }
+
+        @Override
+        public IRecipeInputItemSerializer<?> getSerializer() {
+            return null;
+        }
+
+        @Override
+        public boolean test(ItemStack itemStack) {
+            if (!base.test(itemStack)) {
+                return false;
+            }
+            return SlashBladeHelper.meetEnchantments(itemStack.getTagEnchantments(), enchantments);
+        }
+    }
 }

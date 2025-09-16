@@ -3,24 +3,15 @@ package mod.slashblade.reforged.generated.recipe;
 import mod.slashblade.reforged.content.data.SlashBladeLogic;
 import mod.slashblade.reforged.content.init.SbDataComponentTypes;
 import mod.slashblade.reforged.content.init.SbItems;
-import mod.slashblade.reforged.content.init.SbRecipeSerializer;
-import mod.slashblade.reforged.content.recipe.IRecipeInputItem;
-import mod.slashblade.reforged.content.recipe.SlashBladeRecipe;
+import mod.slashblade.reforged.content.recipe.*;
 import mod.slashblade.reforged.generated.group.ItemStackBuilder;
 import mod.slashblade.reforged.generated.group.SlashBladeItemStacks;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.level.block.Blocks;
-import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.Tags;
 
 import java.util.List;
@@ -584,38 +575,44 @@ public class SlashBladeRecipes {
             SlashBladeItemStacks.YAMATO.get()
     );
 
-    public static final Supplier<ShapelessRecipe> PROUD_SOUL_RECIPE = () -> new ShapelessRecipe(
+    public static final Supplier<ProudSoulShapelessRecipe> PROUD_SOUL_RECIPE = () -> new ProudSoulShapelessRecipe(
             SbItems.PROUD_SOUL.get().getDescriptionId(),
             CraftingBookCategory.MISC,
             new ItemStack(SbItems.PROUD_SOUL.get()),
-            NonNullList.of(Ingredient.EMPTY, Ingredient.of(SbItems.PROUD_SOUL_TINY.get()), Ingredient.of(SbItems.PROUD_SOUL_TINY.get()))
+            NonNullList.of(
+                    EnchantmentTagIngredient.EMPTY,
+                    new EnchantmentTagIngredient(new IRecipeInputItem.IngredientRecipeInputItem(SbItems.PROUD_SOUL_TINY.get()), true),
+                    new EnchantmentTagIngredient(new IRecipeInputItem.IngredientRecipeInputItem(SbItems.PROUD_SOUL_TINY.get()), true)
+            )
     );
 
-    public static final Supplier<ShapelessRecipe> PROUD_SOUL_TINY_RECIPE = () -> new ShapelessRecipe(
+    public static final Supplier<ProudSoulShapelessRecipe> PROUD_SOUL_TINY_RECIPE = () -> new ProudSoulShapelessRecipe(
             SbItems.PROUD_SOUL_TINY.get().getDescriptionId(),
             CraftingBookCategory.MISC,
             new ItemStack(SbItems.PROUD_SOUL_TINY.get(), 2),
-            NonNullList.of(Ingredient.EMPTY, Ingredient.of(SbItems.PROUD_SOUL.get()))
+            NonNullList.of(
+                    EnchantmentTagIngredient.EMPTY,
+                    new EnchantmentTagIngredient(new IRecipeInputItem.IngredientRecipeInputItem(SbItems.PROUD_SOUL.get()), true)
+            )
     );
 
-    public static final Supplier<ShapedRecipe> PROUD_SOUL_INGOT_RECIPE = () -> new ShapedRecipe(
-            SbItems.PROUD_SOUL_INGOT.get().getDescriptionId(),
-            CraftingBookCategory.MISC,
-            ShapedRecipePattern.of(
-                    Map.of(
-                            'P', Ingredient.of(SbItems.PROUD_SOUL.get()),
-                            'I', Ingredient.of(Items.IRON_INGOT)
-                    ),
-                    List.of(
-                            " P ",
-                            "PIP",
-                            " P "
-                    )
+    public static final Supplier<ProudSoulShapedRecipe> PROUD_SOUL_INGOT_RECIPE = () -> new ProudSoulShapedRecipe(
+            List.of(
+                    " P ",
+                    "PIP",
+                    " P "
+            ),
+            Map.of(
+                    'P', new IRecipeInputItem.IngredientRecipeInputItem(Ingredient.of(SbItems.PROUD_SOUL.get())),
+                    'I', new IRecipeInputItem.IngredientRecipeInputItem(Ingredient.of(Items.IRON_INGOT))
+            ),
+            List.of(
+                    'P'
             ),
             new ItemStack(SbItems.PROUD_SOUL_INGOT.get())
     );
 
-    public static final Supplier<SmeltingRecipe> PROUD_SOUL_SPHERE_RECIPE = () -> new SmeltingRecipe(
+    public static final Supplier<ProudSoulSmeltingRecipe> PROUD_SOUL_SPHERE_RECIPE = () -> new ProudSoulSmeltingRecipe(
             SbItems.PROUD_SOUL_SPHERE.get().getDescriptionId(),
             CookingBookCategory.MISC,
             Ingredient.of(SbItems.PROUD_SOUL_INGOT.get()),
@@ -624,22 +621,22 @@ public class SlashBladeRecipes {
             10000
     );
 
-    public static final Supplier<ShapedRecipe> PROUD_SOUL_CRYSTAL_RECIPE = () -> new ShapedRecipe(
-            SbItems.PROUD_SOUL_CRYSTAL.get().getDescriptionId(),
-            CraftingBookCategory.MISC,
-            ShapedRecipePattern.of(
-                    Map.of(
-                            'S', Ingredient.of(SbItems.PROUD_SOUL_SPHERE.get()),
-                            '#', Ingredient.of(Items.NETHER_STAR)
-                    ),
-                    List.of(
-                            "SSS",
-                            "S#S",
-                            "SSS"
-                    )
+    public static final Supplier<ProudSoulShapedRecipe> PROUD_SOUL_CRYSTAL_RECIPE = () -> new ProudSoulShapedRecipe(
+            List.of(
+                    "SSS",
+                    "S#S",
+                    "SSS"
             ),
-            new ItemStack(SbItems.PROUD_SOUL_CRYSTAL.get(), 8)
+            Map.of(
+                    'S', new IRecipeInputItem.IngredientRecipeInputItem(Ingredient.of(SbItems.PROUD_SOUL_SPHERE.get())),
+                    '#', new IRecipeInputItem.IngredientRecipeInputItem(Ingredient.of(Items.NETHER_STAR))
+            ),
+            List.of(
+                    'S'
+            ),
+            new ItemStack(SbItems.PROUD_SOUL_INGOT.get(), 8)
     );
+
 
     /*public static final Supplier<ShapedRecipe> PROUD_SOUL_TRAPEZOHEDRON_RECIPE = () -> new ShapedRecipe(
 

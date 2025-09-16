@@ -1,15 +1,22 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "group": "item.slashblade_reforged.proud_soul_crystal",
+  "type": "slashblade_reforged:proud_soul_shaped_recipe",
   "key": {
     "#": {
-      "item": "minecraft:nether_star"
+      "type": "slashblade_reforged:ingredient",
+      "value": {
+        "item": "minecraft:nether_star"
+      }
     },
     "S": {
-      "item": "slashblade_reforged:proud_soul_sphere"
+      "type": "slashblade_reforged:ingredient",
+      "value": {
+        "item": "slashblade_reforged:proud_soul_sphere"
+      }
     }
   },
+  "mainSlashBladeKey": [
+    "S"
+  ],
   "pattern": [
     "SSS",
     "S#S",
@@ -17,6 +24,6 @@
   ],
   "result": {
     "count": 8,
-    "id": "slashblade_reforged:proud_soul_crystal"
+    "id": "slashblade_reforged:proud_soul_ingot"
   }
 }

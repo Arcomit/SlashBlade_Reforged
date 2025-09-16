@@ -30,6 +30,11 @@ public class SbRecipeInputItemSerializer {
             () -> IRecipeInputItemSerializer.of(CodecConstants.SLASH_BLADE_RECIPE_INPUT_ITEM, ByteBufCodecConstants.SLASH_BLADE_RECIPE_INPUT_ITEM)
     );
 
+    public static final Supplier<IRecipeInputItemSerializer<IRecipeInputItem.EnchantmentItemRecipeInputItem>> ENCHANTMENT_ITEM_RECIPE_INPUT_ITEM = RECIPE_INPUT_ITEM_SERIALIZER_REGISTRY.register(
+            "enchantment_item",
+            () -> IRecipeInputItemSerializer.of(CodecConstants.ENCHANTMENT_ITEM_RECIPE_INPUT_ITEM, ByteBufCodecConstants.ENCHANTMENT_ITEM_RECIPE_INPUT_ITEM)
+    );
+
 
     public static void register(IEventBus bus) {
         RECIPE_INPUT_ITEM_SERIALIZER_REGISTRY.register(bus);

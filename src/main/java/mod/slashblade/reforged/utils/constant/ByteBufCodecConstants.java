@@ -8,15 +8,14 @@ import mod.slashblade.reforged.content.data.*;
 import mod.slashblade.reforged.content.data.network.KeyInputPack;
 import mod.slashblade.reforged.content.entity.SummondSwordEntity;
 import mod.slashblade.reforged.content.init.SbRegistrys;
-import mod.slashblade.reforged.content.recipe.IRecipeInputItem;
-import mod.slashblade.reforged.content.recipe.IRecipeInputItemSerializer;
-import mod.slashblade.reforged.content.recipe.SlashBladeRecipe;
+import mod.slashblade.reforged.content.recipe.*;
 import mod.slashblade.reforged.content.register.SpecialAttack;
 import mod.slashblade.reforged.content.register.SpecialEffect;
 import mod.slashblade.reforged.utils.Util;
 import mod.slashblade.reforged.utils.tuple.Tuple2;
 import mod.slashblade.reforged.utils.tuple.Tuple3;
 import net.minecraft.core.Holder;
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -26,7 +25,9 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
@@ -109,12 +110,6 @@ public class ByteBufCodecConstants {
             KEY_INPUT_MAP.encode(buffer, value.getIsDown());
         }
     };
-
-    public static final StreamCodec<RegistryFriendlyByteBuf, IRecipeInputItem.IngredientRecipeInputItem> INGREDIENT_RECIPE_INPUT_ITEM = Ingredient.CONTENTS_STREAM_CODEC
-            .map(IRecipeInputItem.IngredientRecipeInputItem::new, IRecipeInputItem.IngredientRecipeInputItem::getIngredient);
-    public static final StreamCodec<RegistryFriendlyByteBuf, IRecipeInputItem.SlashBladeRecipeInputItem> SLASH_BLADE_RECIPE_INPUT_ITEM = ItemStack.STREAM_CODEC
-            .map(IRecipeInputItem.SlashBladeRecipeInputItem::new, IRecipeInputItem.SlashBladeRecipeInputItem::getItemStack);
-
     public static final StreamCodec<RegistryFriendlyByteBuf, IRecipeInputItem> RECIPE_INPUT_ITEM = new StreamCodec<>() {
         @Override
         public @NotNull IRecipeInputItem decode(@NotNull RegistryFriendlyByteBuf buffer) {
@@ -142,31 +137,95 @@ public class ByteBufCodecConstants {
             value.getSerializer().streamCodec().encode(buffer, Util.forcedConversion(value));
         }
     };
-    public static final StreamCodec<RegistryFriendlyByteBuf, SlashBladeRecipe.SlashBladeRecipeData> SLASH_BLADE_RECIPE_DATA = StreamCodec.composite(
-            // pattern: List<String>
-            ByteBufCodecs.STRING_UTF8.apply(ByteBufCodecs.list()),
-            SlashBladeRecipe.SlashBladeRecipeData::getPattern,
 
-            // key: Map<Character, IRecipeInputItem>
+    public static final StreamCodec<RegistryFriendlyByteBuf, IRecipeInputItem.IngredientRecipeInputItem> INGREDIENT_RECIPE_INPUT_ITEM = Ingredient.CONTENTS_STREAM_CODEC
+            .map(IRecipeInputItem.IngredientRecipeInputItem::new, IRecipeInputItem.IngredientRecipeInputItem::getIngredient);
+    public static final StreamCodec<RegistryFriendlyByteBuf, IRecipeInputItem.SlashBladeRecipeInputItem> SLASH_BLADE_RECIPE_INPUT_ITEM = ItemStack.STREAM_CODEC
+            .map(IRecipeInputItem.SlashBladeRecipeInputItem::new, IRecipeInputItem.SlashBladeRecipeInputItem::getItemStack);
+    public static final StreamCodec<RegistryFriendlyByteBuf, IRecipeInputItem.EnchantmentItemRecipeInputItem> ENCHANTMENT_ITEM_RECIPE_INPUT_ITEM = StreamCodec.composite(
+            RECIPE_INPUT_ITEM,
+            IRecipeInputItem.EnchantmentItemRecipeInputItem::getBase,
+            ItemEnchantments.STREAM_CODEC,
+            IRecipeInputItem.EnchantmentItemRecipeInputItem::getEnchantments,
+            IRecipeInputItem.EnchantmentItemRecipeInputItem::new
+    );
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, SlashBladeRecipe> SLASH_BLADE_RECIPE = StreamCodec.composite(
+            ByteBufCodecs.STRING_UTF8.apply(ByteBufCodecs.list()),
+            SlashBladeRecipe::getPattern,
+
             ByteBufCodecs.map(
                     java.util.HashMap::new,
-                    // Character codec: 将 char 转换为 int 进行传输
                     ByteBufCodecs.VAR_INT.map(i -> (char) i.intValue(), c -> (int) c),
                     RECIPE_INPUT_ITEM
             ),
-            SlashBladeRecipe.SlashBladeRecipeData::getKey,
+            SlashBladeRecipe::getKey,
 
             // mainSlashBladeKey: char
             ByteBufCodecs.VAR_INT.map(i -> (char) i.intValue(), c -> (int) c),
-            SlashBladeRecipe.SlashBladeRecipeData::getMainSlashBladeKey,
+            SlashBladeRecipe::getMainSlashBladeKey,
 
             // result: ItemStack
             ItemStack.STREAM_CODEC,
-            SlashBladeRecipe.SlashBladeRecipeData::getResult,
+            SlashBladeRecipe::getResult,
 
-            SlashBladeRecipe.SlashBladeRecipeData::new
+            SlashBladeRecipe::new
     );
-    public static final StreamCodec<RegistryFriendlyByteBuf, SlashBladeRecipe> SLASH_BLADE_RECIPE = SLASH_BLADE_RECIPE_DATA.map(SlashBladeRecipe::new, SlashBladeRecipe::getSlashBladeRecipeData);
+    public static final StreamCodec<RegistryFriendlyByteBuf, EnchantmentTagIngredient> ENCHANTMENT_TAG_INGREDIENT = StreamCodec.composite(
+            RECIPE_INPUT_ITEM,
+            EnchantmentTagIngredient::getIngredient,
+
+            ByteBufCodecs.BOOL,
+            EnchantmentTagIngredient::isInheritance,
+
+            EnchantmentTagIngredient::new
+    );
+    public static final StreamCodec<RegistryFriendlyByteBuf, ProudSoulShapelessRecipe> PROUD_SOUL_SHAPELESS_RECIPE = StreamCodec.composite(
+            ByteBufCodecs.STRING_UTF8,
+            ProudSoulShapelessRecipe::getGroup,
+
+            CraftingBookCategory.STREAM_CODEC,
+            ProudSoulShapelessRecipe::category,
+
+            ItemStack.STREAM_CODEC,
+            ProudSoulShapelessRecipe::getResult,
+
+            ByteBufCodecs.collection(
+                    ArrayList::new,
+                    ENCHANTMENT_TAG_INGREDIENT
+            ).map(
+                    a -> NonNullList.of(EnchantmentTagIngredient.EMPTY, a.toArray(EnchantmentTagIngredient[]::new)),
+                    ArrayList::new
+            ),
+            ProudSoulShapelessRecipe::getTagIngredients,
+
+
+            ProudSoulShapelessRecipe::new
+    );
+    public static final StreamCodec<RegistryFriendlyByteBuf, ProudSoulShapedRecipe> PROUD_SOUL_SHAPED_RECIPE = StreamCodec.composite(
+            ByteBufCodecs.STRING_UTF8.apply(ByteBufCodecs.list()),
+            ProudSoulShapedRecipe::getPattern,
+
+            ByteBufCodecs.map(
+                    HashMap::new,
+                    ByteBufCodecs.VAR_INT.map(i -> (char) i.intValue(), c -> (int) c),
+                    RECIPE_INPUT_ITEM
+            ),
+            ProudSoulShapedRecipe::getKey,
+
+            ByteBufCodecs.collection(
+                    ArrayList::new,
+                    ByteBufCodecs.VAR_INT.map(i -> (char) i.intValue(), c -> (int) c)
+            ),
+            ProudSoulShapedRecipe::getInheritanceKey,
+
+            // result: ItemStack
+            ItemStack.STREAM_CODEC,
+            ProudSoulShapedRecipe::getResult,
+
+            ProudSoulShapedRecipe::new
+    );
+
     public static final RegistryStreamCodec<SpecialAttack> SPECIAL_ATTACK = new RegistryStreamCodec<>(SbRegistrys.SPECIAL_ATTACK_REGISTRY);
     public static final RegistryStreamCodec<SpecialEffect> SPECIAL_EFFECT = new RegistryStreamCodec<>(SbRegistrys.SPECIAL_EFFECT_REGISTRY);
     public static final StreamCodec<ByteBuf, Map<SpecialEffect, Integer>> SPECIAL_EFFECT_LEVEL_MAP = ByteBufCodecs.map(HashMap::new, SPECIAL_EFFECT, ByteBufCodecs.INT);

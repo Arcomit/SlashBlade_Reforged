@@ -3,6 +3,7 @@ package mod.slashblade.reforged.content.event;
 import lombok.*;
 import mod.slashblade.reforged.content.data.SlashBladeLogic;
 import mod.slashblade.reforged.content.register.AttackType;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -34,12 +35,15 @@ public class AttackEvent extends SlashBladeEvent {
 
     final List<AttackType> attackTypeList;
 
-    public AttackEvent(ItemStack item, SlashBladeLogic slashBladeLogic, LivingEntity attacker, Entity target, double modifiedRatio, List<AttackType> attackTypeList) {
+    final List<DamageSourceInfo> damageSourceInfoList;
+
+    public AttackEvent(ItemStack item, SlashBladeLogic slashBladeLogic, LivingEntity attacker, Entity target, double modifiedRatio, List<AttackType> attackTypeList, List<DamageSourceInfo> damageSourceInfoList) {
         super(item, slashBladeLogic, attacker);
         this.attacker = attacker;
         this.target = target;
         this.modifiedRatio = modifiedRatio;
         this.attackTypeList = attackTypeList;
+        this.damageSourceInfoList = damageSourceInfoList;
     }
 
     public double getUltimatelyModifiedRatio() {
@@ -53,4 +57,10 @@ public class AttackEvent extends SlashBladeEvent {
     public void addMechanismModifiedRatioAmplifier(double amplifier) {
         mechanismModifiedRatioAmplifier += amplifier;
     }
+
+    public void addDamageSourceInfo(DamageSource damageSource, double damage) {
+        damageSourceInfoList.add(new DamageSourceInfo(damageSource, damage));
+    }
+
+    public static record DamageSourceInfo(DamageSource damageSource, double damage) { }
 }

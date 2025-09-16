@@ -1,6 +1,7 @@
 package mod.slashblade.reforged.content.init;
 
 import mod.slashblade.reforged.SlashbladeMod;
+import mod.slashblade.reforged.content.event.AttackEvent;
 import mod.slashblade.reforged.content.register.AttackType;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.player.Player;
@@ -34,7 +35,7 @@ public class SbAttackTypes {
     /***
      * 闪电攻击类型
      */
-    public static final Supplier<AttackType> LIGHTNING_ATTACK_TYPE = ATTACK_TYPE.register("lightning_attack_type", () -> new AttackType());
+    public static final Supplier<AttackType> LIGHTNING_ATTACK_TYPE = ATTACK_TYPE.register("lightning_attack_type", () -> new AttackType((attacker, target) -> new AttackEvent.DamageSourceInfo(attacker.damageSources().source(DamageTypes.LIGHTNING_BOLT, attacker), 1)));
 
     /***
      * 劈砍攻击类型

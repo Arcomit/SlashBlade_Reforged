@@ -1,45 +1,34 @@
 package mod.slashblade.reforged.content.recipe;
 
 import com.google.common.collect.Sets;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import mod.slashblade.reforged.content.data.SlashBladeLogic;
 import mod.slashblade.reforged.content.init.SbDataComponentTypes;
 import mod.slashblade.reforged.content.init.SbItems;
 import mod.slashblade.reforged.content.init.SbRecipeSerializer;
-import mod.slashblade.reforged.content.init.SbRegistrys;
 import mod.slashblade.reforged.utils.helper.SlashBladeHelper;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.Level;
-import org.checkerframework.checker.units.qual.A;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
-
-public class SlashBladeRecipe implements CraftingRecipe {
+public class ProudSoulShapedRecipe implements CraftingRecipe {
 
     @Getter
     List<String> pattern;
     @Getter
     Map<Character, IRecipeInputItem> key;
     @Getter
-    char mainSlashBladeKey;
+    List<Character> inheritanceKey;
     @Getter
     ItemStack result;
 
@@ -48,15 +37,15 @@ public class SlashBladeRecipe implements CraftingRecipe {
     @Getter
     int recipeHeight;
 
-    int mainKeyId = -1;
 
     NonNullList<IRecipeInputItem> recipeInputItemPackList;
     NonNullList<Ingredient> ingredientNonNullList;
+    NonNullList<Boolean> inheritanceList;
 
-    public SlashBladeRecipe(List<String> pattern, Map<Character, IRecipeInputItem> key, char mainSlashBladeKey, ItemStack result) {
+    public ProudSoulShapedRecipe(List<String> pattern, Map<Character, IRecipeInputItem> key, List<Character> inheritanceKey, ItemStack result) {
         this.pattern = pattern;
         this.key = key;
-        this.mainSlashBladeKey = mainSlashBladeKey;
+        this.inheritanceKey = inheritanceKey;
         this.result = result;
 
         recipeHeight = getPattern().size();
@@ -72,6 +61,7 @@ public class SlashBladeRecipe implements CraftingRecipe {
         }
 
         recipeInputItemPackList = NonNullList.withSize(recipeWidth * recipeHeight, IRecipeInputItem.EMPTY);
+        inheritanceList = NonNullList.withSize(recipeWidth * recipeHeight, false);
 
         Set<Character> set = Sets.newHashSet(key.keySet());
 
@@ -86,13 +76,6 @@ public class SlashBladeRecipe implements CraftingRecipe {
                     continue;
                 }
 
-                if (s == mainSlashBladeKey) {
-                    if (mainKeyId >= 0) {
-                        throw new IllegalArgumentException("recipe input key used multiple times");
-                    }
-                    mainKeyId = j + recipeWidth * i;
-                }
-
                 IRecipeInputItem iRecipeInputItem = key.get(s);
                 if (iRecipeInputItem == null) {
                     throw new IllegalArgumentException("Pattern references symbol '" + s + "' but it's not defined in the key");
@@ -100,6 +83,10 @@ public class SlashBladeRecipe implements CraftingRecipe {
 
                 set.remove(s);
                 recipeInputItemPackList.set(j + recipeWidth * i, iRecipeInputItem);
+
+                if (inheritanceKey.contains(s)) {
+                    inheritanceList.set(j + recipeWidth * i, true);
+                }
             }
         }
 
@@ -110,7 +97,6 @@ public class SlashBladeRecipe implements CraftingRecipe {
         this.ingredientNonNullList = NonNullList.of(Ingredient.EMPTY, recipeInputItemPackList.stream().map(IRecipeInputItem::toIngredient).toArray(Ingredient[]::new));
 
     }
-
 
     @Override
     public @NotNull RecipeType<?> getType() {
@@ -133,23 +119,21 @@ public class SlashBladeRecipe implements CraftingRecipe {
     }
 
     @Override
-    public @NotNull RecipeSerializer<?> getSerializer() {
-        return SbRecipeSerializer.SLASH_BLADE_RECIPE.get();
-    }
-
-    @Override
     public boolean matches(@NotNull CraftingInput input, @NotNull Level level) {
+        Map<Holder<Enchantment>, Integer> map = new HashMap<>();
         for(int i = 0; i <= input.width() - this.getRecipeWidth(); ++i) {
             for(int j = 0; j <= input.height() - this.getRecipeHeight(); ++j) {
-                if (this.checkMatch(input, i, j)) {
+                if (this.checkMatch(input, i, j, map)) {
                     return true;
                 }
+                map.clear();
             }
         }
         return false;
     }
 
-    protected boolean checkMatch(CraftingInput craftingInventory, int width, int height) {
+    protected boolean checkMatch(CraftingInput craftingInventory, int width, int height, Map<Holder<Enchantment>, Integer> map) {
+
         for(int i = 0; i < craftingInventory.width(); ++i) {
             for(int j = 0; j < craftingInventory.height(); ++j) {
                 int k = i - width;
@@ -164,70 +148,52 @@ public class SlashBladeRecipe implements CraftingRecipe {
                 if (!recipeInputItemPackList.get(id).test(itemStack)) {
                     return false;
                 }
+
+                if (inheritanceList.get(id)) {
+                    if (map == null) {
+                        map = new HashMap<>();
+                    }
+
+                    ItemEnchantments tagEnchantments = itemStack.getTagEnchantments();
+                    Map<Holder<Enchantment>, Integer> finalMap = map;
+                    tagEnchantments.entrySet().forEach(holderEntry -> finalMap.put(holderEntry.getKey(), Math.max(finalMap.computeIfAbsent(holderEntry.getKey(), m -> 1), holderEntry.getIntValue())));
+
+                }
             }
         }
-        return true;
+
+        return map.isEmpty() || map.size() == 1;
     }
 
     @Override
     public @NotNull ItemStack assemble(@NotNull CraftingInput input, HolderLookup.@NotNull Provider registries) {
         ItemStack target = getResult().copy();
-        SlashBladeLogic targetLogic = target.get(SbDataComponentTypes.SLASH_BLADE_LOGIC);
 
-        if (targetLogic == null) {
-            return target;
-        }
-
-        if (mainKeyId < 0) {
-            return target;
-        }
+        Map<Holder<Enchantment>, Integer> map = new HashMap<>();
 
         for(int i = 0; i <= input.width() - this.getRecipeWidth(); ++i) {
             for(int j = 0; j <= input.height() - this.getRecipeHeight(); ++j) {
-                ItemStack inputItem = this.getResultSlashBladePack(input, i, j);
-                if (inputItem == null) {
-                    continue;
+                if (!checkMatch(input, i, j, map)) {
+                    map.clear();
                 }
 
-                SlashBladeLogic inputLogic = inputItem.get(SbDataComponentTypes.SLASH_BLADE_LOGIC);
-                if (inputLogic == null) {
-                    continue;
-                }
-
-                return SlashBladeHelper.transformation(inputItem, inputLogic, target, targetLogic);
+                ItemEnchantments.Mutable mutable = new ItemEnchantments.Mutable(ItemEnchantments.EMPTY);
+                map.forEach(mutable::set);
+                EnchantmentHelper.setEnchantments(target, mutable.toImmutable());
             }
         }
         return target;
 
     }
 
-    @Nullable
-    protected ItemStack getResultSlashBladePack(CraftingInput craftingInventory, int width, int height) {
-        for(int i = 0; i < craftingInventory.width(); ++i) {
-            for(int j = 0; j < craftingInventory.height(); ++j) {
-                int k = i - width;
-                int l = j - height;
-                //int id = this.getRecipeWidth() - k - 1 + l * this.getRecipeWidth() /*: k + l * this.getRecipeWidth()*/;
-                int id = k + l * this.getRecipeWidth();
-                if (k < 0 || l < 0 || k >= this.getRecipeWidth() || l >= this.getRecipeHeight()) {
-                    return null;
-                }
-                if (id == mainKeyId) {
-                    return craftingInventory.getItem(i + j * craftingInventory.width());
-                }
-            }
-        }
-        return null;
+    @Override
+    public @NotNull RecipeSerializer<?> getSerializer() {
+        return SbRecipeSerializer.PROUD_SOUL_SHAPED_RECIPE.get();
     }
 
     @Override
     public @NotNull NonNullList<Ingredient> getIngredients() {
         return ingredientNonNullList;
-    }
-
-    @Override
-    public @NotNull ItemStack getToastSymbol() {
-        return new ItemStack(SbItems.SLASH_BLADE);
     }
 
     @Override

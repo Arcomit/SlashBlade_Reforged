@@ -6,14 +6,12 @@ import mod.slashblade.reforged.content.init.SbEntityDataSerializers;
 import mod.slashblade.reforged.utils.CallbackPoint;
 import mod.slashblade.reforged.utils.helper.AttackHelper;
 import mod.slashblade.reforged.utils.helper.EntityPredicateHelper;
-import mod.slashblade.reforged.utils.helper.MathHelper;
 import mod.slashblade.reforged.utils.constant.ResourceLocationConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -283,7 +281,7 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
     }
 
     public void doAttackEntity(Entity target, SummondAttackType summondAttackType) {
-        AttackHelper.doAttack(getShooter(), target, getDamage(), true, List.of(SbAttackTypes.SUMMOND_SWORD_ATTACK_TYPE.get()));
+        AttackHelper.doAttack(getShooter(), target, getDamage(), List.of(SbAttackTypes.SUMMOND_SWORD_ATTACK_TYPE.get()));
         target.setDeltaMovement(0, 0.1, 0);
         switch (summondAttackType) {
             case HIT -> attackActionCallbackPoint.call(a -> a.attack(target));

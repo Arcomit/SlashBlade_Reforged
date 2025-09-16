@@ -1,5 +1,6 @@
 package mod.slashblade.reforged.utils.helper;
 
+import lombok.Getter;
 import mod.slashblade.reforged.content.data.SlashBladeLogic;
 import mod.slashblade.reforged.content.init.SbDataComponentTypes;
 import net.minecraft.core.Holder;
@@ -8,6 +9,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -21,17 +23,27 @@ public class SlashBladeHelper {
             return false;
         }
 
-        ItemEnchantments inputEnchantments = input.getTagEnchantments();
-        ItemEnchantments modelEnchantments = model.getTagEnchantments();
+        if (!meetEnchantments(input, model)) {
+            return false;
+        }
 
-        for(Holder<Enchantment> enchantmentHolder : modelEnchantments.keySet()) {
-            int inputLevel = inputEnchantments.getLevel(enchantmentHolder);
-            int modelLevel = modelEnchantments.getLevel(enchantmentHolder);
+        return true;
+    }
+
+    public static boolean meetEnchantments(@NotNull ItemStack input, @NotNull ItemStack model) {
+        return meetEnchantments(input.getTagEnchantments(), model.getTagEnchantments());
+
+    }
+
+    public static boolean meetEnchantments(@NotNull ItemEnchantments input, @NotNull ItemEnchantments model) {
+
+        for(Holder<Enchantment> enchantmentHolder : model.keySet()) {
+            int inputLevel = input.getLevel(enchantmentHolder);
+            int modelLevel = model.getLevel(enchantmentHolder);
 
             if (inputLevel < modelLevel) {
                 return false;
             }
-
         }
 
         return true;

@@ -1,10 +1,16 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "slashblade_reforged:proud_soul_shapeless_recipe",
   "category": "misc",
   "group": "item.slashblade_reforged.proud_soul_tiny",
   "ingredients": [
     {
-      "item": "slashblade_reforged:proud_soul"
+      "ingredient": {
+        "type": "slashblade_reforged:ingredient",
+        "value": {
+          "item": "slashblade_reforged:proud_soul"
+        }
+      },
+      "inheritance": true
     }
   ],
   "result": {

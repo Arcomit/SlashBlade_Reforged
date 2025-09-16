@@ -10,8 +10,10 @@ import mod.slashblade.reforged.content.init.SbAttackTypes;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -63,9 +65,20 @@ public class EnchantmentHelper {
             event.addModifiedRatioAmplifier(SbConfig.COMMON.powerAttackBonus.get() * powerLevel);
         }
 
+        int fireAspect = item.getEnchantmentLevel(enchantmentRegistry.getOrThrow(Enchantments.FIRE_ASPECT)); // 火焰附加
+        if (fireAspect > 0 && !target.fireImmune()) {
+            target.igniteForSeconds(10 * fireAspect); // TODO 写入配置
+            event.addDamageSourceInfo(
+                    attacker.damageSources().source(
+                            DamageTypes.ON_FIRE,
+                            attacker
+                    ),
+                    0.05 * fireAspect // TODO 写入配置
+            );
+        }
+
 
     }
-
 
     @SubscribeEvent
     public static void sweepingEdgeBonus(SlashEvent event) {

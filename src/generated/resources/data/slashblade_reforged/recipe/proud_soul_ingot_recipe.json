@@ -1,15 +1,22 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "group": "item.slashblade_reforged.proud_soul_ingot",
+  "type": "slashblade_reforged:proud_soul_shaped_recipe",
   "key": {
     "I": {
-      "item": "minecraft:iron_ingot"
+      "type": "slashblade_reforged:ingredient",
+      "value": {
+        "item": "minecraft:iron_ingot"
+      }
     },
     "P": {
-      "item": "slashblade_reforged:proud_soul"
+      "type": "slashblade_reforged:ingredient",
+      "value": {
+        "item": "slashblade_reforged:proud_soul"
+      }
     }
   },
+  "mainSlashBladeKey": [
+    "P"
+  ],
   "pattern": [
     " P ",
     "PIP",

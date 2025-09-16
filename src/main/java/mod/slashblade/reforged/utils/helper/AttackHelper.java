@@ -10,7 +10,6 @@ import mod.slashblade.reforged.content.init.SbAttackTypes;
 import mod.slashblade.reforged.content.init.SbDataComponentTypes;
 import mod.slashblade.reforged.content.init.SbEntityType;
 import mod.slashblade.reforged.content.register.AttackType;
-import mod.slashblade.reforged.utils.constant.ResourceLocationConstants;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
@@ -18,10 +17,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -34,6 +30,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * @Author: til
@@ -131,7 +128,7 @@ public class AttackHelper {
         List<Entity> list = EntityHelper.getTargettableEntitiesWithinAABB(attacker.level(), attacker, pos, range).stream()
                 .filter(e -> !exclude.contains(e))
                 .peek(beforeHit)
-                .peek(e -> doAttack(attacker, e, modifiedRatio, bypassesCooldown, attackTypeList))
+                .peek(e -> doAttack(attacker, e, modifiedRatio, attackTypeList))
                 .toList();
         if (!list.isEmpty()) {
             NeoForge.EVENT_BUS.post(new AreaAttackEvent(mainHandItem, slashBladeLogic, attacker, modifiedRatio, list, attackTypeList));
@@ -144,7 +141,7 @@ public class AttackHelper {
     /***
      * 简单单次攻击
      */
-    public static void doAttack(LivingEntity attacker, Entity target, double modifiedRatio, boolean bypassesCooldown, List<AttackType> attackTypeList) {
+    public static void doAttack(LivingEntity attacker, Entity target, double modifiedRatio, List<AttackType> attackTypeList) {
         if (modifiedRatio == 0) {
             return;
         }
@@ -160,18 +157,16 @@ public class AttackHelper {
             return;
         }
 
-        AttackEvent attackEvent = new AttackEvent(mainHandItem, slashBladeLogic, attacker, target, modifiedRatio, attackTypeList);
+        AttackEvent attackEvent = new AttackEvent(
+                mainHandItem, slashBladeLogic, attacker, target, modifiedRatio, attackTypeList,
+                attackTypeList.stream()
+                        .map(a -> a.createDamageSource(attacker, target))
+                        .filter(Objects::nonNull).collect(Collectors.toList())
+        );
         NeoForge.EVENT_BUS.post(attackEvent);
 
-        if (bypassesCooldown) {
-            target.invulnerableTime = 0;
-        }
+        target.invulnerableTime = 0;
 
-        AttributeModifier am = new AttributeModifier(
-                ResourceLocationConstants.SLASH_BLADE_ATTACK_MULTIPLIED_TOTAL,
-                (attackEvent.getUltimatelyModifiedRatio()) - 1,
-                AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
-        );
 
         AttributeInstance attribute = attacker.getAttribute(Attributes.ATTACK_DAMAGE);
 
@@ -179,42 +174,21 @@ public class AttackHelper {
             return;
         }
 
-        try {
-            attribute.addTransientModifier(am);
+        double harm = attribute.getValue() * attackEvent.getUltimatelyModifiedRatio();
 
-            /*if (attacker instanceof Player player) {
-                player.attack(target);
-            } else {
-                DamageSource damageSource = attacker.damageSources().mobAttack(attacker);
-                target.hurt(damageSource, (float) attribute.getValue());
-            }*/
 
-            List<DamageSource> list = attackTypeList.stream()
-                    .map(a -> a.createDamageSource(attacker, target))
-                    .filter(Objects::nonNull)
-                    .toList();
-
-            if (list.isEmpty()) {
-                list = List.of(
-                        attacker.damageSources().source(
-                                attacker instanceof Player
-                                        ? DamageTypes.PLAYER_ATTACK
-                                        : DamageTypes.MOB_ATTACK,
-                                attacker
-                        )
-                );
-            }
-
-            List<DamageSource> finalList = list;
-            list.forEach(damageSource -> target.hurt(damageSource, (float) attribute.getValue() / finalList.size()));
-
-        } finally {
-            attribute.removeModifier(am.id());
+        List<AttackEvent.DamageSourceInfo> list = attackEvent.getDamageSourceInfoList();
+        if (list.isEmpty()) {
+            return;
         }
 
-        if (bypassesCooldown) {
-            target.invulnerableTime = 0;
-        }
+        list.forEach(info -> {
+                    target.invulnerableTime = 0;
+                    target.hurt(info.damageSource(), (float) (harm * info.damage()));
+                }
+        );
+
+
     }
 
     public static void durabilityLoss(LivingEntity user, ItemStack itemStack, SlashBladeLogic slashBladeLogic, double loss) {
@@ -314,6 +288,5 @@ public class AttackHelper {
 
         durabilityLoss(event.getUser(), event.getItem(), event.getSlashBladeLogic(), event.getModifiedRatio() * SbConfig.COMMON.durabilityLoss.get() * event.getTarget().size());
     }
-
 
 }

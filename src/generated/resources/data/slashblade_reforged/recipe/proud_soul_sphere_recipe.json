@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:smelting",
+  "type": "slashblade_reforged:proud_soul_smelting_recipe",
   "category": "misc",
   "cookingtime": 10000,
   "experience": 3.0,
