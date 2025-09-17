@@ -12,4 +12,6 @@ public class SlashBladeMaterial {
     int addProudSoul;
     @SaveField
     double repairDamageValue;
+    @SaveField
+    int enchantedSuccessRate;
 }

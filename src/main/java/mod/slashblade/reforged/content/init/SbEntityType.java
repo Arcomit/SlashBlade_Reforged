@@ -93,7 +93,6 @@ public class SbEntityType {
                     )
                     .sized(0.5f, 0.5f)
                     .setUpdateInterval(20)
-                    .fireImmune()
                     .build("blade_stand_entity")
     );
 

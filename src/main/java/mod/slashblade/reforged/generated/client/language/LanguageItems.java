@@ -176,10 +176,13 @@ public class LanguageItems {
             .addTranslation(LanguageTypes.ZH_CN, "SA: %s");
 
     public static final LanguageItem SE = new LanguageItem("slash_blade_item.tooltip.se")
-            .addTranslation(LanguageTypes.ZH_CN, "SE:");
+            .addTranslation(LanguageTypes.ZH_CN, "SE: %s    最大等级: %s");
+
+    public static final LanguageItem SE_NOT_REPLICABLE = new LanguageItem("slash_blade_item.tooltip.se_not_replicable")
+            .addTranslation(LanguageTypes.ZH_CN, "不可复制");
 
     public static final LanguageItem SE_ITEM = new LanguageItem("slash_blade_item.tooltip.se_item")
-            .addTranslation(LanguageTypes.ZH_CN, "%s    等级:%s/%s");
+            .addTranslation(LanguageTypes.ZH_CN, "%s    等级: %s/%s");
 
     public static final LanguageItem TOOLTIP_ATTACK = new LanguageItem("slash_blade_item.tooltip.attack")
             .addTranslation(LanguageTypes.ZH_CN, "基础伤害: %s");

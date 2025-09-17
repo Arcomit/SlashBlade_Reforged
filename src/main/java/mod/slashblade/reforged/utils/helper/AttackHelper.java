@@ -207,7 +207,7 @@ public class AttackHelper {
 
         double durabilityReductionRate = Math.max(slashBladeDurabilityLossEvent.getDurabilityLevel() * SbConfig.COMMON.durabilityReductionRate.get(), 0);
 
-        // -Sigmoid函数
+        // -Sigmoid+1
         double modifiedRatio = 1 / (durabilityReductionRate + Math.pow(Math.E, -durabilityReductionRate));
 
         loss = slashBladeDurabilityLossEvent.getBasicLoss() * modifiedRatio;

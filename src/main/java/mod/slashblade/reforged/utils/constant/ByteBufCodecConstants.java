@@ -226,9 +226,9 @@ public class ByteBufCodecConstants {
             ProudSoulShapedRecipe::new
     );
 
-    public static final RegistryStreamCodec<SpecialAttack> SPECIAL_ATTACK = new RegistryStreamCodec<>(SbRegistrys.SPECIAL_ATTACK_REGISTRY);
-    public static final RegistryStreamCodec<SpecialEffect> SPECIAL_EFFECT = new RegistryStreamCodec<>(SbRegistrys.SPECIAL_EFFECT_REGISTRY);
-    public static final StreamCodec<ByteBuf, Map<SpecialEffect, Integer>> SPECIAL_EFFECT_LEVEL_MAP = ByteBufCodecs.map(HashMap::new, SPECIAL_EFFECT, ByteBufCodecs.INT);
+    public static final RegistryStreamCodec<SpecialAttack> SA = new RegistryStreamCodec<>(SbRegistrys.SPECIAL_ATTACK_REGISTRY);
+    public static final RegistryStreamCodec<SpecialEffect> SE = new RegistryStreamCodec<>(SbRegistrys.SPECIAL_EFFECT_REGISTRY);
+    public static final StreamCodec<ByteBuf, Map<SpecialEffect, Integer>> SPECIAL_EFFECT_LEVEL_MAP = ByteBufCodecs.map(HashMap::new, SE, ByteBufCodecs.INT);
 
     static {
         // 基本数值类型
@@ -270,8 +270,8 @@ public class ByteBufCodecConstants {
 
         BASIC_TYPE_CODEC_MAP.put(Entity.class, ENTITY_CLIENT_SIDE);
 
-        BASIC_TYPE_CODEC_MAP.put(SpecialAttack.class, SPECIAL_ATTACK);
-        BASIC_TYPE_CODEC_MAP.put(SpecialEffect.class, SPECIAL_EFFECT);
+        BASIC_TYPE_CODEC_MAP.put(SpecialAttack.class, SA);
+        BASIC_TYPE_CODEC_MAP.put(SpecialEffect.class, SE);
 
     }
 

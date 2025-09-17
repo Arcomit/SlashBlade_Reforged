@@ -3,12 +3,19 @@ package mod.slashblade.reforged.content.init;
 import mod.slashblade.reforged.SlashbladeMod;
 import mod.slashblade.reforged.generated.client.language.LanguageItems;
 import mod.slashblade.reforged.generated.group.SlashBladeItemStacks;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
+import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
@@ -35,9 +42,9 @@ public class SbCreativeModeTab {
             .displayItems(
                     (params, output) -> {
 
+                        output.accept(SbItems.PROUD_SOUL_TINY.get());
                         output.accept(SbItems.PROUD_SOUL.get());
                         output.accept(SbItems.PROUD_SOUL_INGOT.get());
-                        output.accept(SbItems.PROUD_SOUL_TINY.get());
                         output.accept(SbItems.PROUD_SOUL_SPHERE.get());
                         output.accept(SbItems.PROUD_SOUL_CRYSTAL.get());
                         output.accept(SbItems.PROUD_SOUL_TRAPEZOHEDRON.get());
@@ -51,6 +58,40 @@ public class SbCreativeModeTab {
                         output.accept(SbItems.BLADESTAND_S.get());
                         output.accept(SbItems.BLADESTAND_1W.get());
                         output.accept(SbItems.BLADESTAND_2W.get());
+
+
+                        SbRegistrys.SPECIAL_ATTACK_REGISTRY.stream().forEach(h -> {
+                            ItemStack itemStack = new ItemStack(SbItems.PROUD_SOUL_SPHERE.get());
+                            itemStack.set(SbDataComponentTypes.SA, h);
+                            output.accept(itemStack);
+                        });
+
+                        SbRegistrys.SPECIAL_EFFECT_REGISTRY.stream().forEach(
+                                h -> {
+                                    ItemStack itemStack = new ItemStack(SbItems.PROUD_SOUL_CRYSTAL.get());
+                                    itemStack.set(SbDataComponentTypes.SE, h);
+                                }
+                        );
+
+                        Minecraft instance = Minecraft.getInstance();
+                        Level level = instance.level;
+
+                        if (level != null) {
+                            instance.level
+                                    .registryAccess()
+                                    .lookupOrThrow(Registries.ENCHANTMENT)
+                                    .listElements()
+                                    .forEach(
+                                            h -> {
+                                                ItemStack itemStack = new ItemStack(SbItems.PROUD_SOUL_TINY.get());
+                                                ItemEnchantments.Mutable mutable = new ItemEnchantments.Mutable(ItemEnchantments.EMPTY);
+                                                mutable.set(h, 1);
+                                                EnchantmentHelper.setEnchantments(itemStack, mutable.toImmutable());
+                                                output.accept(itemStack);
+                                            }
+                                    );
+
+                        }
                     }
             )
             .build()

@@ -32,6 +32,7 @@ public class SlashBladeItem extends SwordItem {
 
     public SlashBladeItem(Tier tier, Properties properties) {
         super(tier, properties
+                .fireResistant()
                 .component(SbDataComponentTypes.MODEL_LOCATION, DefaultResources.DEFAULT_MODEL)
                 .component(SbDataComponentTypes.TEXTURE_LOCATION, DefaultResources.DEFAULT_TEXTURE)
                 .component(SbDataComponentTypes.DRAW_ACTION, SbActions.IDLE_ACTION.getId())

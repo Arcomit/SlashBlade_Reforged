@@ -15,6 +15,8 @@ import mod.slashblade.reforged.content.init.SbCapabilities;
 import mod.slashblade.reforged.content.init.SbDataComponentTypes;
 import mod.slashblade.reforged.content.init.SbEntityType;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.TicketType;
 import net.minecraft.server.level.ServerPlayer;
@@ -28,6 +30,8 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
@@ -67,13 +71,31 @@ public class KeyHelper {
             return;
         }
 
-        SummondSwordEntity summondSwordEntity = new SummondSwordEntity(SbEntityType.SUMMOND_SWORD_ENTITY.get(), livingEntity.level(), livingEntity);
-        slashBladeStyle.decorate(summondSwordEntity);
-        summondSwordEntity.setDamage(SbConfig.COMMON.ordinaryAttack.get());
-        summondSwordEntity.setMaxLifeTime(100);
-        summondSwordEntity.lookAt(SwordsmanHelper.getAttackPos(livingEntity, slashBladeLogic), false);
-        livingEntity.level().addFreshEntity(summondSwordEntity);
-        livingEntity.playSound(SoundEvents.CHORUS_FRUIT_TELEPORT, 0.2F, 1.45F);
+        //TODO 写入配置
+        if (!canBeReleased(mainHandItem, slashBladeLogic, livingEntity, 2, true)) {
+            return;
+        }
+
+        Level level = event.getLivingEntity().level();
+        HolderLookup.RegistryLookup<Enchantment> enchantmentRegistry = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
+        int enchantmentLevel = mainHandItem.getEnchantmentLevel(enchantmentRegistry.getOrThrow(Enchantments.MULTISHOT));
+        enchantmentLevel = Math.min(enchantmentLevel, 5); // TODO 写入配置
+        int count = 1 + enchantmentLevel; // TODO 写入配置 每级增加的数量
+
+        int piercingLevel = mainHandItem.getEnchantmentLevel(enchantmentRegistry.getOrThrow(Enchantments.PIERCING));
+        int piercing = (int) (piercingLevel * 1f); // TODO 写入配置 每级增加穿透的数量
+
+        for(int i = 0; i < count; i++) {
+            SummondSwordEntity summondSwordEntity = new SummondSwordEntity(SbEntityType.SUMMOND_SWORD_ENTITY.get(), livingEntity.level(), livingEntity);
+            slashBladeStyle.decorate(summondSwordEntity);
+            summondSwordEntity.setDamage(SbConfig.COMMON.ordinaryAttack.get());
+            summondSwordEntity.setMaxLifeTime(100);
+            summondSwordEntity.lookAt(SwordsmanHelper.getAttackPos(livingEntity, slashBladeLogic), false);
+            summondSwordEntity.setMaxPierce(piercing);
+            livingEntity.level().addFreshEntity(summondSwordEntity);
+            livingEntity.playSound(SoundEvents.CHORUS_FRUIT_TELEPORT, 0.2F, 1.45F);
+        }
+
     }
 
 
@@ -107,6 +129,18 @@ public class KeyHelper {
             return;
         }
 
+        //TODO 写入配置
+        if (!canBeReleased(mainHandItem, slashBladeLogic, livingEntity, 20, true)) {
+            return;
+        }
+
+        Level level = event.getLivingEntity().level();
+        HolderLookup.RegistryLookup<Enchantment> enchantmentRegistry = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
+        int enchantmentLevel = mainHandItem.getEnchantmentLevel(enchantmentRegistry.getOrThrow(Enchantments.MULTISHOT));
+        enchantmentLevel = Math.min(enchantmentLevel, 5); // TODO 写入配置
+
+        int piercingLevel = mainHandItem.getEnchantmentLevel(enchantmentRegistry.getOrThrow(Enchantments.PIERCING));
+        int piercing = (int) (piercingLevel * 1f); // TODO 写入配置 每级增加穿透的数量
 
         livingEntity.playSound(SoundEvents.CHORUS_FRUIT_TELEPORT, 0.2F, 1.45F);
 
@@ -122,7 +156,7 @@ public class KeyHelper {
             );
             RandomSource random = event.getLivingEntity().getRandom();
 
-            int amount = SbConfig.COMMON.heavyRainAttackNumber.get();
+            int amount = SbConfig.COMMON.heavyRainAttackNumber.get() + 8 * enchantmentLevel; // TODO 写入配置
 
             for(int i = 0; i < amount; i++) {
                 Vec3 pos = attackPos.add(
@@ -152,6 +186,7 @@ public class KeyHelper {
                         singleAttackPos,
                         false
                 );
+                summondSwordEntity.setMaxPierce(piercing);
                 summondSwordEntity.setRoll(random.nextInt(360));
                 livingEntity.level().addFreshEntity(summondSwordEntity);
             }
@@ -161,7 +196,7 @@ public class KeyHelper {
 
         // 猛烈
         if (playerInputCapability.isDown(KeyInput.FORWARD)) {
-            int amount = SbConfig.COMMON.blisteringAttackNumber.get();
+            int amount = SbConfig.COMMON.blisteringAttackNumber.get() + 4 * enchantmentLevel; // TODO 写入配置
             for(int i = 0; i < amount; i++) {
                 SummondSwordEntity summondSwordEntity = new SummondSwordEntity(
                         SbEntityType.SUMMOND_SWORD_ENTITY.get(),
@@ -183,6 +218,7 @@ public class KeyHelper {
                                                         : -1
                                         )
                         );
+                summondSwordEntity.setMaxPierce(piercing);
                 summondSwordEntity.setPos(pos.x(), pos.y() + ofBlisteringOffset(i, amount), pos.z());
                 summondSwordEntity.lookAt(attackPos, false);
                 livingEntity.level().addFreshEntity(summondSwordEntity);
@@ -193,7 +229,7 @@ public class KeyHelper {
         // 风暴
         if (playerInputCapability.isDown(KeyInput.BACK)) {
 
-            int amount = SbConfig.COMMON.stormSwordAttackNumber.get();
+            int amount = SbConfig.COMMON.stormSwordAttackNumber.get() + 4 * enchantmentLevel; // TODO 写入配置
             double stepping = Math.PI * 2 / amount;
 
             for(int i = 0; i < amount; i++) {
@@ -213,6 +249,7 @@ public class KeyHelper {
                         attackPos.y(),
                         attackPos.z() + offsetZ * 5
                 );
+                summondSwordEntity.setMaxPierce(piercing);
                 summondSwordEntity.lookAt(attackPos, false);
 
                 livingEntity.level().addFreshEntity(summondSwordEntity);
@@ -222,7 +259,7 @@ public class KeyHelper {
 
         // 螺旋
         {
-            int amount = SbConfig.COMMON.spiralSwordAttackNumber.get();
+            int amount = SbConfig.COMMON.spiralSwordAttackNumber.get() + 4 * enchantmentLevel; // TODO 写入配置
             double stepping = Math.PI * 2 / amount;
 
             Vec3 pos = livingEntity.getPosition(1);
@@ -243,6 +280,7 @@ public class KeyHelper {
                         pos.y(),
                         pos.z() + offsetZ * 3
                 );
+                summondSwordEntity.setMaxPierce(piercing);
                 float yaw = livingEntity.getYRot();
                 yaw = yaw / 180;
                 yaw += (float) (stepping * i);
@@ -252,6 +290,35 @@ public class KeyHelper {
             }
         }
 
+    }
+
+    public static boolean canBeReleased(ItemStack itemStack, SlashBladeLogic slashBladeLogic, LivingEntity attacker, int proudSoulConsumption, boolean consumption) {
+        Level level = attacker.level();
+        HolderLookup.RegistryLookup<Enchantment> enchantmentRegistry = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
+
+        int powerLevel = itemStack.getEnchantmentLevel(enchantmentRegistry.getOrThrow(Enchantments.POWER));
+        if (powerLevel <= 0) {
+            return false;
+        }
+
+        if (slashBladeLogic.getProudSoul() < proudSoulConsumption) {
+            return false;
+        }
+
+        if (consumption) {
+            int enchantmentLevel = itemStack.getEnchantmentLevel(enchantmentRegistry.getOrThrow(Enchantments.INFINITY));
+            if (enchantmentLevel <= 0) {
+                itemStack.update(
+                        SbDataComponentTypes.SLASH_BLADE_LOGIC,
+                        SlashBladeLogic.DEF,
+                        s -> s.toBuilder()
+                                .proudSoul(s.getProudSoul() - proudSoulConsumption)
+                                .build()
+                );
+            }
+        }
+
+        return true;
     }
 
 
@@ -353,12 +420,12 @@ public class KeyHelper {
         // In 1.21, the SPlayerPositionLookPacket.Flags is not used the same way
         // We use a simpler approach for teleportation
         BlockPos blockpos = BlockPos.containing(x, y, z);
-        
+
         if (entityIn instanceof ServerPlayer serverPlayer) {
             ChunkPos chunkpos = new ChunkPos(blockpos);
             worldIn.getChunkSource().addRegionTicket(TicketType.POST_TELEPORT, chunkpos, 1, entityIn.getId());
             entityIn.stopRiding();
-            
+
             if (serverPlayer.isSleeping()) {
                 serverPlayer.stopSleepInBed(true, true);
             }

@@ -10,6 +10,7 @@ public class SpecialEffect {
 
     int maxLevel;
 
+    boolean notReplicable;
 
     @Nullable
     String descriptionId;
@@ -29,6 +30,10 @@ public class SpecialEffect {
             this.docDescriptionId = Util.makeDescriptionId("se.doc", SbRegistrys.SPECIAL_EFFECT_REGISTRY.getKey(this));
         }
         return this.docDescriptionId;
+    }
+
+    public boolean isReplicable() {
+        return !notReplicable;
     }
 
 }

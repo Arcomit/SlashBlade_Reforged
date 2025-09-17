@@ -13,6 +13,7 @@ public class ProudSoulItem extends Item {
     public ProudSoulItem(Properties properties, SlashBladeMaterial slashBladeMaterial) {
         super(properties
                 .component(SbDataComponentTypes.SLASH_BLADE_MATERIAL.get(), slashBladeMaterial)
+                .fireResistant()
         );
         this.slashBladeMaterial = slashBladeMaterial;
     }

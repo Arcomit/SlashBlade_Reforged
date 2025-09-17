@@ -4,6 +4,8 @@ import mod.slashblade.reforged.SlashbladeMod;
 import mod.slashblade.reforged.content.data.SlashBladeLogic;
 import mod.slashblade.reforged.content.data.SlashBladeMaterial;
 import mod.slashblade.reforged.content.data.SlashBladeStyle;
+import mod.slashblade.reforged.content.register.SpecialAttack;
+import mod.slashblade.reforged.content.register.SpecialEffect;
 import mod.slashblade.reforged.utils.constant.ByteBufCodecConstants;
 import mod.slashblade.reforged.utils.constant.CodecConstants;
 import net.minecraft.core.component.DataComponentType;
@@ -132,6 +134,22 @@ public class SbDataComponentTypes {
             () -> DataComponentType.<SlashBladeStyle>builder()
                     .persistent(CodecConstants.SLASH_BLADE_STYLE)
                     .networkSynchronized(ByteBufCodecConstants.SLASH_BLADE_STYLE)
+                    .build()
+    );
+
+    public static final Supplier<DataComponentType<SpecialAttack>> SA = DATA_COMPONENTS.register(
+            "sa",
+            () -> DataComponentType.<SpecialAttack>builder()
+                    .persistent(CodecConstants.SA)
+                    .networkSynchronized(ByteBufCodecConstants.SA)
+                    .build()
+    );
+
+    public static final Supplier<DataComponentType<SpecialEffect>> SE = DATA_COMPONENTS.register(
+            "se",
+            () -> DataComponentType.<SpecialEffect>builder()
+                    .persistent(CodecConstants.SE)
+                    .networkSynchronized(ByteBufCodecConstants.SE)
                     .build()
     );
 

@@ -10,6 +10,8 @@ import mod.slashblade.reforged.content.data.SlashBladeStyle;
 import mod.slashblade.reforged.content.init.SbRegistrys;
 import mod.slashblade.reforged.content.loot.LootItemStack;
 import mod.slashblade.reforged.content.recipe.*;
+import mod.slashblade.reforged.content.register.SpecialAttack;
+import mod.slashblade.reforged.content.register.SpecialEffect;
 import mod.slashblade.reforged.core.animation.utils.GsonUtil;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
@@ -63,6 +65,9 @@ public class CodecConstants {
                     )
                     .apply(i, EnchantmentTagIngredient::new)
     );
+
+    public static final Codec<SpecialAttack> SA = SbRegistrys.SPECIAL_ATTACK_REGISTRY.byNameCodec();
+    public static final Codec<SpecialEffect> SE = SbRegistrys.SPECIAL_EFFECT_REGISTRY.byNameCodec();
 
     public static final MapCodec<ProudSoulShapelessRecipe> PROUD_SOUL_SHAPELESS_RECIPE = RecordCodecBuilder.mapCodec(
             i -> i.group(
