@@ -3,6 +3,7 @@ package mod.slashblade.reforged.utils.helper;
 import mod.slashblade.reforged.SlashbladeMod;
 import mod.slashblade.reforged.content.config.SbConfig;
 import mod.slashblade.reforged.content.data.SlashBladeLogic;
+import mod.slashblade.reforged.content.init.SbAttackTypes;
 import mod.slashblade.reforged.content.init.SbDataComponentTypes;
 import mod.slashblade.reforged.content.init.SbItems;
 import net.minecraft.core.Holder;
@@ -16,6 +17,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -59,26 +61,28 @@ public class killHelper {
 
         RandomSource random = attacker.getRandom();
 
+        HolderLookup.RegistryLookup<Enchantment> enchantmentRegistry = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
+        List<Holder.Reference<Enchantment>> list = enchantmentRegistry.listElements().toList();
 
-        // 生成耀魂碎片
-        if (random.nextDouble() < SbConfig.COMMON.soulDropChance.get()) {
+        int fortuneLevel = itemStack.getEnchantmentLevel(enchantmentRegistry.getOrThrow(Enchantments.FORTUNE));
+        double fortuneAdd = fortuneLevel * 0.15;  // TODO 写入配置
+
+        if (random.nextDouble() < SbConfig.COMMON.soulDropChance.get() * fortuneAdd) {
             ItemEntity itemEntity = new ItemEntity(
                     level, x, y, z, new ItemStack(SbItems.PROUD_SOUL.get())
             );
             level.addFreshEntity(itemEntity);
         }
 
-        // 生成破碎的耀魂
-        if (random.nextDouble() < SbConfig.COMMON.tinySoulDropChance.get()) {
+        if (random.nextDouble() < SbConfig.COMMON.tinySoulDropChance.get() * fortuneAdd) {
             ItemEntity itemEntity = new ItemEntity(
                     level, x, y, z, new ItemStack(SbItems.PROUD_SOUL_TINY.get())
             );
             level.addFreshEntity(itemEntity);
         }
 
-        if (random.nextDouble() < SbConfig.COMMON.enchantmentSoulDropChance.get()) {
-            HolderLookup.RegistryLookup<Enchantment> enchantmentRegistry = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
-            List<Holder.Reference<Enchantment>> list = enchantmentRegistry.listElements().toList();
+        if (random.nextDouble() < SbConfig.COMMON.enchantmentSoulDropChance.get() * fortuneAdd) {
+
             Holder.Reference<Enchantment> enchantment = list.get(random.nextInt(list.size()));
 
             ItemStack out = new ItemStack(SbItems.PROUD_SOUL_TINY.get());
