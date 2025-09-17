@@ -10,14 +10,11 @@ import net.neoforged.api.distmarker.OnlyIn;
 /**
  * @Author: Arcomit
  * @CreateTime: 2025-08-27 17:03
- * @Description: TODO
+ * @Description: 拔刀剑动画实例(与实体绑定，无持久化实现)
  */
 public class SlashBladeAnimationInstance {
 
     public AnimationStateMachine<SlashBladeAnimationContext> stateMachine;
-
-    @OnlyIn(Dist.CLIENT)
-    public AnimationStateMachine<SlashBladeAnimationContext> firstPersonStateMachine;
 
     @OnlyIn(Dist.CLIENT)
     public void renderTick() {

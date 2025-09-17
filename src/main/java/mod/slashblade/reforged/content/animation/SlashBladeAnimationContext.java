@@ -10,6 +10,8 @@ import com.maydaymemory.mae.control.Tickable;
 import com.maydaymemory.mae.control.misc.AnimationVelocityEstimatorNode;
 import com.maydaymemory.mae.control.misc.RealtimeVelocityEstimatorNode;
 import com.maydaymemory.mae.control.montage.AnimationMontageRunner;
+import mod.slashblade.reforged.content.action.Action;
+import mod.slashblade.reforged.content.init.SbActions;
 import mod.slashblade.reforged.core.animation.AnimationAsset;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -33,6 +35,9 @@ public class SlashBladeAnimationContext implements Tickable {
 
     public SlashBladeAnimationContext(LivingEntity livingEntity) {
         this.livingEntity = livingEntity;
+        Action action = SbActions.TEST.get();
+        animationMontageRunner = new AnimationMontageRunner<>(action.getActionMontage(), this, new ZYXBoneTransformFactory(), ArrayPoseBuilder::new, new NotCountingPausedNanoTimeSupplier());
+        animationMontageRunner.start("action");
     }
 
     @Override

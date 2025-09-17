@@ -1,7 +1,10 @@
 package mod.slashblade.reforged.content.init;
 
+import lombok.extern.slf4j.Slf4j;
 import mod.slashblade.reforged.SlashbladeMod;
 import mod.slashblade.reforged.content.action.Action;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageSources;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -11,6 +14,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
  * @CreateTime: 2025-08-20 13:09
  * @Description: 集中管理所有模组行动的注册（且能够从中获取调用）
  */
+@Slf4j
 public class SbActions {
 
     public static final DeferredRegister<Action> ACTIONS = DeferredRegister.create(SbRegistrys.ACTION_REGISTRY, SlashbladeMod.MODID);
@@ -25,15 +29,13 @@ public class SbActions {
             "walking",
             () -> new Action()
                     .animation("Default_Walk_FristPerson", 0.0f, 0.25f)
-                    .fristPersonAnimation("Default_Walk_FristPerson", 0.0f, 0.25f)
                     .isLoop(true)
     );
 
     public static final DeferredHolder<Action, Action> SPRINTING_ACTION = ACTIONS.register(
             "sprinting",
             () -> new Action()
-                    .animation("Default_Sprint_FristPerson", 0.0f, 0.25f)
-                    .fristPersonAnimation("Default_Sprint_FristPerson", 0.0f, 0.25f)
+                    .animation("Default_Sprint_Universal", 0.0f, 0.25f)
                     .isLoop(true)
     );
 
@@ -42,6 +44,9 @@ public class SbActions {
             () -> new Action()
                     .animation("Combo_A4_FristPerson", 0.0f, 3.58f)
                     .fristPersonAnimation("Combo_A4_FristPerson", 0.0f, 3.58f)
+                    .addNotify(0.358f, (context) -> {
+                        System.out.println(context.livingEntity);
+                    })
                     .isLoop(true)
     );
 

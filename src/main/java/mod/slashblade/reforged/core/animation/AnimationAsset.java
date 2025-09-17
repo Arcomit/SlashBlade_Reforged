@@ -22,9 +22,8 @@ public class AnimationAsset extends BasicAnimation {
     private static final float DEGREE_TO_ANGLE = (float) (Math.PI / 180);
     public static final String SOUND_CHANNEL_NAME = "sound_effects";
 
-    public InterpolatableChannel<? extends Vector3fc> cameraTranslationChannel;
-    public InterpolatableChannel<? extends Rotation> cameraRotationChannel;
-    public InterpolatableChannel<? extends Vector3fc> cameraScaleChannel;
+    public static final String CAMERA_ROTATION_CHANNEL_NAME = "camera_rotation";
+    public static final String CAMERA_TRANSLATION_CHANNEL_NAME = "camera_translation";
 
     private float specifiedEndTimeS = -1;
 
@@ -53,13 +52,13 @@ public class AnimationAsset extends BasicAnimation {
                     ArrayInterpolatableChannel<Rotation> rotationChannel = parseRotationChannel(bone.getRotation(), -1, -1, 1);
                     ArrayInterpolatableChannel<Vector3fc> scaleChannel = parseChannel(bone.getScale(), 1, 1, 1);
                     if (entry.getKey().equals("camera")) {
-                        animationAsset.cameraTranslationChannel = translationChannel;
-                        animationAsset.cameraRotationChannel = rotationChannel;
-                        animationAsset.cameraScaleChannel = scaleChannel;
+                        animationAsset.setCurve(CAMERA_TRANSLATION_CHANNEL_NAME, translationChannel);
+                        animationAsset.setCurve(CAMERA_ROTATION_CHANNEL_NAME, rotationChannel);
+                    }else {
+                        animationAsset.setTranslationChannel(boneIndex, translationChannel);
+                        animationAsset.setRotationChannel(boneIndex, rotationChannel);
+                        animationAsset.setScaleChannel(boneIndex, scaleChannel);
                     }
-                    animationAsset.setTranslationChannel(boneIndex, translationChannel);
-                    animationAsset.setRotationChannel(boneIndex, rotationChannel);
-                    animationAsset.setScaleChannel(boneIndex, scaleChannel);
                 }
             }
         }

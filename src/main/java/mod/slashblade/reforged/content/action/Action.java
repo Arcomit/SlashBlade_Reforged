@@ -7,12 +7,16 @@ import lombok.Getter;
 import mod.slashblade.reforged.content.animation.SlashBladeAnimationContext;
 import mod.slashblade.reforged.core.animation.event.AnimationManager;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * @Author: Arcomit
@@ -23,10 +27,13 @@ public class Action {
 
     private final AnimationMontage<SlashBladeAnimationContext> actionMontage = new AnimationMontage<>();
 
+    //第一人称蒙太奇
     private final AnimationMontage<SlashBladeAnimationContext> firstPersonMontage = new AnimationMontage<>();
 
+    private final ArrayList<Keyframe<IAnimationNotify<SlashBladeAnimationContext>>> actionNotifies = new ArrayList<>();
+
     // 动作的动画资源名称
-    private String animation = "default_idle_universal";
+    private String animation = "Default_Idle_Universal";
     private float start = 0.0f;
     private float end = 0.25f;
 
@@ -40,7 +47,7 @@ public class Action {
 
     // 动作的速度
     private float  speed = 1.0f;
-    // 动作的优先级
+    // 动作的优先级（优先级大的动作可以无视时间取消低的动作）
     private int    priority = 0;
     private boolean isLoop = false;
 
@@ -80,6 +87,11 @@ public class Action {
         return this;
     }
 
+    public Action addNotify(float timeS,Consumer<SlashBladeAnimationContext> notify) {
+        this.actionNotifies.add(new AnimationNotifyKeyframe<>(timeS, notify::accept));
+        return this;
+    }
+
     public AnimationMontage<SlashBladeAnimationContext> getActionMontage() {
         init();
         return actionMontage;
@@ -107,6 +119,7 @@ public class Action {
         actionMontage.setTracks(List.of(drawTrack));
         actionMontage.setSections(commonMontageSections);
 
+        // 没有设置第一人称动画时，则与第三人称共用动画
         if (fristPersonAnimation != null) {
             ArrayList<Keyframe<AnimationSegment>> firstPersonSegments = new ArrayList<>();
             firstPersonSegments.add(AnimationManager.constructSegmentKeyframe(fristPersonAnimation, 0.0f, fristPersonStart, fristPersonEnd));
@@ -126,14 +139,7 @@ public class Action {
             firstPersonMontage.setSections(commonMontageSections);
         }
 
-        ArrayList<Keyframe<IAnimationNotify<SlashBladeAnimationContext>>> drawNotifies = new ArrayList<>();
-        drawNotifies.add(new AnimationNotifyKeyframe<>(0.6f, ctx -> {
-            Level level = ctx.livingEntity.level();
-            if (level.isClientSide()) {
-                System.out.println("Man!");
-            }
-        })); // raising gun 为 false 就可以开枪换弹了
-        actionMontage.setNotifyChannels(List.of(new ArrayClipChannel<>(drawNotifies)));
+        actionMontage.setNotifyChannels(List.of(new ArrayClipChannel<>(actionNotifies)));
 
         isInit = true;
     }

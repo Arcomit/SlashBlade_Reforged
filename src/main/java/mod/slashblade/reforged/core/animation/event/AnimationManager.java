@@ -101,7 +101,6 @@ public class AnimationManager implements PreparableReloadListener {
                 for (AnimationAsset animation : animations) {
 
                     cache.put(animation.getName().toLowerCase(), animation);
-                    System.out.println("Loaded animation: " + animation.getName());
 
                 }
 

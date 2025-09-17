@@ -1,12 +1,9 @@
 package mod.slashblade.reforged.content.animation.state;
 
-import com.maydaymemory.mae.basic.ArrayPoseBuilder;
-import com.maydaymemory.mae.basic.DummyPose;
-import com.maydaymemory.mae.basic.Pose;
-import com.maydaymemory.mae.basic.ZYXBoneTransformFactory;
+import com.maydaymemory.mae.basic.*;
 import com.maydaymemory.mae.control.blend.EasingBlendCurve;
 import com.maydaymemory.mae.control.blend.IBlendCurve;
-import com.maydaymemory.mae.control.montage.AnimationMontageRunner;
+import com.maydaymemory.mae.control.montage.*;
 import com.maydaymemory.mae.control.statemachine.IAnimationState;
 import com.maydaymemory.mae.control.statemachine.IAnimationTransition;
 import com.maydaymemory.mae.control.statemachine.TransferOutStrategy;
@@ -15,8 +12,12 @@ import mod.slashblade.reforged.content.action.Action;
 import mod.slashblade.reforged.content.animation.SlashBladeAnimationContext;
 import mod.slashblade.reforged.content.animation.NotCountingPausedNanoTimeSupplier;
 import mod.slashblade.reforged.content.init.SbActions;
+import mod.slashblade.reforged.core.animation.event.AnimationManager;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: Arcomit
@@ -94,51 +95,8 @@ public class Standing implements IAnimationState<SlashBladeAnimationContext> {
 
         @Override
         public void afterTrigger(SlashBladeAnimationContext context) {
+            // Action action = SbActions.IDLE_ACTION.get();
             Action action = SbActions.TEST.get();
-            context.animationMontageRunner = new AnimationMontageRunner<>(action.getActionMontage(), context, new ZYXBoneTransformFactory(), ArrayPoseBuilder::new, new NotCountingPausedNanoTimeSupplier());
-            context.animationMontageRunner.start("action");
-        }
-
-        @Override
-        public Pose getInterpolatedPose(SlashBladeAnimationContext context, Pose fromPose, Pose toPose, float alpha) {
-            return SlashBladeAnimationContext.BLENDER.blend(fromPose, toPose, alpha);
-        }
-    }
-
-    public static class Transition2 implements IAnimationTransition<SlashBladeAnimationContext> {
-
-        @Override
-        public IAnimationState<SlashBladeAnimationContext> targetState() {
-            return Standing.INSTANCE;
-        }
-
-        @Override
-        public IBlendCurve curve() {
-            return new EasingBlendCurve(Easing.LINEAR);
-        }
-
-        @Override
-        public float duration() {
-            return 0f;
-        }
-
-        @Override
-        public TransferOutStrategy transferOutStrategy() {
-            return TransferOutStrategy.TO_STATE;
-        }
-
-        @Override
-        public boolean canTrigger(SlashBladeAnimationContext context) {
-            float walkDelta = context.livingEntity.walkDist - context.livingEntity.walkDistO;
-            if (walkDelta <= 0.05F) {
-                return true;
-            }
-            return false;
-        }
-
-        @Override
-        public void afterTrigger(SlashBladeAnimationContext context) {
-            Action action = SbActions.IDLE_ACTION.get();
             context.animationMontageRunner = new AnimationMontageRunner<>(action.getActionMontage(), context, new ZYXBoneTransformFactory(), ArrayPoseBuilder::new, new NotCountingPausedNanoTimeSupplier());
             context.animationMontageRunner.start("action");
         }

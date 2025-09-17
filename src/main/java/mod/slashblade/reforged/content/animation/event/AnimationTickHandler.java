@@ -2,6 +2,7 @@ package mod.slashblade.reforged.content.animation.event;
 
 import mod.slashblade.reforged.SlashbladeMod;
 import mod.slashblade.reforged.content.animation.SlashBladeAnimationInstance;
+import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.api.distmarker.Dist;
@@ -25,7 +26,12 @@ public class AnimationTickHandler {
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void onRenderTick(RenderFrameEvent.Pre event) {
-
+        Minecraft mc = Minecraft.getInstance();
+        Player player = mc.player;
+        if (player != null) {
+            SlashBladeAnimationInstance instance = SlashBladeAnimationInstance.get(player);
+            instance.tick();
+        }
     }
 
     @SubscribeEvent

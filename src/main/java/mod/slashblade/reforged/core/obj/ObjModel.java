@@ -29,25 +29,18 @@ public class ObjModel {
     public void applyPose(Pose pose) {
         for (BoneTransform boneTransform : pose.getBoneTransforms()) {
             String groupName = AnimationManager.INDEX_PROVIDER.getGroupName(boneTransform.boneIndex());
-            if (!groupName.equals("camera")){
-                ObjGroup group = Groups.get(groupName);
-                if (group != null) {
-                    Vector3fc translation = boneTransform.translation();
-                    Quaternionfc rotation = boneTransform.rotation().asQuaternion();
-                    Vector3fc scale = boneTransform.scale();
-                    group.setX(translation.x());
-                    group.setY(translation.y());
-                    group.setZ(translation.z());
-                    group.getRotation().set(rotation);
-                    group.setXScale(scale.x());
-                    group.setYScale(scale.y());
-                    group.setZScale(scale.z());
-                }
-            }else {
+            ObjGroup group = Groups.get(groupName);
+            if (group != null) {
                 Vector3fc translation = boneTransform.translation();
-                Vector3f rotationAngles = new Vector3f(boneTransform.rotation().asEulerAngle());
-                CameraAnimationHandler.setCameraPos(translation);
-                CameraAnimationHandler.setCameraRotation(rotationAngles);
+                Quaternionfc rotation = boneTransform.rotation().asQuaternion();
+                Vector3fc scale = boneTransform.scale();
+                group.setX(translation.x());
+                group.setY(translation.y());
+                group.setZ(translation.z());
+                group.getRotation().set(rotation);
+                group.setXScale(scale.x());
+                group.setYScale(scale.y());
+                group.setZScale(scale.z());
             }
         }
     }

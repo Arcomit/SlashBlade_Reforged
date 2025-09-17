@@ -66,7 +66,7 @@ public class SlashBladeItemRenderer extends BlockEntityWithoutLevelRenderer {
         AnimationAsset animation = AnimationManager.get(DefaultResources.DEFAULT_ANIMATION);
         if (animation == null) return;
         Pose pose = animation.evaluate(0f);
-        //model.applyPose(pose);
+        model.applyPose(pose);
 
         try (PoseStackAutoCloser PSAC1 = PoseStackAutoCloser.pushMatrix(poseStack)) {
             poseStack.translate(0.5f, 0.5f, 0.5f);
@@ -130,8 +130,8 @@ public class SlashBladeItemRenderer extends BlockEntityWithoutLevelRenderer {
                 // 抵消移动视角时的晃动
                 float interpolatedXBobbing = Mth.lerp(partialTick, player.xBobO, player.xBob);
                 float interpolatedYBobbing = Mth.lerp(partialTick, player.yBobO, player.yBob);
-                poseStack.mulPose(Axis.YN.rotationDegrees((player.getViewYRot(partialTick) - interpolatedYBobbing ) * 0.1F));
-                poseStack.mulPose(Axis.XN.rotationDegrees((player.getViewXRot(partialTick) - interpolatedXBobbing ) * 0.1F));
+                poseStack.mulPose(Axis.YN.rotationDegrees((player.getViewYRot(partialTick) - interpolatedYBobbing ) * 0.07F));
+                poseStack.mulPose(Axis.XN.rotationDegrees((player.getViewXRot(partialTick) - interpolatedXBobbing ) * 0.07F));
 
                 // 抵消走路时的晃动
                 if (mc.options.bobView().get()){
@@ -223,7 +223,7 @@ public class SlashBladeItemRenderer extends BlockEntityWithoutLevelRenderer {
         AnimationAsset animation = AnimationManager.get(DefaultResources.DEFAULT_ANIMATION);
         if (animation == null) return;
         Pose pose = animation.evaluate(0f);
-        //model.applyPose(pose);
+        model.applyPose(pose);
 
         try (PoseStackAutoCloser PSAC1 = PoseStackAutoCloser.pushMatrix(poseStack)) {
             // 调整位置，使其于blockbench初始位置一致
