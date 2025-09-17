@@ -79,6 +79,7 @@ public class SlashBladeItemStacks {
                                     .key(SlashBladeNameConstants.NOTED_SILVER_BAMBOO_LIGHT)
                                     .attack(4)
                                     .maxDurable(2048)
+                                    .fragile(true)
                                     .build()
                     )
                     .set(
