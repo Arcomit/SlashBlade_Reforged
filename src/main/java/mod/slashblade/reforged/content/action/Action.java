@@ -25,10 +25,10 @@ import java.util.function.Consumer;
  */
 public class Action {
 
-    private final AnimationMontage<SlashBladeAnimationContext> actionMontage = new AnimationMontage<>();
+    private AnimationMontage<SlashBladeAnimationContext> actionMontage;
 
     //第一人称蒙太奇
-    private final AnimationMontage<SlashBladeAnimationContext> firstPersonMontage = new AnimationMontage<>();
+    private AnimationMontage<SlashBladeAnimationContext> firstPersonMontage;
 
     private final ArrayList<Keyframe<IAnimationNotify<SlashBladeAnimationContext>>> actionNotifies = new ArrayList<>();
 
@@ -105,6 +105,9 @@ public class Action {
     // 初始化动作
     public void init() {
         if (isInit) return;
+
+        actionMontage = new AnimationMontage<SlashBladeAnimationContext>();
+        firstPersonMontage = new AnimationMontage<SlashBladeAnimationContext>();
 
         ArrayList<Keyframe<AnimationSegment>> commonSegments = new ArrayList<>();
         commonSegments.add(AnimationManager.constructSegmentKeyframe(animation, 0.0f, start, end));

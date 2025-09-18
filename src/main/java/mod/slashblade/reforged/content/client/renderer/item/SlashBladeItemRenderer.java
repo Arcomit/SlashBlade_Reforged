@@ -22,6 +22,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
@@ -183,6 +184,11 @@ public class SlashBladeItemRenderer extends BlockEntityWithoutLevelRenderer {
 
             model.writeVerticesOnly(vertexConsumer, "blade");
             model.writeVerticesOnly(vertexConsumer, "sheath");
+
+            WriteVerticesInfo.setLightMap(LightTexture.FULL_BRIGHT);
+            RenderType renderType2 = SbRenderTypes.getBlend(DefaultResources.DEFAULT_TRAIL_TEXTURE);
+            VertexConsumer vertexConsumer2 = bufferSource.getBuffer(renderType2);
+            model.writeVerticesOnly(vertexConsumer2, "trail");
 
             WriteVerticesInfo.resetColor();
             WriteVerticesInfo.resetPoseStack();

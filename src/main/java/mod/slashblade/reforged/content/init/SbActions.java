@@ -28,7 +28,7 @@ public class SbActions {
     public static final DeferredHolder<Action, Action> WALKING_ACTION = ACTIONS.register(
             "walking",
             () -> new Action()
-                    .animation("Default_Walk_FristPerson", 0.0f, 0.25f)
+                    .animation("Default_Walk_Universal", 0.0f, 0.25f)
                     .isLoop(true)
     );
 
@@ -44,9 +44,9 @@ public class SbActions {
             () -> new Action()
                     .animation("Combo_A4_FristPerson", 0.0f, 3.58f)
                     .fristPersonAnimation("Combo_A4_FristPerson", 0.0f, 3.58f)
-                    .addNotify(0.358f, (context) -> {
-                        System.out.println(context.livingEntity);
-                    })
+//                    .addNotify(0.358f, (context) -> {
+//                        System.out.println(context.livingEntity);
+//                    })
                     .isLoop(true)
     );
 

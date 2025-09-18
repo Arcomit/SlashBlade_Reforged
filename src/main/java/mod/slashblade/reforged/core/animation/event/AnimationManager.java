@@ -75,9 +75,8 @@ public class AnimationManager implements PreparableReloadListener {
     }
 
     private void loadResources(ResourceManager resourceManager) {
-        SbRegistrys.ACTION_REGISTRY.forEach(Action::resetInit);
-
         LOCK.lock();
+        SbRegistrys.ACTION_REGISTRY.forEach(Action::resetInit);
         animationsCache = null;
         LOCK.unlock();
 
@@ -127,8 +126,8 @@ public class AnimationManager implements PreparableReloadListener {
             while (animationsCache == null) {
                 PREPARED.await(); // 等待 animationsCache 准备好
             }
-            return animationsCache.computeIfAbsent(animationName.toLowerCase(),
-                    aniName -> animationsCache.get(DefaultResources.DEFAULT_ANIMATION)
+            return animationsCache.getOrDefault(animationName.toLowerCase(),
+                    animationsCache.get(DefaultResources.DEFAULT_ANIMATION.toLowerCase())
             );
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
