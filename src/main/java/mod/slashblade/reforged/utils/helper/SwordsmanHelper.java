@@ -1,7 +1,7 @@
 package mod.slashblade.reforged.utils.helper;
 
 import mod.slashblade.reforged.content.data.SlashBladeLogic;
-import mod.slashblade.reforged.content.data.capabilitie.ILockTarget;
+import mod.slashblade.reforged.content.capability.ILockTarget;
 import mod.slashblade.reforged.content.init.SbCapabilities;
 import mod.slashblade.reforged.content.init.SbDataComponentTypes;
 import net.minecraft.world.entity.Entity;

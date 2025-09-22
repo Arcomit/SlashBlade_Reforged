@@ -1,4 +1,4 @@
-package mod.slashblade.reforged.content.data.capabilitie;
+package mod.slashblade.reforged.content.capability;
 
 import net.minecraft.world.entity.Entity;
 

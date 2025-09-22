@@ -1,6 +1,6 @@
 package mod.slashblade.reforged.content.data;
 
-import mod.slashblade.reforged.content.data.capabilitie.IInputCapability;
+import mod.slashblade.reforged.content.capability.IInputCapability;
 import mod.slashblade.reforged.content.data.network.KeyInputPack;
 import mod.slashblade.reforged.content.event.key.KeyInputEvent;
 import mod.slashblade.reforged.content.event.key.KeyUpdateEvent;
@@ -8,7 +8,6 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 import org.jetbrains.annotations.NotNull;

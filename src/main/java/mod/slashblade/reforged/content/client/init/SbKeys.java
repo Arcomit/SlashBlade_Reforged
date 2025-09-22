@@ -3,7 +3,7 @@ package mod.slashblade.reforged.content.client.init;
 import com.mojang.blaze3d.platform.InputConstants;
 import mod.slashblade.reforged.SlashbladeMod;
 import mod.slashblade.reforged.content.data.KeyInput;
-import mod.slashblade.reforged.content.data.capabilitie.IInputCapability;
+import mod.slashblade.reforged.content.capability.IInputCapability;
 import mod.slashblade.reforged.content.data.network.KeyInputPack;
 import mod.slashblade.reforged.content.init.SbCapabilities;
 import net.minecraft.client.KeyMapping;
@@ -12,7 +12,6 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
-import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.common.util.Lazy;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -20,7 +19,6 @@ import org.lwjgl.glfw.GLFW;
 
 import java.util.EnumMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @EventBusSubscriber(modid = SlashbladeMod.MODID, value = Dist.CLIENT)
 public class SbKeys {

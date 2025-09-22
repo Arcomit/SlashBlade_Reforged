@@ -2,7 +2,7 @@ package mod.slashblade.reforged.content.event.key;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import mod.slashblade.reforged.content.data.capabilitie.IInputCapability;
+import mod.slashblade.reforged.content.capability.IInputCapability;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.bus.api.Event;
 

@@ -1,4 +1,4 @@
-package mod.slashblade.reforged.content.data.capabilitie;
+package mod.slashblade.reforged.content.capability;
 
 import mod.slashblade.reforged.content.data.KeyInput;
 import mod.slashblade.reforged.content.data.network.KeyInputPack;

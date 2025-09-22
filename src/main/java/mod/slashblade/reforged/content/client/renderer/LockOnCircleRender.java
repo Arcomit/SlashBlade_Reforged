@@ -6,10 +6,9 @@ import mod.slashblade.reforged.SlashbladeMod;
 import mod.slashblade.reforged.content.data.KeyInput;
 import mod.slashblade.reforged.content.data.SlashBladeLogic;
 import mod.slashblade.reforged.content.data.SlashBladeStyle;
-import mod.slashblade.reforged.content.data.capabilitie.IInputCapability;
-import mod.slashblade.reforged.content.data.capabilitie.ILockTarget;
+import mod.slashblade.reforged.content.capability.IInputCapability;
+import mod.slashblade.reforged.content.capability.ILockTarget;
 import mod.slashblade.reforged.content.init.SbCapabilities;
-import mod.slashblade.reforged.content.init.SbCreativeModeTab;
 import mod.slashblade.reforged.content.init.SbDataComponentTypes;
 import mod.slashblade.reforged.core.obj.ObjModel;
 import mod.slashblade.reforged.core.obj.event.ObjModelManager;
@@ -21,7 +20,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.resources.ResourceLocation;
@@ -36,11 +34,8 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RenderFrameEvent;
 import net.neoforged.neoforge.client.event.RenderLivingEvent;
-import net.neoforged.neoforge.client.event.RenderPlayerEvent;
-import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 import java.awt.*;
-import java.util.Optional;
 
 @EventBusSubscriber(modid = SlashbladeMod.MODID, value = Dist.CLIENT)
 public class LockOnCircleRender {

@@ -1,7 +1,7 @@
 package mod.slashblade.reforged.content.init;
 
 import mod.slashblade.reforged.SlashbladeMod;
-import mod.slashblade.reforged.content.data.capabilitie.IInputCapability;
+import mod.slashblade.reforged.content.capability.IInputCapability;
 import mod.slashblade.reforged.content.data.network.KeyInputPack;
 import mod.slashblade.reforged.utils.constant.ByteBufCodecConstants;
 import net.minecraft.world.entity.player.Player;

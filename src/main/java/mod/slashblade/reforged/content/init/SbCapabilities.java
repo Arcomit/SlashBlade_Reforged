@@ -2,8 +2,8 @@ package mod.slashblade.reforged.content.init;
 
 
 import mod.slashblade.reforged.SlashbladeMod;
-import mod.slashblade.reforged.content.data.capabilitie.ILockTarget;
-import mod.slashblade.reforged.content.data.capabilitie.IInputCapability;
+import mod.slashblade.reforged.content.capability.ILockTarget;
+import mod.slashblade.reforged.content.capability.IInputCapability;
 import net.minecraft.world.entity.EntityType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;

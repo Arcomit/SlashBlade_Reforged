@@ -5,8 +5,8 @@ import mod.slashblade.reforged.content.config.SbConfig;
 import mod.slashblade.reforged.content.data.KeyInput;
 import mod.slashblade.reforged.content.data.SlashBladeLogic;
 import mod.slashblade.reforged.content.data.SlashBladeStyle;
-import mod.slashblade.reforged.content.data.capabilitie.ILockTarget;
-import mod.slashblade.reforged.content.data.capabilitie.IInputCapability;
+import mod.slashblade.reforged.content.capability.ILockTarget;
+import mod.slashblade.reforged.content.capability.IInputCapability;
 import mod.slashblade.reforged.content.entity.SummondSwordEntity;
 import mod.slashblade.reforged.content.event.key.KeyInputEvent;
 import mod.slashblade.reforged.content.event.key.KeyUpdateEvent;
@@ -21,12 +21,10 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.TicketType;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -40,9 +38,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.Set;
 
 @EventBusSubscriber(modid = SlashbladeMod.MODID)
 public class KeyHelper {
