@@ -26,6 +26,10 @@ public class ObjModel {
 
     private final Map<String, ObjGroup> Groups = new HashMap<>();
 
+    /**
+     * 将 姿势 应用到相应的模型组
+     * @param pose 需要应用的姿势
+     */
     public void applyPose(Pose pose) {
         for (BoneTransform boneTransform : pose.getBoneTransforms()) {
             String groupName = AnimationManager.INDEX_PROVIDER.getGroupName(boneTransform.boneIndex());
@@ -45,6 +49,9 @@ public class ObjModel {
         }
     }
 
+    /**
+     * 重置模型组的姿势
+     */
     public void resetPose() {
         for (ObjGroup group : Groups.values()) {
 

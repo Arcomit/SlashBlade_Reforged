@@ -30,7 +30,7 @@ public class ObjFace {
     private float    averageV = 0F;
 
     public  void writeVertices(VertexConsumer vertexConsumer){
-        if (WriteVerticesInfo.getPoseStack() != null){
+        if (WriteVerticesInfo.getPoseStack() != null && WriteVerticesInfo.getPoseStack().last() != null){
 
             transform  = WriteVerticesInfo.getPoseStack().last().pose();
             normal     = WriteVerticesInfo.getPoseStack().last().normal();

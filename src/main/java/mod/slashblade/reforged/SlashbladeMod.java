@@ -23,6 +23,10 @@ public class SlashbladeMod {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public SlashbladeMod(IEventBus modEventBus, ModContainer modContainer) {
+        LOGGER.debug("this is debug");
+        LOGGER.info("this is info");
+        LOGGER.warn("this is warn");
+        LOGGER.error("this is error");
         SbItems.register(modEventBus);
         SbActions.register(modEventBus);
         SbDataComponentTypes.register(modEventBus);

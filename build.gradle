@@ -110,14 +110,14 @@ dependencies {
     implementation        "dev.kosmx.player-anim:player-animation-lib-forge:${player_anim_version}"
 
     // May爹动画引擎
-    mcLib jarJar("com.maydaymemory:mae:1.0.4") {
+    mcLib jarJar("com.maydaymemory:mae:1.1.2") {
         exclude group: 'com.google.code.findbugs', module: 'jsr305'
         exclude group: 'it.unimi.dsi', module: 'fastutil'
         exclude group: 'org.joml', module: 'joml'
     }
 
     // 加速渲染
-    implementation        "curse.maven:accelerated-rendering-1314021:6839175"
+    implementation        "curse.maven:accelerated-rendering-1314021:7128905"
 
     // 光子2特效库（前置）
     implementation        "curse.maven:photon-871522:6911487"

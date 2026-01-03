@@ -108,7 +108,7 @@ public class ObjModelManager implements PreparableReloadListener {
 
                         } catch (IOException | ModelParseException e) {
 
-                            SlashbladeMod.LOGGER.warn("Failed to load model: {}", resourceLocation, e);
+                            SlashbladeMod.LOGGER.error("Failed to load model: {}", resourceLocation, e);
 
                             return ObjModelManager.get(DefaultResources.DEFAULT_MODEL);
 
@@ -116,6 +116,7 @@ public class ObjModelManager implements PreparableReloadListener {
                     }
             );
         } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
             throw new RuntimeException(e);
         } finally {
             LOCK.unlock();

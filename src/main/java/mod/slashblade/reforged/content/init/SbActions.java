@@ -42,11 +42,11 @@ public class SbActions {
     public static final DeferredHolder<Action, Action> TEST = ACTIONS.register(
             "test",
             () -> new Action()
-                    .animation("Combo_A4_FristPerson", 0.0f, 3.58f)
-                    .fristPersonAnimation("Combo_A4_FristPerson", 0.0f, 3.58f)
-//                    .addNotify(0.358f, (context) -> {
-//                        System.out.println(context.livingEntity);
-//                    })
+                    .animation("Combo_A1_ThirdPerson", 0.0f, 1.33f)
+                    .fristPersonAnimation("Combo_A1_ThirdPerson", 0.0f, 1.33f)
+                    .addNotify(0.358f, (context) -> {
+                        //System.out.println(context.livingEntity);
+                    })
                     .isLoop(true)
     );
 

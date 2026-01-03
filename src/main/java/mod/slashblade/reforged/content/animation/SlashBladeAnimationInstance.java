@@ -33,3 +33,4 @@ public class SlashBladeAnimationInstance {
         return instance;
     }
 }
+

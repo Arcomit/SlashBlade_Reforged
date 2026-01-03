@@ -17,24 +17,23 @@ import java.util.concurrent.locks.ReentrantLock;
 @ThreadSafe
 public class NotCountingPausedNanoTimeSupplier implements LongSupplier {
     // 状态跟踪变量
-    private volatile long baseTime;
-    private volatile long totalPausedDuration;
-    private volatile long pauseStartTime = -1;  // -1表示未暂停
+    private  long baseTime;
+    private  long totalPausedDuration;
+    private  long pauseStartTime = -1;  // -1表示未暂停
     private final Lock lock = new ReentrantLock();
 
     @Override
     public long getAsLong() {
+        boolean isPaused = false;
+        // 仅客户端检查暂停状态
+        if (FMLLoader.getDist() == Dist.CLIENT) {
+            final Minecraft mc = Minecraft.getInstance();
+            isPaused = (mc != null) && mc.isPaused();
+        }
+
         lock.lock();
         try {
             final long currentNanoTime = System.nanoTime();
-            boolean isPaused = false;
-
-            // 仅客户端检查暂停状态
-            if (FMLLoader.getDist() == Dist.CLIENT) {
-                final Minecraft mc = Minecraft.getInstance();
-                isPaused = (mc != null) && mc.isPaused();
-            }
-
             // 处理状态切换
             if (isPaused) {
                 if (pauseStartTime < 0) {

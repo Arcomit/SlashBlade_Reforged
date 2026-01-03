@@ -141,8 +141,18 @@ public class ObjReader {
 
     private void parseFace(String[] tokens, int lineNum) throws ModelParseException {
         if (tokens.length >= 5){
-            throw new ModelParseException("Non-triangular face detected", lineNum);
-            // TODO: 自动模型三角化
+            // 自动三角面化
+            for(int j = 0; j < tokens.length - 3; j++)
+            {
+                String[] newTokens = new String[4];
+                newTokens[0] = tokens[0];
+                newTokens[1] = tokens[1];
+                newTokens[2] = tokens[j + 2];
+                newTokens[3] = tokens[j + 3];
+                parseFace(newTokens, lineNum);
+            }
+            return;
+//            throw new ModelParseException("Non-triangular face detected", lineNum);
         }
 
         ObjFace  face1 = new ObjFace();
@@ -156,7 +166,7 @@ public class ObjReader {
             for (int i = 0; i < tokens.length - 1; ++i) {
                 subTokens              = tokens[i + 1].split("/");
                 face1.vertices     [i] = positions.get(Integer.parseInt(subTokens[0]) - 1);
-                face1.vertexUvs[i] = uvs      .get(Integer.parseInt(subTokens[1]) - 1);
+                face1.vertexUvs    [i] = uvs      .get(Integer.parseInt(subTokens[1]) - 1);
                 face1.vertexNormals[i] = normals  .get(Integer.parseInt(subTokens[2]) - 1);
             }
 
@@ -169,8 +179,8 @@ public class ObjReader {
             face1.vertexUvs = new SimpleVector3f[tokens.length - 1];
 
             for (int i = 0; i < tokens.length - 1; ++i) {
-                subTokens            = tokens[i + 1].split("/");
-                face1.vertices   [i] = positions.get(Integer.parseInt(subTokens[0]) - 1);
+                subTokens          = tokens[i + 1].split("/");
+                face1.vertices [i] = positions.get(Integer.parseInt(subTokens[0]) - 1);
                 face1.vertexUvs[i] = uvs      .get(Integer.parseInt(subTokens[1]) - 1);
             }
 

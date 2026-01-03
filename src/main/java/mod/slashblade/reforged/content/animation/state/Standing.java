@@ -13,6 +13,8 @@ import mod.slashblade.reforged.content.animation.SlashBladeAnimationContext;
 import mod.slashblade.reforged.content.animation.NotCountingPausedNanoTimeSupplier;
 import mod.slashblade.reforged.content.init.SbActions;
 import mod.slashblade.reforged.core.animation.event.AnimationManager;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -96,9 +98,40 @@ public class Standing implements IAnimationState<SlashBladeAnimationContext> {
         @Override
         public void afterTrigger(SlashBladeAnimationContext context) {
             // Action action = SbActions.IDLE_ACTION.get();
-            Action action = SbActions.TEST.get();
-            context.animationMontageRunner = new AnimationMontageRunner<>(action.getActionMontage(), context, new ZYXBoneTransformFactory(), ArrayPoseBuilder::new, new NotCountingPausedNanoTimeSupplier());
-            context.animationMontageRunner.start("action");
+//            Action action = SbActions.TEST.get();
+//            context.animationMontageRunner = new AnimationMontageRunner<>(action.getActionMontage(), context, new ZYXBoneTransformFactory(), ArrayPoseBuilder::new, new NotCountingPausedNanoTimeSupplier());
+//            context.animationMontageRunner.start("action");
+
+
+            AnimationMontage<SlashBladeAnimationContext> drawMontage = new AnimationMontage<>();
+
+            // 将两段动画合并成一个片段
+            ArrayList<Keyframe<AnimationSegment>> drawSegments = new ArrayList<>();
+//            drawSegments.add(AnimationManager.constructSegmentKeyframe("Combo_A1_FristPerson", 0.0f, 0.0f, 0.33f));
+//            drawSegments.add(AnimationManager.constructSegmentKeyframe("Combo_A2_FristPerson", 0.33f, 0.0f, 0.33f));
+//            drawSegments.add(AnimationManager.constructSegmentKeyframe("Combo_A3_FristPerson", 0.66f, 0.0f, 0.50f));
+//            drawSegments.add(AnimationManager.constructSegmentKeyframe("Combo_A4_FristPerson", 1.16f, 0.0f, 3.58f));
+//            drawSegments.add(AnimationManager.constructSegmentKeyframe("Combo_A1_FristPerson", 0.0f, 0.0f, 0.33f));
+//            drawSegments.add(AnimationManager.constructSegmentKeyframe("Combo_A2_FristPerson", 0.33f, 0.0f, 0.33f));
+//            drawSegments.add(AnimationManager.constructSegmentKeyframe("Combo_C_FristPerson", 0.66f, 0.0f, 2.92f));
+            drawSegments.add(AnimationManager.constructSegmentKeyframe("Combo_A1_FristPerson", 0.0f, 0.0f, 0.33f));
+            drawSegments.add(AnimationManager.constructSegmentKeyframe("Combo_A2_FristPerson", 0.33f, 0.0f, 0.33f));
+            drawSegments.add(AnimationManager.constructSegmentKeyframe("Combo_A3_FristPerson", 0.66f, 0.0f, 0.50f));
+            drawSegments.add(AnimationManager.constructSegmentKeyframe("Combo_A4_EX_FristPerson", 1.16f, 0.0f, 3.56f));
+            //drawSegments.add(AnimationManager.constructSegmentKeyframe("Combo_A5_FristPerson", 2.16f, 0.0f, 5.38f));
+
+
+
+            AnimationMontageTrack drawTrack = new AnimationMontageTrack(drawSegments);
+            drawMontage.setTracks(List.of(drawTrack));
+
+            Map<String, AnimationMontageSection> drawMontageSections = new HashMap<>();
+            //drawMontageSections.put("draw", new AnimationMontageSection("draw", 0.0f, 1.16f + 3.58f, "draw"));
+            drawMontageSections.put("draw", new AnimationMontageSection("draw", 0.0f, 1.16f + 3.56f, "draw"));
+            drawMontage.setSections(drawMontageSections);
+
+            context.animationMontageRunner = new AnimationMontageRunner<>(drawMontage, context, new ZYXBoneTransformFactory(), ArrayPoseBuilder::new, new NotCountingPausedNanoTimeSupplier());
+            context.animationMontageRunner.start("draw");
         }
 
         @Override

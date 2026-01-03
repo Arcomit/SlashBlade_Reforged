@@ -1,0 +1,18 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "mod.slashblade.reforged.core.obj.acceleratedrendering.mixin",
+  "plugin": "mod.slashblade.reforged.core.obj.acceleratedrendering.mixin.ArMixinPlugin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+  ],
+  "client": [
+    "ObjGroupMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  }
+}

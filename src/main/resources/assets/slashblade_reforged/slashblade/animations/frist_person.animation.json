@@ -163,6 +163,9 @@
 						"1.2917": [7.476, 12.857, -8.17],
 						"1.3333": [7.34, 13.147, -7.85]
 					}
+				},
+				"trail": {
+					"scale": 0
 				}
 			}
 		},
@@ -334,6 +337,9 @@
 						"1.4583": [8.714, 16.806, 2.549],
 						"1.7083": [7.34, 13.147, -7.85]
 					}
+				},
+				"trail": {
+					"scale": 0
 				}
 			}
 		},
@@ -3959,7 +3965,7 @@
 		},
 		"Aerial_Rave_B4_FristPerson": {
 			"loop": true,
-			"animation_length": 3.0417,
+			"animation_length": 1.5833,
 			"bones": {
 				"blade": {
 					"rotation": {
@@ -6462,6 +6468,69 @@
 						"0.7333": [1, 1, 1],
 						"0.7917": [1, 0, 0]
 					}
+				}
+			}
+		},
+		"Default_Idle_FristPerson": {
+			"loop": true,
+			"animation_length": 0.25,
+			"bones": {
+				"camera": {
+					"rotation": [0, 0, 0],
+					"position": [0, 24, 12]
+				},
+				"blade": {
+					"rotation": [-169.692, -105.95, -12.217],
+					"position": [7.34, 13.147, -7.85]
+				},
+				"sheath": {
+					"rotation": [-169.692, -105.95, -12.217],
+					"position": [7.34, 13.147, -7.85]
+				},
+				"trail": {
+					"scale": 0
+				}
+			}
+		},
+		"Default_Walk_FristPerson": {
+			"loop": true,
+			"animation_length": 0.25,
+			"bones": {
+				"camera": {
+					"rotation": [0, 0, 0],
+					"position": [0, 24, 12]
+				},
+				"blade": {
+					"rotation": [-169.692, -105.95, -12.217],
+					"position": [7.34, 13.147, -7.85]
+				},
+				"sheath": {
+					"rotation": [-169.692, -105.95, -12.217],
+					"position": [7.34, 13.147, -7.85]
+				},
+				"trail": {
+					"scale": 0
+				}
+			}
+		},
+		"Default_Sprint_FristPerson": {
+			"loop": true,
+			"animation_length": 0.25,
+			"bones": {
+				"camera": {
+					"rotation": [0, 0, 0],
+					"position": [0, 24, 12]
+				},
+				"blade": {
+					"rotation": [-169.692, -105.95, -12.217],
+					"position": [7.34, 13.147, -7.85]
+				},
+				"sheath": {
+					"rotation": [-169.692, -105.95, -12.217],
+					"position": [7.34, 13.147, -7.85]
+				},
+				"trail": {
+					"scale": 0
 				}
 			}
 		}

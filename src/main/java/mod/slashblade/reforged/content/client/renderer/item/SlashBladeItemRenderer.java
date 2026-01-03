@@ -51,7 +51,7 @@ public class SlashBladeItemRenderer extends BlockEntityWithoutLevelRenderer {
     // 物品栏渲染
     @Override
     public void renderByItem(
-            @NotNull ItemStack          stack,
+            @NotNull ItemStack          blade,
             ItemDisplayContext          transform,
             @NotNull PoseStack          poseStack,
             @NotNull MultiBufferSource  bufferSource,
@@ -62,7 +62,10 @@ public class SlashBladeItemRenderer extends BlockEntityWithoutLevelRenderer {
             return;
         }
 
-        ObjModel model = ObjModelManager.get(DefaultResources.DEFAULT_MODEL);
+        ResourceLocation modelLoc = blade.get(SbDataComponentTypes.MODEL_LOCATION);
+        ResourceLocation textureLoc = blade.get(SbDataComponentTypes.TEXTURE_LOCATION);
+
+        ObjModel model = ObjModelManager.get(modelLoc);
 
         AnimationAsset animation = AnimationManager.get(DefaultResources.DEFAULT_ANIMATION);
         if (animation == null) return;
@@ -86,7 +89,7 @@ public class SlashBladeItemRenderer extends BlockEntityWithoutLevelRenderer {
             WriteVerticesInfo.setLightMap(packedLight);
             WriteVerticesInfo.setOverlayMap(packedOverlay);
 
-            RenderType renderType = SbRenderTypes.getBlend(DefaultResources.DEFAULT_TEXTURE);
+            RenderType renderType = SbRenderTypes.getBlend(textureLoc);
             VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
 
             //poseStack.scale(0.01f,0.01f,0.01f);
@@ -103,7 +106,7 @@ public class SlashBladeItemRenderer extends BlockEntityWithoutLevelRenderer {
 
     // 第一人称渲染
     public void renderFristPerson(
-            ItemStack         stack,
+            ItemStack         blade,
             RenderHandEvent   event,
             PoseStack         poseStack,
             MultiBufferSource bufferSource,
@@ -113,17 +116,17 @@ public class SlashBladeItemRenderer extends BlockEntityWithoutLevelRenderer {
         event.setCanceled(true);
         Minecraft mc = Minecraft.getInstance();
 
-        ObjModel model = ObjModelManager.get(DefaultResources.DEFAULT_MODEL);
+        ResourceLocation modelLoc = blade.get(SbDataComponentTypes.MODEL_LOCATION);
+        ResourceLocation textureLoc = blade.get(SbDataComponentTypes.TEXTURE_LOCATION);
+
+        ObjModel model = ObjModelManager.get(modelLoc);
 
         if (!(mc.getCameraEntity() instanceof LocalPlayer)) return;
         LocalPlayer playerTest = (LocalPlayer) mc.getCameraEntity();
         SlashBladeAnimationInstance instance = SlashBladeAnimationInstance.get(playerTest);
-        instance.renderTick();
+        //instance.renderTick();
 
         Pose pose = instance.stateMachine.getPose();
-//        AnimationAsset animation = AnimationManager.get(DefaultResources.DEFAULT_ANIMATION);
-//        if (animation == null) return;
-//        Pose pose = animation.evaluate(0f);
         model.applyPose(pose);
 
         try (PoseStackAutoCloser PSAC1 = PoseStackAutoCloser.pushMatrix(poseStack)) {
@@ -179,7 +182,7 @@ public class SlashBladeItemRenderer extends BlockEntityWithoutLevelRenderer {
             WriteVerticesInfo.setLightMap(packedLight);
             WriteVerticesInfo.setOverlayMap(OverlayTexture.NO_OVERLAY);
 
-            RenderType renderType = SbRenderTypes.getBlend(DefaultResources.DEFAULT_TEXTURE);
+            RenderType renderType = SbRenderTypes.getBlend(textureLoc);
             VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
 
             model.writeVerticesOnly(vertexConsumer, "blade");
@@ -205,7 +208,7 @@ public class SlashBladeItemRenderer extends BlockEntityWithoutLevelRenderer {
                        @NotNull MultiBufferSource bufferSource,
                        int                        packedLight,
                        @NotNull LivingEntity      livingEntity,
-                       @NotNull ItemStack         itemStack,
+                       @NotNull ItemStack         blade,
                        float                      limbSwing,
                        float                      limbSwingAmount,
                        float                      partialTick,
@@ -213,18 +216,10 @@ public class SlashBladeItemRenderer extends BlockEntityWithoutLevelRenderer {
                        float                      netHeadYaw,
                        float                      headPitch)
     {
-//        SlashBladeAnimationGraph graph = itemStack.get(SbDataComponents.BASIC_EXAMPLE);
-//        graph.setTest(20);
-//        graph.setTest2(false);
-//        itemStack.set(SbDataComponents.BASIC_EXAMPLE, graph);
-//
-//        System.out.println(itemStack.get(SbDataComponents.BASIC_EXAMPLE).getTest());
-//        System.out.println(itemStack.get(SbDataComponents.BASIC_EXAMPLE).isTest2());
+        ResourceLocation modelLoc = blade.get(SbDataComponentTypes.MODEL_LOCATION);
+        ResourceLocation textureLoc = blade.get(SbDataComponentTypes.TEXTURE_LOCATION);
 
-        ResourceLocation test = itemStack.get(SbDataComponentTypes.DRAW_ACTION);
-        //System.out.println(test);
-
-        ObjModel model = ObjModelManager.get(DefaultResources.DEFAULT_MODEL);
+        ObjModel model = ObjModelManager.get(modelLoc);
 
         AnimationAsset animation = AnimationManager.get(DefaultResources.DEFAULT_ANIMATION);
         if (animation == null) return;
@@ -240,7 +235,7 @@ public class SlashBladeItemRenderer extends BlockEntityWithoutLevelRenderer {
             WriteVerticesInfo.setLightMap(packedLight);
             WriteVerticesInfo.setOverlayMap(OverlayTexture.NO_OVERLAY);
 
-            RenderType renderType = SbRenderTypes.getBlend(DefaultResources.DEFAULT_TEXTURE);
+            RenderType renderType = SbRenderTypes.getBlend(textureLoc);
             VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
 
             //poseStack.scale(0.01f,0.01f,0.01f);
