@@ -55,6 +55,7 @@ public class Walking implements IAnimationState<SlashBladeAnimationContext> {
     @Override
     public Pose evaluatePose(SlashBladeAnimationContext context) {
         AnimationMontageRunner<SlashBladeAnimationContext> runner = context.animationMontageRunner;
+//        runner.tickForward(elapsedNanos);
         if (runner == null) {
             return DummyPose.INSTANCE;
         }

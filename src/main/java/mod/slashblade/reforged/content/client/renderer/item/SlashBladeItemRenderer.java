@@ -115,6 +115,7 @@ public class SlashBladeItemRenderer extends BlockEntityWithoutLevelRenderer {
     ) {
         event.setCanceled(true);
         Minecraft mc = Minecraft.getInstance();
+        mc.gameRenderer.resetProjectionMatrix(mc.gameRenderer.getProjectionMatrix(mc.gameRenderer.getFov(mc.gameRenderer.getMainCamera(), partialTick, true)));
 
         ResourceLocation modelLoc = blade.get(SbDataComponentTypes.MODEL_LOCATION);
         ResourceLocation textureLoc = blade.get(SbDataComponentTypes.TEXTURE_LOCATION);

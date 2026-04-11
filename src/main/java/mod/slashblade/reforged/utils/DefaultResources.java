@@ -11,8 +11,8 @@ import net.minecraft.resources.ResourceLocation;
  */
 public class DefaultResources {
 
-    public static final ResourceLocation DEFAULT_MODEL     = SlashbladeMod.prefix("slashblade/models/test.obj");
-    public static final ResourceLocation DEFAULT_TEXTURE   = SlashbladeMod.prefix("slashblade/models/test5.png");
+    public static final ResourceLocation DEFAULT_MODEL     = SlashbladeMod.prefix("slashblade/models/blade.obj");
+    public static final ResourceLocation DEFAULT_TEXTURE   = SlashbladeMod.prefix("slashblade/models/blade.png");
 
     public static final ResourceLocation DEFAULT_TRAIL_TEXTURE    = SlashbladeMod.prefix("slashblade/models/trail.png");
 
